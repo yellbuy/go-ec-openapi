@@ -5,6 +5,8 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"io"
 	"net/url"
 	"sort"
@@ -12,6 +14,7 @@ import (
 	"strings"
 	"time"
 
+	simplejson "github.com/bitly/go-simplejson"
 	"github.com/nilorg/sdk/convert"
 	"github.com/yellbuy/go-ec-openapi/cache"
 )
@@ -37,6 +40,27 @@ type ClientParams struct {
 
 // Parameter 参数
 type Parameter map[string]interface{}
+
+func InterfaceToParameter(request interface{}) (Parameter, error) {
+	if request == nil {
+		return nil, errors.New("请求参数不能为空")
+	}
+	data, err := json.Marshal(request)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	reqJson, err := simplejson.NewJson(data)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	params, err := reqJson.Map()
+	if err != nil {
+		fmt.Println(err)
+	}
+	return params, err
+}
 
 // copyParameter 复制参数
 func CopyParameter(srcParams Parameter) Parameter {

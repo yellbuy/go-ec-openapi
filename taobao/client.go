@@ -1,6 +1,7 @@
 package taobao
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -25,25 +26,25 @@ var (
 	SetCache cache.SetCacheFunc
 )
 
-type TaobaoClient struct {
+type Client struct {
 	Params *common.ClientParams
 }
 
-func InitTaobaoClient(appKey, appSecret, session string) *TaobaoClient {
-	client := new(TaobaoClient)
+func InitClient(appKey, appSecret, session string) *Client {
+	client := new(Client)
 	client.Params = &common.ClientParams{appKey, appSecret, session}
 	return client
 }
 
 // execute 执行API接口
-func execute(param common.Parameter) (bytes []byte, err error) {
-	err = checkConfig()
+func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
+	err = checkConfig(client)
 	if err != nil {
 		return
 	}
 
 	var req *http.Request
-	req, err = http.NewRequest("POST", router, strings.NewReader(param.getRequestData()))
+	req, err = http.NewRequest("POST", router, strings.NewReader(param.GetRequestData()))
 	if err != nil {
 		return
 	}
@@ -64,20 +65,52 @@ func execute(param common.Parameter) (bytes []byte, err error) {
 	bytes, err = ioutil.ReadAll(response.Body)
 	return
 }
+func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest) (*common.WaybillApplyNewCols, error) {
+	params, err := common.InterfaceToParameter(request)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	res, err := client.Execute("taobao.wlb.waybill.i.get", params)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return res, err
+}
 
 // Execute 执行API接口
-func (client *TaobaoClient) Execute(method string, param common.Parameter) (res *simplejson.Json, err error) {
+func (client *Client) Execute(method string, param common.Parameter) (res *common.WaybillApplyNewCols, err error) {
 	param["method"] = method
 	param.SetRequestData(client.Params)
 
 	var bodyBytes []byte
-	bodyBytes, err = execute(param)
+	bodyBytes, err = execute(client, param)
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
-
-	return bytesToResult(bodyBytes)
+	res = new(common.WaybillApplyNewCols)
+	err = json.Unmarshal(bodyBytes, res)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return res, err
 }
+
+// // Execute 执行API接口
+// func (client *Client) Execute(method string, param common.Parameter) (res *simplejson.Json, err error) {
+// 	param["method"] = method
+// 	param.SetRequestData(client.Params)
+
+// 	var bodyBytes []byte
+// 	bodyBytes, err = execute(client, param)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 		return
+// 	}
+
+// 	return bytesToResult(bodyBytes)
+// }
 
 func bytesToResult(bytes []byte) (res *simplejson.Json, err error) {
 	res, err = simplejson.NewJson(bytes)
@@ -97,9 +130,9 @@ func bytesToResult(bytes []byte) (res *simplejson.Json, err error) {
 }
 
 // ExecuteCache 执行API接口，缓存
-func ExecuteCache(method string, param common.Parameter) (res *simplejson.Json, err error) {
+func (client *Client) ExecuteCache(method string, param common.Parameter) (res *simplejson.Json, err error) {
 	param["method"] = method
-	param.SetRequestData()
+	param.SetRequestData(client.Params)
 
 	cacheKey := common.NewCacheKey(param)
 	// 获取缓存
@@ -114,7 +147,7 @@ func ExecuteCache(method string, param common.Parameter) (res *simplejson.Json, 
 	}
 
 	var bodyBytes []byte
-	bodyBytes, err = execute(param)
+	bodyBytes, err = execute(client, param)
 	if err != nil {
 		return
 	}
@@ -131,11 +164,11 @@ func ExecuteCache(method string, param common.Parameter) (res *simplejson.Json, 
 }
 
 // 检查配置
-func checkConfig() error {
-	if AppKey == "" {
+func checkConfig(client *Client) error {
+	if client.Params.AppKey == "" {
 		return errors.New("AppKey 不能为空")
 	}
-	if AppSecret == "" {
+	if client.Params.AppSecret == "" {
 		return errors.New("AppSecret 不能为空")
 	}
 	if router == "" {
