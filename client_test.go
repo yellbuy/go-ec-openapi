@@ -9,29 +9,18 @@ import (
 
 func TestExecute(t *testing.T) {
 	// http://open.taobao.com/docs/api.htm?apiId=24515
-	client, err := NewClient(TAOBAO, &common.ClientParams{"23268761", "b17cc059ffba3f6cf0d9131359d0be2a", "62026037725650ee7e9056985050e24865e52523122485"})
+	client, err := NewClient(TAOBAO, &common.ClientParams{"23268761", "b17cc059ffba3f6cf0d9131359d0be2a", "62024115ddfe90c8c9cege1fefda96512336cddb9fe0f852523122485"})
 	if err != nil {
 		t.Fatal(err)
 	}
-	res, err := client.Execute("taobao.wlb.waybill.i.get", common.Parameter{
-		"cp_code": "ZTO",
-		"shipping_address":       "女装",
-		"cat":     "16,18",
-	})
-
+	request := new(common.WaybillApplyNewRequest)
+	request.ShippingAddress = new(common.WaybillAddress)
+	// 订单数据，必填
+	request.TradeOrderInfoCols = make([]*common.TradeOrderInfo, 0)
+	res, err := client.GetWaybill(request)
+	fmt.Println(res)
 	if err != nil {
 		t.Fatal(err)
-	}
-
-	fmt.Println("商品数量:", res.Get("tbk_item_get_response").Get("total_results").MustInt())
-	var imtes []interface{}
-	imtes, _ = res.Get("tbk_item_get_response").Get("results").Get("n_tbk_item").Array()
-	for _, v := range imtes {
-		fmt.Println("======")
-		item := v.(map[string]interface{})
-		fmt.Println("商品名称:", item["title"])
-		fmt.Println("商品价格:", item["reserve_price"])
-		fmt.Println("商品链接:", item["item_url"])
 	}
 }
 

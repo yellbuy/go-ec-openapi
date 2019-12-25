@@ -112,3 +112,19 @@ type WaybillApplyNewCols struct {
 	// 包裹对应的派件（收件）物流服务商网点（分支机构）代码
 	ConsigneeBranchCode string `json:"consignee_branch_code"`
 }
+
+// type CommonResponseDto{
+// 	//平台颁发的每次请求访问的唯一标识
+// 	RequestId	string	`json:"request_id"`
+// 	// 请求访问失败时返回的根节点
+// 	ErrorResponse	string	`json:"error_response"`
+// 	// 请求失败返回的错误码
+// 	Code	string	`json:"code"`
+// 	// 请求失败返回的错误信息
+// 	Msg	string	`json:"msg"`
+// 	// 请求失败返回的子错误码
+// 	SubCode	String
+// 	// 请求失败返回的子错误信息
+// 	SubMsg	String
+// 	***_response	String
+// }
