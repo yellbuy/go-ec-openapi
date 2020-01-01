@@ -81,12 +81,12 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest) (*commo
 		fmt.Println(err)
 		return nil, nil, err
 	}
-	data, err := res.Get("wlb_waybill_i_get_response").Encode()
+	data, err := res.Get("wlb_waybill_i_get_response").Get("waybill_apply_new_cols").Encode()
 	if err != nil {
 		fmt.Println(err)
 		return nil, data, err
 	}
-	//fmt.Println("wlb_waybill_i_get_response:", string(data))
+	fmt.Println("waybill_apply_new_cols:", string(data))
 	result := new(common.WaybillApplyNewCols)
 	err = json.Unmarshal(data, result)
 	if err != nil {

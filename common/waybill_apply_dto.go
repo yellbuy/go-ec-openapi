@@ -89,12 +89,13 @@ type WaybillApplyNewRequest struct {
 // 电子面单响应结构体
 // taobao.wlb.waybill.i.get
 type WaybillApplyNewCols struct {
+	WaybillApplyNewInfo []*WaybillApplyNewInfo `json:"waybill_apply_new_info"`
+}
+
+// 电子面单响应结构体
+type WaybillApplyDto struct {
 	// 根据收货地址返回大头笔信息
 	ShortAddress string `json:"short_address"`
-	// 收\发货地址，必填
-	ShippingAddress *WaybillAddress `valid:"Required" json:"shipping_address"`
-	// 订单数据，必填
-	TradeOrderInfoCols []*TradeOrderInfo `valid:"Required" json:"trade_order_info_cols"`
 	// 返回的面单号
 	WaybillCode string `json:"waybill_code"`
 	// 集包地代码
@@ -111,6 +112,11 @@ type WaybillApplyNewCols struct {
 	ShippingBranchName string `json:"shipping_branch_name"`
 	// 包裹对应的派件（收件）物流服务商网点（分支机构）代码
 	ConsigneeBranchCode string `json:"consignee_branch_code"`
+}
+type WaybillApplyNewInfo struct {
+	WaybillApplyDto
+	// 订单数据，必填
+	TradeOrderInfoCols []*TradeOrderInfo `valid:"Required" json:"trade_order_info_cols"`
 }
 
 // type CommonResponseDto{
