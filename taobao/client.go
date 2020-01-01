@@ -86,7 +86,7 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest) (*commo
 		fmt.Println(err)
 		return nil, data, err
 	}
-	fmt.Println("waybill_apply_new_cols:", string(data))
+	// fmt.Println("waybill_apply_new_cols:", string(data))
 	result := new(common.WaybillApplyNewCols)
 	err = json.Unmarshal(data, result)
 	if err != nil {
