@@ -22,5 +22,5 @@ func NewClient(platformType int, params *common.ClientParams) (Client, error) {
 }
 
 type Client interface {
-	GetWaybill(request *common.WaybillApplyNewRequest) (res *common.WaybillApplyNewCols, err error)
+	GetWaybill(request *common.WaybillApplyNewRequest) (res *common.WaybillApplyNewCols, oriData []byte, err error)
 }

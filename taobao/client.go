@@ -68,30 +68,31 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	bytes, err = ioutil.ReadAll(response.Body)
 	return
 }
-func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest) (*common.WaybillApplyNewCols, error) {
+func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest) (*common.WaybillApplyNewCols, []byte, error) {
 	req := make(map[string]interface{})
 	req["waybill_apply_new_request"] = request
 	params, err := common.InterfaceToParameter(req)
 	if err != nil {
 		fmt.Println(err)
-		return nil, err
+		return nil, nil, err
 	}
 	res, err := client.Execute("taobao.wlb.waybill.i.get", params)
 	if err != nil {
 		fmt.Println(err)
-		return nil, err
+		return nil, nil, err
 	}
 	data, err := res.Get("wlb_waybill_i_get_response").Encode()
 	if err != nil {
 		fmt.Println(err)
-		return nil, err
+		return nil, data, err
 	}
+	//fmt.Println("wlb_waybill_i_get_response:", string(data))
 	result := new(common.WaybillApplyNewCols)
 	err = json.Unmarshal(data, result)
 	if err != nil {
 		fmt.Println(err)
 	}
-	return result, err
+	return result, data, err
 }
 
 // Execute 执行API接口
