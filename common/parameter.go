@@ -10,7 +10,6 @@ import (
 	"io"
 	"net/url"
 	"sort"
-	"strconv"
 	"strings"
 	"time"
 
@@ -69,22 +68,6 @@ func CopyParameter(srcParams Parameter) Parameter {
 		newParams[key] = value
 	}
 	return newParams
-}
-
-func (p Parameter) SetRequestData(params *ClientParams) {
-	hh, _ := time.ParseDuration("8h")
-	loc := time.Now().UTC().Add(hh)
-	p["timestamp"] = strconv.FormatInt(loc.Unix(), 10)
-	p["format"] = "json"
-	p["app_key"] = params.AppKey
-	p["v"] = "2.0"
-	p["sign_method"] = "md5"
-	p["partner_id"] = "Nilorg"
-	if params.Session != "" {
-		p["session"] = params.Session
-	}
-	// 设置签名
-	p["sign"] = GetSign(params.AppSecret, p)
 }
 
 // 获取请求数据

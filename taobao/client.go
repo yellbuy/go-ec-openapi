@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -36,6 +37,22 @@ func InitClient(appKey, appSecret, session string) *Client {
 	client := new(Client)
 	client.Params = &common.ClientParams{appKey, appSecret, session}
 	return client
+}
+func setRequestData(p common.Parameter, params *common.ClientParams) common.Parameter {
+	hh, _ := time.ParseDuration("8h")
+	loc := time.Now().UTC().Add(hh)
+	p["timestamp"] = strconv.FormatInt(loc.Unix(), 10)
+	p["format"] = "json"
+	p["app_key"] = params.AppKey
+	p["v"] = "2.0"
+	p["sign_method"] = "md5"
+	p["partner_id"] = "Nilorg"
+	if params.Session != "" {
+		p["session"] = params.Session
+	}
+	// 设置签名
+	p["sign"] = common.GetSign(params.AppSecret, p)
+	return p
 }
 
 // execute 执行API接口
@@ -96,28 +113,9 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest) (*commo
 }
 
 // Execute 执行API接口
-// func (client *Client) Execute(method string, param common.Parameter) (res *common.WaybillApplyNewCols, err error) {
-// 	param["method"] = method
-// 	param.SetRequestData(client.Params)
-
-// 	var bodyBytes []byte
-// 	bodyBytes, err = execute(client, param)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 		return
-// 	}
-// 	res = new(common.WaybillApplyNewCols)
-// 	err = json.Unmarshal(bodyBytes, res)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 	}
-// 	return res, err
-// }
-
-// Execute 执行API接口
 func (client *Client) Execute(method string, param common.Parameter) (res *simplejson.Json, err error) {
 	param["method"] = method
-	param.SetRequestData(client.Params)
+	param = setRequestData(param, client.Params)
 
 	var bodyBytes []byte
 	bodyBytes, err = execute(client, param)
@@ -153,7 +151,7 @@ func bytesToResult(bytes []byte) (res *simplejson.Json, err error) {
 // ExecuteCache 执行API接口，缓存
 func (client *Client) ExecuteCache(method string, param common.Parameter) (res *simplejson.Json, err error) {
 	param["method"] = method
-	param.SetRequestData(client.Params)
+	param = setRequestData(param, client.Params)
 
 	cacheKey := common.NewCacheKey(param)
 	// 获取缓存

@@ -28,10 +28,10 @@ type TradeOrderInfo struct {
 	ConsigneeAddress *WaybillAddress `valid:"Required" json:"consignee_address"`
 	// 发货人联系方式
 	SendPhone string `json:"send_phone"`
-	// 重量，单位：克
-	Weight int `json:"weight"`
 	// 发货人姓名
 	SendName string `json:"send_name"`
+	// 重量，单位：克
+	Weight int `json:"weight"`
 	// 包裹里面的商品名称，必填
 	PackageItems []*PackageItem `valid:"Required" json:"package_items"`
 	// 物流服务能力集合
@@ -58,6 +58,9 @@ type TradeOrderInfo struct {
 	ConsigneePhone string `json:"consignee_phone"`
 	// 订单渠道来源:123
 	OrderType string `json:"order_type"`
+
+	// 拼多多接口所需参数
+	ObjectId string `json:"-"`
 }
 
 // 包裹里面的商品名称
@@ -117,6 +120,8 @@ type WaybillApplyNewInfo struct {
 	WaybillApplyDto
 	// 订单数据，必填
 	TradeOrderInfoCols []*TradeOrderInfo `valid:"Required" json:"trade_order_info_cols"`
+	// 兼容pdd的接口，电子面单内容
+	PrintData string `json:"-"`
 }
 
 // type CommonResponseDto{
