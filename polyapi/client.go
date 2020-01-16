@@ -36,12 +36,13 @@ func InitClient(appKey, appSecret, session string) *Client {
 	return client
 }
 func setRequestData(p common.Parameter, params *common.ClientParams) common.Parameter {
+	hh, _ := time.ParseDuration("8h")
+	loc := time.Now().UTC().Add(hh)
+	p["timestamp"] = loc.Format("2006-01-02 15:04:05")
 	p["appkey"] = params.AppKey
-	if params.Session != "" {
-		p["token"] = params.Session
-	}
+	p["token"] = params.Session
 	p["platid"] = "500"
-	p["version"] = "1.0"
+	p["version"] = "1.5"
 	p["contenttype"] = "json"
 	// 设置签名
 	p["sign"] = common.GetSign(params.AppSecret, p)
@@ -56,7 +57,9 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	}
 
 	var req *http.Request
-	req, err = http.NewRequest("POST", router, strings.NewReader(param.GetRequestData()))
+	data := param.GetRequestData()
+	fmt.Println("data:", data)
+	req, err = http.NewRequest("POST", router, strings.NewReader(data))
 	if err != nil {
 		return
 	}

@@ -8,6 +8,9 @@ import (
 )
 
 func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest) (*common.WaybillApplyNewCols, []byte, error) {
+	for index, _ := range request.TradeOrderInfoCols {
+		request.TradeOrderInfoCols[index].OrderChannelsType = "TB"
+	}
 	req := make(map[string]interface{})
 	req["waybill_apply_new_request"] = request
 	params, err := common.InterfaceToParameter(req)

@@ -193,7 +193,7 @@ func (self *ParamWaybillCloudPrintApplyNewRequest) getParamWaybillCloudPrintAppl
 		dto.ObjectId = val.ObjectId
 		// 订单信息
 		orderInfo := new(OrderInfo)
-		orderInfo.OrderChannelsType = val.OrderType
+		//orderInfo.OrderChannelsType = val.OrderType
 		if val.PackageId != "" {
 			orderInfo.TradeOrderList = strings.Split(val.PackageId, ",")
 		}
