@@ -47,7 +47,7 @@ func setRequestData(p common.Parameter, params *common.ClientParams) common.Para
 		p["access_token"] = params.Session
 	}
 	// 设置签名
-	p["sign"] = common.GetSign(params.AppSecret, p)
+	p["sign"] = common.GetSign(params.AppSecret, p, false)
 	return p
 }
 

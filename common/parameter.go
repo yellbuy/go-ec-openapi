@@ -82,7 +82,7 @@ func (p Parameter) GetRequestData() string {
 }
 
 // 获取签名
-func GetSign(appSecret string, params Parameter) string {
+func GetSign(appSecret string, params Parameter, isLower bool) string {
 	// 获取Key
 	keys := []string{}
 	for k := range params {
@@ -93,14 +93,23 @@ func GetSign(appSecret string, params Parameter) string {
 	// 把所有参数名和参数值串在一起
 	query := bytes.NewBufferString(appSecret)
 	for _, k := range keys {
-		query.WriteString(k)
-		query.WriteString(InterfaceToString(params[k]))
+		if isLower {
+			query.WriteString(strings.ToLower(k))
+			query.WriteString(strings.ToLower(InterfaceToString(params[k])))
+		} else {
+			query.WriteString(k)
+			query.WriteString(InterfaceToString(params[k]))
+		}
 	}
 	query.WriteString(appSecret)
 	// 使用MD5加密
 	h := md5.New()
 	io.Copy(h, query)
-	// 把二进制转化为大写的十六进制
+	if isLower {
+		// 把二进制转化为大写的十六进制
+		return strings.ToLower(hex.EncodeToString(h.Sum(nil)))
+	}
+	// 把二进制转化为小写的十六进制
 	return strings.ToUpper(hex.EncodeToString(h.Sum(nil)))
 }
 

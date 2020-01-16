@@ -45,7 +45,7 @@ func setRequestData(p common.Parameter, params *common.ClientParams) common.Para
 	p["version"] = "1.5"
 	p["contenttype"] = "json"
 	// 设置签名
-	p["sign"] = common.GetSign(params.AppSecret, p)
+	p["sign"] = common.GetSign(params.AppSecret, p, true)
 	return p
 }
 
