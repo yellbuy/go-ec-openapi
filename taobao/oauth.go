@@ -116,7 +116,8 @@ func (client *Client) GetAccessToken(code, redirectUri, state string) (res *comm
 	res.RefreshToken = token.RefreshToken
 	res.VenderId = token.TaobaoUserId
 	res.Nickname = token.TaobaoUserNick
-	res.TokenType = token.TokenType
+	res.TokenType = "TAOBAO"
+	//res.TokenType = token.TokenType
 	res.Scope = token.Scope
 	return
 }

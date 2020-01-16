@@ -1,12 +1,10 @@
 package polyapi
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
 
@@ -16,9 +14,8 @@ import (
 )
 
 var (
-	router = "http://gw.api.taobao.com/router/rest"
-	// router = "http://gw.api.tbsandbox.com/router/rest"
-	// router = "https://baidu.com"
+	router = "http://39.98.7.126/OpenAPI/do"
+	// router = "http://aliyuntest.polyapi.com/OpenAPI/do"
 	// Timeout ...
 	Timeout time.Duration
 	// CacheExpiration 缓存过期时间
@@ -39,17 +36,13 @@ func InitClient(appKey, appSecret, session string) *Client {
 	return client
 }
 func setRequestData(p common.Parameter, params *common.ClientParams) common.Parameter {
-	hh, _ := time.ParseDuration("8h")
-	loc := time.Now().UTC().Add(hh)
-	p["timestamp"] = strconv.FormatInt(loc.Unix(), 10)
-	p["format"] = "json"
-	p["app_key"] = params.AppKey
-	p["v"] = "2.0"
-	p["sign_method"] = "md5"
-	p["partner_id"] = "Nilorg"
+	p["appkey"] = params.AppKey
 	if params.Session != "" {
-		p["session"] = params.Session
+		p["token"] = params.Session
 	}
+	p["platid"] = "500"
+	p["version"] = "1.0"
+	p["contenttype"] = "json"
 	// 设置签名
 	p["sign"] = common.GetSign(params.AppSecret, p)
 	return p
@@ -85,65 +78,37 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	bytes, err = ioutil.ReadAll(response.Body)
 	return
 }
-func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest) (*common.WaybillApplyNewCols, []byte, error) {
-	req := make(map[string]interface{})
-	req["waybill_apply_new_request"] = request
-	params, err := common.InterfaceToParameter(req)
-	if err != nil {
-		fmt.Println(err)
-		return nil, nil, err
-	}
-	res, err := client.Execute("taobao.wlb.waybill.i.get", params)
-	if err != nil {
-		fmt.Println(err)
-		return nil, nil, err
-	}
-	data, err := res.Get("wlb_waybill_i_get_response").Get("waybill_apply_new_cols").Encode()
-	if err != nil {
-		fmt.Println(err)
-		return nil, data, err
-	}
-	// fmt.Println("waybill_apply_new_cols:", string(data))
-	result := new(common.WaybillApplyNewCols)
-	err = json.Unmarshal(data, result)
-	if err != nil {
-		fmt.Println(err)
-	}
-	return result, data, err
-}
 
 // Execute 执行API接口
-func (client *Client) Execute(method string, param common.Parameter) (res *simplejson.Json, err error) {
+func (client *Client) Execute(method string, param common.Parameter) (res *simplejson.Json, body []byte, err error) {
 	param["method"] = method
 	param = setRequestData(param, client.Params)
-
-	var bodyBytes []byte
-	bodyBytes, err = execute(client, param)
+	body, err = execute(client, param)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	return bytesToResult(bodyBytes)
+	res, err = bytesToResult(body)
+	return
 }
 
 func bytesToResult(bytes []byte) (res *simplejson.Json, err error) {
 	res, err = simplejson.NewJson(bytes)
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
-
-	if responseError, ok := res.CheckGet("error_response"); ok {
-		fmt.Println("code:", responseError.Get("code").MustInt())
-		fmt.Println("msg:", responseError.Get("msg").MustString())
-		if subMsg, subOk := responseError.CheckGet("sub_msg"); subOk {
-			fmt.Println("sub_code:", responseError.Get("sub_code").MustString())
-			fmt.Println("sub_msg:", responseError.Get("sub_msg").MustString())
-			err = errors.New(subMsg.MustString())
-		} else {
-			err = errors.New(responseError.Get("msg").MustString())
+	code := res.Get("code").MustString()
+	if code != "10000" {
+		fmt.Println("code:", code)
+		fmt.Println("subcode:", res.Get("subcode").MustString())
+		msg := res.Get("submessage").MustString()
+		if msg == "" {
+			msg = res.Get("msg").MustString()
 		}
-		res = nil
+		fmt.Println("msg:", msg)
+		err = errors.New(msg)
 	}
 	return
 }

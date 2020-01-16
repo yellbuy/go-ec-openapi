@@ -4,11 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
-	"net/http"
-	"net/url"
-	"strings"
 
+	simplejson "github.com/bitly/go-simplejson"
 	"github.com/yellbuy/go-ec-openapi/common"
 )
 
@@ -33,60 +30,88 @@ type AccessToken struct {
 	Scope   []string `json:"scope"`
 }
 
+type authorizeReqDto struct {
+	AppKey      string `json:"appkey"`
+	AppSecret   string `json:"appsecret"`
+	CallbackUrl string `json:"callbackurl"`
+	State       string `json:"state"`
+	ItemCode    string `json:"itemcode"`
+}
+
 func (client *Client) GetAuthorizeUrl(redirectUri, state string) (string, error) {
-	return "", nil
+	reqDto := new(authorizeReqDto)
+	reqDto.AppKey = client.Params.AppKey
+	reqDto.AppSecret = client.Params.AppSecret
+	reqDto.CallbackUrl = redirectUri
+	reqDto.State = state
+	bizcontent, err := json.Marshal(reqDto)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	req := make(map[string]interface{})
+	req["bizcontent"] = string(bizcontent)
+	params, err := common.InterfaceToParameter(req)
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+	res, _, err := client.Execute("Differ.JH.BuildeAuthorizeUrl", params)
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+	authorizeUrl := res.Get("authorizeurl").MustString()
+	if authorizeUrl == "" {
+		return "", errors.New("authorizeUrl为空")
+	}
+	return authorizeUrl, nil
+}
+
+type tokenReqDto struct {
+	AppKey      string `json:"appkey"`
+	AppSecret   string `json:"appsecret"`
+	CallbackUrl string `json:"callbackurl"`
+	// 是否校验服务订购状态
+	IsCheckAppOrder bool `json:"ischeckapporder"`
 }
 
 func (client *Client) GetAccessToken(code, redirectUri, state string) (res *common.AccessToken, body []byte, err error) {
-	postData := url.Values{"client_id": {client.Params.AppKey}, "client_secret": {client.Params.AppSecret}, "code": {code},
-		"grant_type": {"authorization_code"}, "redirect_uri": {redirectUri}, "state": {state}}
-	var resp *http.Response
-	resp, err = http.Post("http://open-api.pinduoduo.com/oauth/token", "application/x-www-form-urlencoded;charset=utf-8", strings.NewReader(postData.Encode()))
-	defer resp.Body.Close()
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	body, err = ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	token := new(AccessToken)
-	if err = json.Unmarshal(body, token); err != nil {
-		fmt.Println("body:", err)
-		return
-	}
-	if token.SessionKey == "" {
-		err = errors.New("access_token不存在")
-		return
-	}
-	postData = url.Values{"client_id": {client.Params.AppKey}, "client_secret": {client.Params.AppSecret}, "code": {code},
-		"grant_type": {"refresh_token"}, "refresh_token": {token.RefreshToken}, "redirect_uri": {redirectUri}, "state": {state}}
-	resp, err = http.Post("http://open-api.pinduoduo.com/oauth/token", "application/x-www-form-urlencoded;charset=utf-8", strings.NewReader(postData.Encode()))
-	defer resp.Body.Close()
-	if err != nil {
-		fmt.Println(err)
+	reqDto := new(tokenReqDto)
+	reqDto.AppKey = client.Params.AppKey
+	reqDto.AppSecret = client.Params.AppSecret
+	reqDto.CallbackUrl = redirectUri
+	reqDto.IsCheckAppOrder = false
+	bizcontent, resErr := json.Marshal(reqDto)
+	if resErr != nil {
+		fmt.Println(resErr)
+		err = resErr
 		return
 	}
 
-	body, err = ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println(err)
+	req := make(map[string]interface{})
+	req["bizcontent"] = string(bizcontent)
+	params, resErr := common.InterfaceToParameter(req)
+	if resErr != nil {
+		fmt.Println(resErr)
+		err = resErr
 		return
 	}
-	if err = json.Unmarshal(body, token); err != nil {
-		fmt.Println("body:", err)
+	var resJson *simplejson.Json
+	resJson, body, err = client.Execute("Differ.JH.BuildeAuthorizeUrl", params)
+	if err != nil {
+		fmt.Println(err)
 		return
 	}
 	res = new(common.AccessToken)
-	res.AccessToken = token.SessionKey
-	res.ExpireIn = token.ExpireTimeInterval
-	res.RefreshToken = token.RefreshToken
-	res.VenderId = token.VenderId
-	res.Nickname = token.Nickname
+	res.AccessToken = resJson.Get("sessionkey").MustString()
+	res.ExpireIn = resJson.Get("expiretimeinterval").MustInt()
+	res.RefreshToken = resJson.Get("refreshtoken").MustString()
+	res.VenderId = resJson.Get("venderid").MustString()
+	res.Nickname = resJson.Get("nickname").MustString()
+	res.ExpireTime = resJson.Get("sessionkeyexpiretime").MustString()
+	res.RefreshTokenExpireTime = resJson.Get("refreshtokenexpiretime").MustString()
+	res.Subplat = resJson.Get("subplat").MustString()
 	res.TokenType = "POLYAPI"
-	res.Scope = token.Scope
 	return
 }
