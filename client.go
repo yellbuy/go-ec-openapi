@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	TAOBAO = iota
+	TB = iota
 	JD
 	PDD
 	POLYAPI
@@ -18,7 +18,7 @@ const (
 
 func NewClient(platformType int, params *common.ClientParams) (Client, error) {
 	switch platformType {
-	case TAOBAO:
+	case TB:
 		return &taobao.Client{params}, nil
 	case PDD:
 		return &pdd.Client{params}, nil
