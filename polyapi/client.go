@@ -1,8 +1,14 @@
 package polyapi
 
 import (
+	"bytes"
+	"crypto/aes"
+	"crypto/cipher"
+	"crypto/md5"
+	"encoding/hex"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -58,7 +64,7 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 
 	var req *http.Request
 	data := param.GetRequestData()
-	fmt.Println("data:", data)
+	// fmt.Println("data:", data)
 	req, err = http.NewRequest("POST", router, strings.NewReader(data))
 	if err != nil {
 		return
@@ -162,4 +168,53 @@ func checkConfig(client *Client) error {
 		return errors.New("router 不能为空")
 	}
 	return nil
+}
+
+// 账号同步所需的加密方法
+func aesEncrypt(appSecret string, origData []byte) ([]byte, error) {
+	// { 0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF, 0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF }
+	iv := []byte{18, 52, 86, 120, 144, 171, 205, 239, 18, 52, 86, 120, 144, 171, 205, 239}
+	key := genPassword(appSecret)
+	block, err := aes.NewCipher([]byte(key))
+	if err != nil {
+		return nil, err
+	}
+	blockSize := block.BlockSize()
+	//fmt.Println("blockSize:", blockSize)
+	origData = paddingPKCS7(origData, blockSize)
+
+	blockMode := cipher.NewCBCEncrypter(block, iv)
+	crypted := make([]byte, len(origData))
+	blockMode.CryptBlocks(crypted, origData)
+	return crypted, nil
+}
+
+func paddingPKCS7(ciphertext []byte, blockSize int) []byte {
+	padding := blockSize - len(ciphertext)%blockSize
+	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
+	return append(ciphertext, padtext...)
+}
+
+func paddingPKCS5(ciphertext []byte) []byte {
+	return paddingPKCS7(ciphertext, 8)
+}
+
+// 生成AES加密所需密码
+func genPassword(appSecret string) string {
+	query := bytes.NewBufferString(appSecret)
+	// 使用MD5加密
+	h := md5.New()
+	io.Copy(h, query)
+	// 把二进制转化为大写的十六进制
+	return strings.ToUpper(hex.EncodeToString(h.Sum(nil)))
+}
+
+// 字节数组转16进制字符串
+func byteArrToHexString(DecimalSlice []byte) string {
+	var sa = make([]string, 0)
+	for _, v := range DecimalSlice {
+		sa = append(sa, fmt.Sprintf("%02X", v))
+	}
+	ss := strings.Join(sa, "")
+	return ss
 }

@@ -87,7 +87,7 @@ func (client *Client) GetAccessToken(code, redirectUri, state string, extData ..
 		platAppKey = extData[0]
 	}
 	if len(extData) > 1 {
-		platAppSecret = extData[2]
+		platAppSecret = extData[1]
 	}
 	reqDto.AppKey = platAppKey
 	reqDto.AppSecret = platAppSecret
@@ -102,6 +102,7 @@ func (client *Client) GetAccessToken(code, redirectUri, state string, extData ..
 
 	req := make(map[string]interface{})
 	req["bizcontent"] = string(bizcontent)
+	//fmt.Println("bizcontent：", string(bizcontent))
 	params, resErr := common.InterfaceToParameter(req)
 	if resErr != nil {
 		fmt.Println(resErr)
@@ -112,7 +113,7 @@ func (client *Client) GetAccessToken(code, redirectUri, state string, extData ..
 	// 获取平台SessionKey
 	resJson, body, err = client.Execute("Differ.JH.GetAuthorizeSessionKey", params)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Differ.JH.GetAuthorizeSessionKey:", err)
 		return
 	}
 
@@ -128,17 +129,34 @@ func (client *Client) GetAccessToken(code, redirectUri, state string, extData ..
 	res.TokenType = "POLYAPI"
 
 	// 平台账号同步
-	resJson.Set("appkey", platAppKey)
-	resJson.Set("appsecret", platAppSecret)
-	params, err = resJson.Map()
+	resJson = simplejson.New()
+
+	resJson.Set("AppKey", platAppKey)
+	resJson.Set("AppSecret", platAppSecret)
+	resJson.Set("SessionKey", res.AccessToken)
+	resJson.Set("SessionKeyExpireTime", res.ExpireTime)
+	resJson.Set("SessionKeyTimeout", res.ExpireIn)
+	resJson.Set("RefreshTokenKey", res.RefreshToken)
+	// params, err = resJson.Map()
+
+	req = make(map[string]interface{})
+	bizcontent, err = resJson.MarshalJSON()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-
-	resJson, body, err = client.Execute("Differ.JH.SyncAccount", params)
+	fmt.Println("bizcontent:", string(bizcontent))
+	bizcontent, err = aesEncrypt(client.Params.AppSecret, bizcontent)
 	if err != nil {
 		fmt.Println(err)
+		return
+	}
+	content := byteArrToHexString(bizcontent)
+	fmt.Println("bizcontent:", content)
+	req["bizcontent"] = content
+	resJson, body, err = client.Execute("Differ.JH.SyncAccount", req)
+	if err != nil {
+		fmt.Println("Differ.JH.SyncAccount", err)
 		return
 	}
 	// 获取最终token
