@@ -2,8 +2,6 @@ package polyapi
 
 import (
 	"bytes"
-	"crypto/aes"
-	"crypto/cipher"
 	"crypto/md5"
 	"encoding/hex"
 	"errors"
@@ -13,6 +11,8 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/thinkoner/openssl"
 
 	simplejson "github.com/bitly/go-simplejson"
 	"github.com/yellbuy/go-ec-openapi/cache"
@@ -172,41 +172,64 @@ func checkConfig(client *Client) error {
 
 // 账号同步所需的加密方法
 func aesEncrypt(appSecret string, origData []byte) ([]byte, error) {
-	// { 0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF, 0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF }
-	iv := []byte{18, 52, 86, 120, 144, 171, 205, 239, 18, 52, 86, 120, 144, 171, 205, 239}
 	key := genPassword(appSecret)
-	block, err := aes.NewCipher([]byte(key))
-	if err != nil {
-		return nil, err
-	}
-	blockSize := block.BlockSize()
-	//fmt.Println("blockSize:", blockSize)
-	origData = paddingPKCS7(origData, blockSize)
-
-	blockMode := cipher.NewCBCEncrypter(block, iv)
-	crypted := make([]byte, len(origData))
-	blockMode.CryptBlocks(crypted, origData)
+	fmt.Println("key:", key)
+	keyBytes := []byte(key)
+	crypted, _ := openssl.AesECBEncrypt(origData, keyBytes, openssl.PKCS7_PADDING)
 	return crypted, nil
 }
 
-func paddingPKCS7(ciphertext []byte, blockSize int) []byte {
-	padding := blockSize - len(ciphertext)%blockSize
-	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
-	return append(ciphertext, padtext...)
-}
+// func aesEncryptECB(origData []byte, key []byte, blockSize int) (encrypted []byte) {
+// 	cipher, _ := aes.NewCipher(generateKey(key))
+// 	length := (len(origData) + blockSize) / blockSize
+// 	plain := make([]byte, length*blockSize)
+// 	copy(plain, origData)
+// 	pad := byte(len(plain) - len(origData))
+// 	for i := len(origData); i < len(plain); i++ {
+// 		plain[i] = pad
+// 	}
+// 	encrypted = make([]byte, len(plain))
+// 	// 分组分块加密
+// 	for bs, be := 0, blockSize; bs <= len(origData); bs, be = bs+blockSize, be+blockSize {
+// 		cipher.Encrypt(encrypted[bs:be], plain[bs:be])
+// 	}
 
-func paddingPKCS5(ciphertext []byte) []byte {
-	return paddingPKCS7(ciphertext, 8)
-}
+// 	return encrypted
+// }
+// func generateKey(key []byte) (genKey []byte) {
+// 	genKey = make([]byte, 16)
+// 	copy(genKey, key)
+// 	for i := 16; i < len(key); {
+// 		for j := 0; j < 16 && i < len(key); j, i = j+1, i+1 {
+// 			genKey[j] ^= key[i]
+// 		}
+// 	}
+// 	return genKey
+// }
+
+// func paddingPKCS7(ciphertext []byte, blockSize int) []byte {
+// 	padding := blockSize - len(ciphertext)%blockSize
+// 	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
+// 	return append(ciphertext, padtext...)
+// }
+
+// func paddingPKCS5(ciphertext []byte) []byte {
+// 	return paddingPKCS7(ciphertext, 8)
+// }
 
 // 生成AES加密所需密码
 func genPassword(appSecret string) string {
+	byteArr := []byte(appSecret)
+	fmt.Println(byteArr)
 	query := bytes.NewBufferString(appSecret)
 	// 使用MD5加密
 	h := md5.New()
 	io.Copy(h, query)
+	content := h.Sum(nil)
 	// 把二进制转化为大写的十六进制
-	return strings.ToUpper(hex.EncodeToString(h.Sum(nil)))
+	subContent := content[4:12]
+	res := hex.EncodeToString(subContent)
+	return res
 }
 
 // 字节数组转16进制字符串
