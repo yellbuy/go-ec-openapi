@@ -30,7 +30,7 @@ type AccessToken struct {
 	Scope          []string `json:"scope"`
 }
 
-func (client *Client) GetAuthorizeUrl(redirectUri, state string) (string, error) {
+func (client *Client) GetAuthorizeUrl(redirectUri, state string, extData ...string) (string, error) {
 	query := url.Values{}
 	query.Add("response_type", "code")
 	query.Add("client_id", client.Params.AppKey)
@@ -41,7 +41,7 @@ func (client *Client) GetAuthorizeUrl(redirectUri, state string) (string, error)
 	return oauthUrl, nil
 }
 
-func (client *Client) GetAccessToken(code, redirectUri, state string) (res *common.AccessToken, body []byte, err error) {
+func (client *Client) GetAccessToken(code, redirectUri, state string, extData ...string) (res *common.AccessToken, body []byte, err error) {
 	postData := url.Values{"grant_type": {"authorization_code"}, "client_id": {client.Params.AppKey}, "client_secret": {client.Params.AppSecret},
 		"code": {code}, "redirect_uri": {redirectUri}}
 	postStr := postData.Encode()

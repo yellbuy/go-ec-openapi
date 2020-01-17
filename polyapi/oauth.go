@@ -38,10 +38,22 @@ type authorizeReqDto struct {
 	ItemCode    string `json:"itemcode"`
 }
 
-func (client *Client) GetAuthorizeUrl(redirectUri, state string) (string, error) {
+type tokenReqDto struct {
+	AppKey      string `json:"appkey"`
+	AppSecret   string `json:"appsecret"`
+	CallbackUrl string `json:"callbackurl"`
+	// 是否校验服务订购状态
+	IsCheckAppOrder bool `json:"ischeckapporder"`
+}
+
+func (client *Client) GetAuthorizeUrl(redirectUri, state string, extData ...string) (string, error) {
 	reqDto := new(authorizeReqDto)
-	reqDto.AppKey = client.Params.AppKey
-	reqDto.AppSecret = client.Params.AppSecret
+	if len(extData) > 0 {
+		reqDto.AppKey = extData[0]
+	}
+	if len(extData) > 1 {
+		reqDto.AppSecret = extData[1]
+	}
 	reqDto.CallbackUrl = redirectUri
 	reqDto.State = state
 	bizcontent, err := json.Marshal(reqDto)
@@ -68,18 +80,17 @@ func (client *Client) GetAuthorizeUrl(redirectUri, state string) (string, error)
 	return authorizeUrl, nil
 }
 
-type tokenReqDto struct {
-	AppKey      string `json:"appkey"`
-	AppSecret   string `json:"appsecret"`
-	CallbackUrl string `json:"callbackurl"`
-	// 是否校验服务订购状态
-	IsCheckAppOrder bool `json:"ischeckapporder"`
-}
-
-func (client *Client) GetAccessToken(code, redirectUri, state string) (res *common.AccessToken, body []byte, err error) {
+func (client *Client) GetAccessToken(code, redirectUri, state string, extData ...string) (res *common.AccessToken, body []byte, err error) {
 	reqDto := new(tokenReqDto)
-	reqDto.AppKey = client.Params.AppKey
-	reqDto.AppSecret = client.Params.AppSecret
+	platAppKey, platAppSecret := "", ""
+	if len(extData) > 0 {
+		platAppKey = extData[0]
+	}
+	if len(extData) > 1 {
+		platAppSecret = extData[2]
+	}
+	reqDto.AppKey = platAppKey
+	reqDto.AppSecret = platAppSecret
 	reqDto.CallbackUrl = redirectUri
 	reqDto.IsCheckAppOrder = false
 	bizcontent, resErr := json.Marshal(reqDto)
@@ -98,11 +109,13 @@ func (client *Client) GetAccessToken(code, redirectUri, state string) (res *comm
 		return
 	}
 	var resJson *simplejson.Json
-	resJson, body, err = client.Execute("Differ.JH.BuildeAuthorizeUrl", params)
+	// 获取平台SessionKey
+	resJson, body, err = client.Execute("Differ.JH.GetAuthorizeSessionKey", params)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+
 	res = new(common.AccessToken)
 	res.AccessToken = resJson.Get("sessionkey").MustString()
 	res.ExpireIn = resJson.Get("expiretimeinterval").MustInt()
@@ -113,5 +126,22 @@ func (client *Client) GetAccessToken(code, redirectUri, state string) (res *comm
 	res.RefreshTokenExpireTime = resJson.Get("refreshtokenexpiretime").MustString()
 	res.Subplat = resJson.Get("subplat").MustString()
 	res.TokenType = "POLYAPI"
+
+	// 平台账号同步
+	resJson.Set("appkey", platAppKey)
+	resJson.Set("appsecret", platAppSecret)
+	params, err = resJson.Map()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	resJson, body, err = client.Execute("Differ.JH.SyncAccount", params)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	// 获取最终token
+	res.AccessToken = resJson.Get("token").MustString()
 	return
 }

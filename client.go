@@ -29,8 +29,8 @@ func NewClient(platformType int, params *common.ClientParams) (Client, error) {
 }
 
 type Client interface {
-	// 获取OAuth地址
-	GetAuthorizeUrl(redirectUri, state string) (string, error)
-	GetAccessToken(code, redirectUri, state string) (res *common.AccessToken, body []byte, err error)
+	// 获取OAuth地址，菠萝派API需要通过extData传AppKey和AppSecret
+	GetAuthorizeUrl(redirectUri, state string, extData ...string) (string, error)
+	GetAccessToken(code, redirectUri, state string, extData ...string) (res *common.AccessToken, body []byte, err error)
 	GetWaybill(request *common.WaybillApplyNewRequest) (res *common.WaybillApplyNewCols, body []byte, err error)
 }

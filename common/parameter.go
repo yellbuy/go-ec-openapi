@@ -35,6 +35,7 @@ type ClientParams struct {
 	AppSecret string
 	// Session 用户登录授权成功后，TOP颁发给应用的授权信息。当此API的标签上注明：“需要授权”，则此参数必传；“不需要授权”，则此参数不需要传；“可选授权”，则此参数为可选
 	Session string
+	PlatId  string
 }
 
 // Parameter 参数

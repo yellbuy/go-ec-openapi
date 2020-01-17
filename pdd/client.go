@@ -34,7 +34,7 @@ type Client struct {
 
 func InitClient(clientId, clientSecret, access_token string) *Client {
 	client := new(Client)
-	client.Params = &common.ClientParams{clientId, clientSecret, access_token}
+	client.Params = &common.ClientParams{clientId, clientSecret, access_token, ""}
 	return client
 }
 func setRequestData(p common.Parameter, params *common.ClientParams) common.Parameter {

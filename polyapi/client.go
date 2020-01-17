@@ -32,7 +32,7 @@ type Client struct {
 
 func InitClient(appKey, appSecret, session string) *Client {
 	client := new(Client)
-	client.Params = &common.ClientParams{appKey, appSecret, session}
+	client.Params = &common.ClientParams{appKey, appSecret, session, ""}
 	return client
 }
 func setRequestData(p common.Parameter, params *common.ClientParams) common.Parameter {
@@ -41,7 +41,7 @@ func setRequestData(p common.Parameter, params *common.ClientParams) common.Para
 	p["timestamp"] = loc.Format("2006-01-02 15:04:05")
 	p["appkey"] = params.AppKey
 	p["token"] = params.Session
-	p["platid"] = "500"
+	p["platid"] = params.PlatId
 	p["version"] = "1.5"
 	p["contenttype"] = "json"
 	// 设置签名

@@ -21,12 +21,12 @@ type AccessToken struct {
 	Scope        []string `json:"scope"`
 }
 
-func (client *Client) GetAuthorizeUrl(redirectUri, state string) (string, error) {
+func (client *Client) GetAuthorizeUrl(redirectUri, state string, extData ...string) (string, error) {
 	oauthUrl := fmt.Sprint("https://mms.pinduoduo.com/open.html?response_type=code&client_id=%v&redirect_uri=%v&state=%v", client.Params.AppKey, redirectUri, state)
 	return oauthUrl, nil
 }
 
-func (client *Client) GetAccessToken(code, redirectUri, state string) (res *common.AccessToken, body []byte, err error) {
+func (client *Client) GetAccessToken(code, redirectUri, state string, extData ...string) (res *common.AccessToken, body []byte, err error) {
 	postData := url.Values{"client_id": {client.Params.AppKey}, "client_secret": {client.Params.AppSecret}, "code": {code},
 		"grant_type": {"authorization_code"}, "redirect_uri": {redirectUri}, "state": {state}}
 	var resp *http.Response
