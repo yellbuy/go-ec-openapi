@@ -160,6 +160,6 @@ func (client *Client) GetAccessToken(code, redirectUri, state string, extData ..
 		return
 	}
 	// 获取最终token
-	res.AccessToken = resJson.Get("token").MustString()
+	res.ThirdPlatToken = resJson.Get("token").MustString()
 	return
 }

@@ -4,6 +4,8 @@ package common
 type AccessToken struct {
 	// 授权SessionKey
 	AccessToken string
+	// 第三方平台Token
+	ThirdPlatToken string
 	// SessionKey过期时间间隔(单位：秒)
 	ExpireIn int
 
