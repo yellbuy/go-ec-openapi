@@ -97,7 +97,7 @@ func (client *Client) GetAccessToken(code, redirectUri, state string, extData ..
 	if resErr != nil {
 		fmt.Println(resErr)
 		err = resErr
-		return
+		return res, body, err
 	}
 
 	req := make(map[string]interface{})
@@ -107,14 +107,14 @@ func (client *Client) GetAccessToken(code, redirectUri, state string, extData ..
 	if resErr != nil {
 		fmt.Println(resErr)
 		err = resErr
-		return
+		return res, body, err
 	}
 	var resJson *simplejson.Json
 	// 获取平台SessionKey
 	resJson, body, err = client.Execute("Differ.JH.GetAuthorizeSessionKey", params)
 	if err != nil {
 		fmt.Println("Differ.JH.GetAuthorizeSessionKey:", err)
-		return
+		return res, body, err
 	}
 
 	res = new(common.AccessToken)
@@ -143,23 +143,23 @@ func (client *Client) GetAccessToken(code, redirectUri, state string, extData ..
 	bizcontent, err = resJson.MarshalJSON()
 	if err != nil {
 		fmt.Println(err)
-		return
+		return res, body, err
 	}
-	fmt.Println("bizcontent:", string(bizcontent))
+	//fmt.Println("bizcontent:", string(bizcontent))
 	bizcontent, err = aesEncrypt(client.Params.AppSecret, bizcontent)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	content := byteArrToHexString(bizcontent)
-	fmt.Println("bizcontent:", content)
+	//fmt.Println("bizcontent:", content)
 	req["bizcontent"] = content
 	resJson, body, err = client.Execute("Differ.JH.SyncAccount", req)
 	if err != nil {
 		fmt.Println("Differ.JH.SyncAccount", err)
-		return
+		return res, body, err
 	}
 	// 获取最终token
-	res.AccessToken = resJson.Get("token").MustString()
-	return
+	res.ThirdPlatToken = resJson.Get("token").MustString()
+	return res, body, err
 }
