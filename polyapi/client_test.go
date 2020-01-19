@@ -10,7 +10,8 @@ import (
 func init() {
 
 }
-func TestExecute(t *testing.T) {
+
+func TestGetTokenExecute(t *testing.T) {
 	// http://open.taobao.com/docs/api.htm?apiId=24515
 	resJson := simplejson.New()
 

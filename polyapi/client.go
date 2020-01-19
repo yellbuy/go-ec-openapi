@@ -64,7 +64,7 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 
 	var req *http.Request
 	data := param.GetRequestData()
-	// fmt.Println("data:", data)
+	fmt.Println("data:", data)
 	req, err = http.NewRequest("POST", router, strings.NewReader(data))
 	if err != nil {
 		return

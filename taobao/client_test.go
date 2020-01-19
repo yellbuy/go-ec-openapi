@@ -5,12 +5,10 @@ import (
 	"log"
 	"testing"
 	"time"
+	"github.com/yellbuy/go-ec-openapi/common"
 )
 
 func init() {
-	AppKey = ""
-	AppSecret = ""
-	Router = "http://gw.api.taobao.com/router/rest"
 	GetCache = func(cacheKey string) []byte {
 		log.Printf("GetCache key:%s\n", cacheKey)
 		//return nil
@@ -21,9 +19,12 @@ func init() {
 		return false
 	}
 }
+
+
+
 func TestExecute(t *testing.T) {
 	// http://open.taobao.com/docs/api.htm?apiId=24515
-	res, err := Execute("taobao.tbk.item.get", ecopenapi.Parameter{
+	res, err := Execute("taobao.tbk.item.get", Parameter{
 		"fields": "num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,seller_id,volume,nick",
 		"q":      "女装",
 		"cat":    "16,18",

@@ -9,7 +9,7 @@ import (
 
 func TestExecute(t *testing.T) {
 	// http://open.taobao.com/docs/api.htm?apiId=24515
-	client, err := NewClient(TAOBAO, &common.ClientParams{"23268761", "b17cc059ffba3f6cf0d9131359d0be2a", "62024115ddfe90c8c9cege1fefda96512336cddb9fe0f852523122485"})
+	client, err := NewClient(TB, &common.ClientParams{"23268761", "b17cc059ffba3f6cf0d9131359d0be2a", "62024115ddfe90c8c9cege1fefda96512336cddb9fe0f852523122485", ""})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -17,11 +17,29 @@ func TestExecute(t *testing.T) {
 	request.ShippingAddress = new(common.WaybillAddress)
 	// 订单数据，必填
 	request.TradeOrderInfoCols = make([]*common.TradeOrderInfo, 0)
-	res, err := client.GetWaybill(request)
+	res, _, err := client.GetWaybill(request)
 	fmt.Println(res)
 	if err != nil {
 		t.Fatal(err)
 	}
+}
+
+func TestDownloadProductExecute(t *testing.T) {
+	platId := fmt.Sprintf("%v", 1)
+	platformType := POLYAPI
+	client, err := NewClient(platformType, &common.ClientParams{"8e770a60b9684c558f40e4796a96710f", "c9cb1df531b441a8872c60ffb7f900a6", "ed7d59ddb5a74df0a63d7307cea0435f", platId})
+	_, _, err = client.DownloadProductList(0, 100000)
+
+	fmt.Println("err:", err.Error())
+}
+
+func TestDownloadOrderExecute(t *testing.T) {
+	platId := fmt.Sprintf("%v", 1)
+	platformType := POLYAPI
+	client, err := NewClient(platformType, &common.ClientParams{"8e770a60b9684c558f40e4796a96710f", "c9cb1df531b441a8872c60ffb7f900a6", "ed7d59ddb5a74df0a63d7307cea0435f", platId})
+	_, _, err = client.DownloadOrderList(0, 100000, "2020-01-18 00:00:00", "2020-01-20 00:00:00", "JH_01", "JH_03")
+
+	fmt.Println("err:", err.Error())
 }
 
 // func TestExecuteErrMsg(t *testing.T) {
