@@ -25,12 +25,17 @@ func TestExecute(t *testing.T) {
 }
 
 func TestDownloadProductExecute(t *testing.T) {
-	platId := fmt.Sprintf("%v", 1)
+	platId := fmt.Sprintf("%v", 752)
 	platformType := POLYAPI
 	client, err := NewClient(platformType, &common.ClientParams{"8e770a60b9684c558f40e4796a96710f", "c9cb1df531b441a8872c60ffb7f900a6", "ed7d59ddb5a74df0a63d7307cea0435f", platId})
-	_, _, err = client.DownloadProductList(0, 100000)
+	if err == nil {
+		_, _, err = client.DownloadProductList(0, 100000)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+	}
 
-	fmt.Println("err:", err.Error())
 }
 
 func TestDownloadOrderExecute(t *testing.T) {
