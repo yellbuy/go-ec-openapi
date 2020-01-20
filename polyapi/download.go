@@ -14,7 +14,10 @@ func (client *Client) DownloadProductList(pageIndex, pageSize int, status string
 	reqJson.Set("pagesize", pageSize)
 	reqJson.Set("status", status)
 	reqJson.Set("polyapitoken", client.Params.Session)
-	reqJson.Set("platvalue", client.Params.PlatId)
+	if len(extData) > 0 {
+		reqJson.Set("platvalue", extData[0])
+	}
+
 	bizcontent, resErr := reqJson.Encode()
 	if resErr != nil {
 		fmt.Println(resErr)
