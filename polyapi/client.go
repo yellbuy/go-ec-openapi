@@ -20,8 +20,10 @@ import (
 )
 
 var (
-	// router = "http://39.98.7.126/OpenAPI/do"
-	router = "http://aliyuntest.polyapi.com/OpenAPI/do"
+	// 正式地址
+	router = "http://39.98.7.126/OpenAPI/do"
+	// 测试地址
+	// router = "http://aliyuntest.polyapi.com/OpenAPI/do"
 	// Timeout ...
 	Timeout time.Duration
 	// CacheExpiration 缓存过期时间
