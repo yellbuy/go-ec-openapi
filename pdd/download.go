@@ -6,7 +6,7 @@ import (
 	simplejson "github.com/bitly/go-simplejson"
 )
 
-func (client *Client) DownloadProductList(pageIndex, pageSize int, extData ...string) (res *simplejson.Json, body []byte, err error) {
+func (client *Client) DownloadProductList(pageIndex, pageSize int, status string, extData ...string) (res *simplejson.Json, body []byte, err error) {
 	return nil, nil, errors.New("未实现")
 }
 

@@ -8,10 +8,11 @@ import (
 )
 
 // 产品下载
-func (client *Client) DownloadProductList(pageIndex, pageSize int, extData ...string) (res *simplejson.Json, body []byte, err error) {
+func (client *Client) DownloadProductList(pageIndex, pageSize int, status string, extData ...string) (res *simplejson.Json, body []byte, err error) {
 	reqJson := simplejson.New()
 	reqJson.Set("pageindex", pageIndex)
 	reqJson.Set("pagesize", pageSize)
+	reqJson.Set("status", status)
 	reqJson.Set("polyapitoken", client.Params.Session)
 	reqJson.Set("platvalue", client.Params.PlatId)
 	bizcontent, resErr := reqJson.Encode()
