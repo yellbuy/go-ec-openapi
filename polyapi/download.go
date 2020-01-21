@@ -96,7 +96,9 @@ func (client *Client) DownloadProductList(pageIndex, pageSize int, status string
 }
 
 // 订单下载
-func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus string, extData ...string) (res *simplejson.Json, body []byte, err error) {
+func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus, orderToken string, extData ...string) (res []*common.OrderInfo, hasNextPage bool, nextToken string, body []byte, err error) {
+	res = make([]*common.OrderInfo, 0)
+	hasNextPage = false
 	reqJson := simplejson.New()
 	reqJson.Set("pageindex", pageIndex)
 	reqJson.Set("pagesize", pageSize)
@@ -104,6 +106,7 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 	reqJson.Set("endtime", endTime)
 	reqJson.Set("timetype", timeType)
 	reqJson.Set("orderstatus", orderStatus)
+	reqJson.Set("randomnumber", orderToken)
 
 	if len(extData) > 0 {
 		reqJson.Set("platvalue", extData[0])
@@ -120,7 +123,7 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 	if resErr != nil {
 		fmt.Println(resErr)
 		err = resErr
-		return res, body, err
+		return res, hasNextPage, nextToken, body, err
 	}
 
 	req := make(map[string]interface{})
@@ -130,18 +133,66 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 	if resErr != nil {
 		fmt.Println(resErr)
 		err = resErr
-		return res, body, err
+		return res, hasNextPage, nextToken, body, err
 	}
 	// 通过奇门代理平台
 	//method := "Differ.JH.Other.DelegateQimenGetOrder"
 	// 通过polyapi自有平台
 	method := "Differ.JH.Business.GetOrder"
-	res, body, err = client.Execute(method, params)
+	resJson := simplejson.New()
+	resJson, body, err = client.Execute(method, params)
 	if err != nil {
 		fmt.Println(method, err)
-		return res, body, err
+		return res, hasNextPage, nextToken, body, err
 	}
-	return res, body, err
+	nextToken, _ = resJson.Get("nexttoken").String()
+	hasNextPageStr, _ := resJson.Get("ishasnextpage").String()
+	hasNextPage = hasNextPageStr == "1"
+	orderList, err := resJson.Get("orders").Array()
+	if err != nil {
+		fmt.Println(method, err)
+		return res, hasNextPage, nextToken, body, err
+	}
+	for index := range orderList {
+		order := resJson.Get("orders").GetIndex(index)
+		orderInfo := new(common.OrderInfo)
+		orderInfo.PlatOrderNo, _ = order.Get("platorderno").String()
+		orderInfo.TradeStatus, _ = order.Get("tradestatus").String()
+		orderInfo.Nick, _ = order.Get("nick").String()
+		orderInfo.Mobile, _ = order.Get("mobile").String()
+		orderInfo.Phone, _ = order.Get("phone").String()
+		orderInfo.ReceiverName, _ = order.Get("receivername").String()
+		orderInfo.Country, _ = order.Get("country").String()
+		orderInfo.Province, _ = order.Get("province").String()
+		orderInfo.City, _ = order.Get("city").String()
+		orderInfo.Area, _ = order.Get("area").String()
+		orderInfo.Town, _ = order.Get("town").String()
+		orderInfo.Address, _ = order.Get("address").String()
+		orderInfo.Zip, _ = order.Get("zip").String()
+		orderInfo.CustomerRemark, _ = order.Get("customerremark").String()
+		orderInfo.SellerRemark, _ = order.Get("sellerremark").String()
+		orderInfo.PayOrderNo, _ = order.Get("payorderno").String()
+		orderInfo.TotalAmount, _ = order.Get("totalamount").String()
+
+		goodsList, _ := order.Get("goodinfos").Array()
+		orderInfo.GoodsInfoList = make([]*common.GoodsInfo, len(goodsList))
+		for j := range goodsList {
+			goodsJson := order.Get("goodinfos").GetIndex(j)
+			goods := new(common.GoodsInfo)
+			goods.PlatGoodsId, _ = goodsJson.Get("platgoodsid").String()
+			goods.PlatSkuId, _ = goodsJson.Get("platskuid").String()
+			goods.OutItemId, _ = goodsJson.Get("outitemid").String()
+			goods.RefundStatus, _ = goodsJson.Get("refundstatus").String()
+			goods.GoodsCount, _ = goodsJson.Get("goodscount").String()
+			goods.TradeGoodsName, _ = goodsJson.Get("tradegoodsname").String()
+			goods.TradeGoodsSpec, _ = goodsJson.Get("tradegoodsspec").String()
+			goods.Price, _ = goodsJson.Get("price").String()
+			goods.DiscountMoney, _ = goodsJson.Get("discountmoney").String()
+			orderInfo.GoodsInfoList[j] = goods
+		}
+		res = append(res, orderInfo)
+	}
+	return res, hasNextPage, nextToken, body, err
 }
 
 func NewSuccessResDto(isSuccess bool, code int, message, itemId string) *SuccessResDto {
@@ -193,7 +244,7 @@ type Sku struct {
 	Skuname2      string `json:"skuname2"`
 }
 type Goods struct {
-	Platproductid      string      `json:"platproductid"`
+	PlatProductId      string      `json:"platproductid"`
 	Name               string      `json:"name"`
 	Outerid            string      `json:"outerid"`
 	Price              string      `json:"price"`
@@ -238,15 +289,15 @@ type errorRes struct {
 }
 
 type SubGoods struct {
-	Productid      string `json:"productid"`
-	Tradegoodsno   string `json:"tradegoodsno"`
-	Tradegoodsname string `json:"tradegoodsname"`
-	Goodscount     string `json:"goodscount"`
+	ProductId      string `json:"productid"`
+	TradeGoodsNo   string `json:"tradegoodsno"`
+	TradeGoodsName string `json:"tradegoodsname"`
+	GoodsCount     string `json:"goodscount"`
 	Price          string `json:"price"`
-	Outskuid       string `json:"outskuid"`
-	Outitemid      string `json:"outitemid"`
-	Platgoodsid    string `json:"platgoodsid"`
-	Platskuid      string `json:"platskuid"`
+	OutSkuId       string `json:"outskuid"`
+	OutTtemId      string `json:"outitemid"`
+	PlatGoodsId    string `json:"platgoodsid"`
+	PlatSkuId      string `json:"platskuid"`
 }
 type GoodInfo struct {
 	ProductId             string      `json:"productid"`

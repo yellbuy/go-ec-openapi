@@ -150,7 +150,7 @@ type OrderInfo struct {
 	Mobile                 string `json:"mobile"`
 	Email                  string `json:"email"`
 	//买家备注
-	CustomeRremark string `json:"customerremark"`
+	CustomerRemark string `json:"customeremark"`
 	//卖家备注
 	SellerRemark string `json:"sellerremark"`
 	BuyerMobile  string `json:"buyermobile"`

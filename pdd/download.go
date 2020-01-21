@@ -3,7 +3,6 @@ package pdd
 import (
 	"errors"
 
-	simplejson "github.com/bitly/go-simplejson"
 	"github.com/yellbuy/go-ec-openapi/common"
 )
 
@@ -12,7 +11,7 @@ func (client *Client) DownloadProductList(pageIndex, pageSize int, status string
 	return
 }
 
-func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus string, extData ...string) (res *simplejson.Json, body []byte, err error) {
+func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus string, orderToken string, extData ...string) (res []*common.OrderInfo, hasNextPage bool, nextToken string, body []byte, err error) {
 	err = errors.New("未实现")
 	return
 }

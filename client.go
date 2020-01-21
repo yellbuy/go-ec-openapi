@@ -3,7 +3,6 @@ package ecopenapi
 import (
 	"errors"
 
-	simplejson "github.com/bitly/go-simplejson"
 	"github.com/yellbuy/go-ec-openapi/common"
 	"github.com/yellbuy/go-ec-openapi/pdd"
 	"github.com/yellbuy/go-ec-openapi/polyapi"
@@ -39,5 +38,5 @@ type Client interface {
 	// 商品下载
 	DownloadProductList(pageIndex, pageSize int, status string, extData ...string) (res []*common.Product, hasNextPage bool, body []byte, err error)
 	// 订单下载
-	DownloadOrderList(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus string, extData ...string) (res *simplejson.Json, body []byte, err error)
+	DownloadOrderList(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus string, orderToken string, extData ...string) (res []*common.OrderInfo, hasNextPage bool, nextToken string, body []byte, err error)
 }
