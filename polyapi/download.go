@@ -14,12 +14,17 @@ func (client *Client) DownloadProductList(pageIndex, pageSize int, status string
 	reqJson.Set("pageindex", pageIndex)
 	reqJson.Set("pagesize", pageSize)
 	reqJson.Set("status", status)
-	reqJson.Set("shoptype", "JH_001")
+
 	if len(extData) > 0 {
 		reqJson.Set("platvalue", extData[0])
 	}
 	if len(extData) > 1 {
 		reqJson.Set("polyapitoken", extData[1])
+	}
+	if len(extData) > 2 {
+		reqJson.Set("shoptype", extData[2])
+	} else {
+		reqJson.Set("shoptype", "JH_001")
 	}
 
 	bizcontent, resErr := reqJson.Encode()
@@ -105,6 +110,11 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 	}
 	if len(extData) > 1 {
 		reqJson.Set("polyapitoken", extData[1])
+	}
+	if len(extData) > 2 {
+		reqJson.Set("shoptype", extData[2])
+	} else {
+		reqJson.Set("shoptype", "JH_001")
 	}
 	bizcontent, resErr := reqJson.Encode()
 	if resErr != nil {
