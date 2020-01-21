@@ -46,3 +46,34 @@ type errorRes struct {
 	SubCode int    `json:"sub_code"`
 	SubMsg  string `json:"sub_msg"`
 }
+
+type Product struct {
+	ProductId          string      `json:"platproductid"`
+	ProductName        string      `json:"name"`
+	ProductCode        string      `json:"outerid"`
+	Price              string      `json:"price"`
+	Num                string      `json:"num"`
+	PictureUrl         string      `json:"pictureurl"`
+	WhseCode           string      `json:"whsecode"`
+	Attrbutes          interface{} `json:"attrbutes"`
+	CategoryId         string      `json:"categoryid"`
+	Status             string      `json:"status"`
+	Statusdesc         string      `json:"statusdesc"`
+	SkuList            []*Sku      `json:"skus"`
+	Sendtype           string      `json:"sendtype"`
+	Skutype            string      `json:"skutype"`
+	PropertyAlias      string      `json:"propertyalias"`
+	Isplatstorageorder string      `json:"isplatstorageorder"`
+	Cooperationno      string      `json:"cooperationno"`
+}
+type Sku struct {
+	SkuId         string `json:"skuid"`
+	SkuCode       string `json:"skuouterid"`
+	SkuPrice      string `json:"skuprice"`
+	SkuQuantity   string `json:"skuquantity"`
+	SkuName       string `json:"skuname"`
+	SkuProperty   string `json:"skuproperty"`
+	SkuType       string `json:"skutype"`
+	SkuPictureUrl string `json:"skupictureurl"`
+	SkuName2      string `json:"skuname2"`
+}

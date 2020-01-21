@@ -37,7 +37,7 @@ type Client interface {
 	// 电子面单
 	GetWaybill(request *common.WaybillApplyNewRequest) (res *common.WaybillApplyNewCols, body []byte, err error)
 	// 商品下载
-	DownloadProductList(pageIndex, pageSize int, status string, extData ...string) (res *simplejson.Json, body []byte, err error)
+	DownloadProductList(pageIndex, pageSize int, status string, extData ...string) (res []*common.Product, hasNextPage bool, body []byte, err error)
 	// 订单下载
 	DownloadOrderList(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus string, extData ...string) (res *simplejson.Json, body []byte, err error)
 }
