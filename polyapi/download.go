@@ -100,11 +100,11 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 	reqJson := simplejson.New()
 	reqJson.Set("pageindex", pageIndex)
 	reqJson.Set("pagesize", pageSize)
-	reqJson.Set("orderstatus", orderStatus)
 	reqJson.Set("starttime", startTime)
 	reqJson.Set("endtime", endTime)
 	reqJson.Set("timetype", timeType)
-	reqJson.Set("shoptype", "JH_001")
+	reqJson.Set("orderstatus", orderStatus)
+
 	if len(extData) > 0 {
 		reqJson.Set("platvalue", extData[0])
 	}
@@ -114,7 +114,7 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 	if len(extData) > 2 {
 		reqJson.Set("shoptype", extData[2])
 	} else {
-		reqJson.Set("shoptype", "JH_001")
+		reqJson.Set("shoptype", "SOP")
 	}
 	bizcontent, resErr := reqJson.Encode()
 	if resErr != nil {
@@ -235,4 +235,202 @@ type errorRes struct {
 	Message string `json:"message"`
 	SubCode int    `json:"sub_code"`
 	SubMsg  string `json:"sub_msg"`
+}
+
+type SubGoods struct {
+	Productid      string `json:"productid"`
+	Tradegoodsno   string `json:"tradegoodsno"`
+	Tradegoodsname string `json:"tradegoodsname"`
+	Goodscount     string `json:"goodscount"`
+	Price          string `json:"price"`
+	Outskuid       string `json:"outskuid"`
+	Outitemid      string `json:"outitemid"`
+	Platgoodsid    string `json:"platgoodsid"`
+	Platskuid      string `json:"platskuid"`
+}
+type GoodInfo struct {
+	ProductId             string      `json:"productid"`
+	SubOrderNo            string      `json:"suborderno"`
+	TaxSubOrderNo         string      `json:"taxsuborderno"`
+	TradeGoodsNo          string      `json:"tradegoodsno"`
+	TradeGoodsName        string      `json:"tradegoodsname"`
+	TradeGoodsSpec        string      `json:"tradegoodsspec"`
+	GoodsCount            string      `json:"goodscount"`
+	Price                 string      `json:"price"`
+	RefundCount           string      `json:"refundcount"`
+	DiscountMoney         string      `json:"discountmoney"`
+	TaxAmount             string      `json:"taxamount"`
+	TariffAmount          string      `json:"tariffamount"`
+	AddedValueAmount      string      `json:"addedvalueamount"`
+	ConsumptionDutyAmount string      `json:"consumptiondutyamount"`
+	RefundStatus          string      `json:"refundstatus"`
+	Status                string      `json:"status"`
+	Remark                string      `json:"remark"`
+	OutSkuId              string      `json:"outskuid"`
+	PlatGoodsId           string      `json:"platgoodsid"`
+	PlatSkuId             string      `json:"platskuid"`
+	OutItemId             string      `json:"outitemid"`
+	SubGoodsList          []*SubGoods `json:"subgoods"`
+	IsGift                string      `json:"isgift"`
+	IsHwgFlag             string      `json:"ishwgflag"`
+	DeliveryType          string      `json:"deliverytype"`
+	PayorderId            string      `json:"payorderid"`
+	PackageOrderId        string      `json:"packageorderid"`
+	ActivityAmount        string      `json:"activityamount"`
+	SpecialAmount         string      `json:"specialamount"`
+	CouponAmount          string      `json:"couponamount"`
+	ProductItemId         string      `json:"productitemid"`
+	GoodsCount2           string      `json:"goodscount2"`
+	IsPlatStorageOrder    string      `json:"isplatstorageorder"`
+	PictureUrl            string      `json:"pictureurl"`
+	GoodType              string      `json:"goodtype"`
+	EstimateConTime       string      `json:"estimatecontime"`
+	Fenxiaoprice          string      `json:"fenxiaoprice"`
+	SubOrderItemNo        string      `json:"suborderitemno"`
+	GoodsOrderAttr        string      `json:"goodsorderattr"`
+}
+type CouponDetail struct {
+	SkuId      string `json:"sku_id"`
+	CouponType string `json:"coupontype"`
+	Type       string `json:"type"`
+	Price      string `json:"price"`
+	CouponNum  string `json:"couponnum"`
+}
+type ServiceOrder struct {
+	ServiceId    string `json:"serviceid"`
+	ServiceName  string `json:"servicename"`
+	ServiceType  string `json:"servicetype"`
+	ServicePrice string `json:"serviceprice"`
+	ServiceNum   string `json:"servicenum"`
+}
+type ShopOrderInfo struct {
+	ShopType                     string          `json:"shoptype"`
+	PlatOrderNo                  string          `json:"platorderno"`
+	TradeStatus                  string          `json:"tradestatus"`
+	TradeStatusDescription       string          `json:"tradestatusdescription"`
+	TradeTime                    string          `json:"tradetime"`
+	ModifyTime                   string          `json:"modifytime"`
+	CollageTime                  string          `json:"collagetime"`
+	Username                     string          `json:"username"`
+	Nick                         string          `json:"nick"`
+	BuyerMobile                  string          `json:"buyermobile"`
+	ReceiverName                 string          `json:"receivername"`
+	Country                      string          `json:"country"`
+	Province                     string          `json:"province"`
+	City                         string          `json:"city"`
+	Area                         string          `json:"area"`
+	Town                         string          `json:"town"`
+	Address                      string          `json:"address"`
+	PayOrderNo                   string          `json:"payorderno"`
+	PayType                      string          `json:"paytype"`
+	ShouldPayType                string          `json:"shouldpaytype"`
+	Zip                          string          `json:"zip"`
+	Phone                        string          `json:"phone"`
+	Mobile                       string          `json:"mobile"`
+	Email                        string          `json:"email"`
+	CustomeRremark               string          `json:"customerremark"`
+	SellerRemark                 string          `json:"sellerremark"`
+	PostFee                      string          `json:"postfee"`
+	PostInsuranceFee             string          `json:"postinsurancefee"`
+	GoodsFee                     string          `json:"goodsfee"`
+	TotalAmount                  string          `json:"totalamount"`
+	RealPayMoney                 string          `json:"realpaymoney"`
+	FavourableMoney              string          `json:"favourablemoney"`
+	PlatDiscountMoney            string          `json:"platdiscountmoney"`
+	TaxAmount                    string          `json:"taxamount"`
+	TariffAmount                 string          `json:"tariffamount"`
+	AddedValueAmount             string          `json:"addedvalueamount"`
+	ConsumptionDutyAmount        string          `json:"consumptiondutyamount"`
+	CommissionValue              string          `json:"commissionvalue"`
+	PayTime                      string          `json:"paytime"`
+	SendType                     string          `json:"sendtype"`
+	SendStyle                    string          `json:"sendstyle"`
+	CodServiceFee                string          `json:"codservicefee"`
+	SellerFlag                   string          `json:"sellerflag"`
+	CardType                     string          `json:"cardtype"`
+	IdCard                       string          `json:"idcard"`
+	IdCardTrueName               string          `json:"idcardtruename"`
+	IdCardImgs                   string          `json:"idcardimgs"`
+	WhseCode                     string          `json:"whsecode"`
+	IsHwgFlag                    string          `json:"ishwgflag"`
+	DeliveryType                 string          `json:"deliverytype"`
+	ShopId                       string          `json:"shopid"`
+	MdbId                        string          `json:"mdbid"`
+	SaleSpin                     string          `json:"salespin"`
+	IsNeedInvoice                string          `json:"isneedinvoice"`
+	InvoiceType                  string          `json:"invoicetype"`
+	InvoiceBusinessType          string          `json:"invoicebusinesstype"`
+	InvoiceTitle                 string          `json:"invoicetitle"`
+	InvoiceContent               string          `json:"invoicecontent"`
+	TaxPayerIdent                string          `json:"taxpayerident"`
+	RegisteredAddress            string          `json:"registeredaddress"`
+	RegisteredPhone              string          `json:"registeredphone"`
+	DepositBank                  string          `json:"depositbank"`
+	BankAccount                  string          `json:"bankaccount"`
+	FetchTime                    string          `json:"fetchtime"`
+	FetchTimeDesc                string          `json:"fetchtimedesc"`
+	OrderSource                  string          `json:"ordersource"`
+	CustomAttr                   string          `json:"customattr"`
+	TransportDay                 string          `json:"transportday"`
+	GoodInfoList                 []*GoodInfo     `json:"goodinfos"`
+	CouponDetails                []*CouponDetail `json:"coupondetails"`
+	CustomsCode                  string          `json:"customscode"`
+	UserLevel                    string          `json:"userlevel"`
+	ReminderCount                string          `json:"remindercount"`
+	VerifyCode                   string          `json:"verifycode"`
+	SellerOrderId                string          `json:"sellerorderid"`
+	Qq                           string          `json:"qq"`
+	OrderFlag                    string          `json:"orderflag"`
+	TradeAttr                    string          `json:"tradeattr"`
+	OrdertType                   string          `json:"ordertype"`
+	IsStoreOrder                 string          `json:"isstoreorder"`
+	IsYunStoreOrder              string          `json:"isyunstoreorder"`
+	SendDate                     string          `json:"senddate"`
+	LeftSendDate                 string          `json:"leftsenddate"`
+	SortingCode                  string          `json:"sortingcode"`
+	PartNer                      string          `json:"partner"`
+	BfDeligoodglag               string          `json:"bfdeligoodglag"`
+	CkyName                      string          `json:"ckyname"`
+	CreateDate                   string          `json:"createdate"`
+	ShouldPayMoney               string          `json:"shouldpaymoney"`
+	ResellerId                   string          `json:"resellerid"`
+	ResellerShopName             string          `json:"resellershopname"`
+	ResellerMobile               string          `json:"resellermobile"`
+	ActivityAmount               string          `json:"activityamount"`
+	BalanceUsed                  string          `json:"balanceused"`
+	SpecialAmount                string          `json:"specialamount"`
+	CouponAmount                 string          `json:"couponamount"`
+	CurrencyCode                 string          `json:"currencycode"`
+	IsPresaleOrder               string          `json:"ispresaleorder"`
+	ShipTypeName                 string          `json:"shiptypename"`
+	BondedId                     string          `json:"bondedid"`
+	BondedName                   string          `json:"bondedname"`
+	LogisticNo                   string          `json:"logisticno"`
+	LogisticName                 string          `json:"logisticname"`
+	PayMethod                    string          `json:"paymethod"`
+	FxtId                        string          `json:"fxtid"`
+	ClerkName                    string          `json:"clerkname"`
+	ClerkPhone                   string          `json:"clerkphone"`
+	TransactionId                string          `json:"transactionid"`
+	IsDaiXiao                    string          `json:"isdaixiao"`
+	IsBrandSale                  string          `json:"isbrandsale"`
+	IsForcewLb                   string          `json:"isforcewlb"`
+	IsWlBorder                   string          `json:"iswlborder"`
+	IsShip                       string          `json:"isship"`
+	IsEncrypt                    string          `json:"isencrypt"`
+	FulfillmentChannel           string          `json:"fulfillmentchannel"`
+	ShipmentServiceLevelCategory string          `json:"shipmentservicelevelcategory"`
+	IsshippedByAmazonTfm         string          `json:"isshippedbyamazontfm"`
+	IsJzOrder                    string          `json:"isjzorder"`
+	TradeAttrJson                string          `json:"tradeattrjson"`
+	EndTime                      string          `json:"endtime"`
+	ProductNum                   string          `json:"productnum"`
+	CancelTime                   string          `json:"canceltime"`
+	CancelReason                 string          `json:"cancelreason"`
+	AuditResult                  string          `json:"auditresult"`
+	AuditReason                  string          `json:"auditreason"`
+	OrderNumber                  string          `json:"ordernumber"`
+	InnertranSactionId           string          `json:"innertransactionid"`
+	OriginalMobile               string          `json:"originalmobile"`
+	ServiceOrderList             []*ServiceOrder `json:"serviceorders"`
 }
