@@ -14,6 +14,7 @@ func (client *Client) DownloadProductList(pageIndex, pageSize int, status string
 	reqJson.Set("pageindex", pageIndex)
 	reqJson.Set("pagesize", pageSize)
 	reqJson.Set("status", status)
+	reqJson.Set("shoptype", "JH_001")
 	if len(extData) > 0 {
 		reqJson.Set("platvalue", extData[0])
 	}
@@ -40,7 +41,6 @@ func (client *Client) DownloadProductList(pageIndex, pageSize int, status string
 
 	// 通过奇门代理平台
 	//method := "Differ.JH.Other.DelegateQimenDownloadProduct"
-	// res, body, err = client.Execute("Differ.JH.Other.DelegateQimenDownloadProduct", params)
 	// 通过polyapi自有平台
 	method := "Differ.JH.Business.DownloadProduct"
 	resJson := simplejson.New()
@@ -99,6 +99,7 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 	reqJson.Set("starttime", startTime)
 	reqJson.Set("endtime", endTime)
 	reqJson.Set("timetype", timeType)
+	reqJson.Set("shoptype", "JH_001")
 	if len(extData) > 0 {
 		reqJson.Set("platvalue", extData[0])
 	}
@@ -121,10 +122,13 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 		err = resErr
 		return res, body, err
 	}
-	// 获取平台SessionKey
-	res, body, err = client.Execute("Differ.JH.Other.DelegateQimenGetOrder", params)
+	// 通过奇门代理平台
+	//method := "Differ.JH.Other.DelegateQimenGetOrder"
+	// 通过polyapi自有平台
+	method := "Differ.JH.Business.GetOrder"
+	res, body, err = client.Execute(method, params)
 	if err != nil {
-		fmt.Println(" Differ.JH.Other.DelegateQimenGetOrder:", err)
+		fmt.Println(method, err)
 		return res, body, err
 	}
 	return res, body, err
