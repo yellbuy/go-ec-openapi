@@ -74,6 +74,7 @@ func (client *Client) DownloadProductList(pageIndex, pageSize int, status string
 		product.CategoryId, _ = goods.Get("categoryid").String()
 		product.Status, _ = goods.Get("status").String()
 		product.PropertyAlias, _ = goods.Get("propertyalias").String()
+		product.PictureUrl, _ = goods.Get("pictureurl").String()
 
 		skuList, _ := goods.Get("skus").Array()
 		product.SkuList = make([]*common.Sku, len(skuList))
