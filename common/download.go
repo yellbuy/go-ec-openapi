@@ -93,6 +93,8 @@ type SubGoods struct {
 	Platskuid      string `json:"platskuid"`
 }
 type GoodsInfo struct {
+	// 子订单号
+	SubOrderNo  string `json:"suborderno"`
 	PlatGoodsId string `json:"platgoodsid"`
 	PlatSkuId   string `json:"platskuid"`
 	ProductId   string `json:"productid"`

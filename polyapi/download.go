@@ -180,6 +180,7 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 		for j := range goodsList {
 			goodsJson := order.Get("goodinfos").GetIndex(j)
 			goods := new(common.GoodsInfo)
+			goods.SubOrderNo, _ = goodsJson.Get("suborderno").String()
 			goods.PlatGoodsId, _ = goodsJson.Get("platgoodsid").String()
 			goods.PlatSkuId, _ = goodsJson.Get("platskuid").String()
 			goods.OutItemId, _ = goodsJson.Get("outitemid").String()
