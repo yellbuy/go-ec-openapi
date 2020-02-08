@@ -182,7 +182,6 @@ type OrderInfo struct {
 	GoodsFee string `json:"goodsfee"`
 	// 支付时间
 	PayTime string `json:"paytime"`
-
 	GoodsInfoList []*GoodsInfo `json:"goodinfos"`
 
 	ServiceOrderList []*ServiceOrder `json:"serviceorders"`

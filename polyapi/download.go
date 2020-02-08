@@ -174,6 +174,8 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 		orderInfo.SellerRemark, _ = order.Get("sellerremark").String()
 		orderInfo.PayOrderNo, _ = order.Get("payorderno").String()
 		orderInfo.TotalAmount, _ = order.Get("totalamount").String()
+		orderInfo.PayTime, _ = order.Get("paytime").String()
+		orderInfo.TradeTime, _ = order.Get("tradetime").String()
 
 		goodsList, _ := order.Get("goodinfos").Array()
 		orderInfo.GoodsInfoList = make([]*common.GoodsInfo, len(goodsList))
