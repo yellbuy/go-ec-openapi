@@ -173,6 +173,7 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 		orderInfo.CustomerRemark, _ = order.Get("customerremark").String()
 		orderInfo.SellerRemark, _ = order.Get("sellerremark").String()
 		orderInfo.PayOrderNo, _ = order.Get("payorderno").String()
+		orderInfo.GoodsFee, _ = order.Get("goodsfee").String()
 		orderInfo.TotalAmount, _ = order.Get("totalamount").String()
 		orderInfo.PayTime, _ = order.Get("paytime").String()
 		orderInfo.TradeTime, _ = order.Get("tradetime").String()
