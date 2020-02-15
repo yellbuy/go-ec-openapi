@@ -109,13 +109,13 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 	reqJson.Set("orderstatus", orderStatus)
 	reqJson.Set("randomnumber", orderToken)
 
-	if len(extData) > 0 {
+	if len(extData) > 0 && extData[0] != "" {
 		reqJson.Set("platvalue", extData[0])
 	}
-	if len(extData) > 1 {
+	if len(extData) > 1 && extData[1] != "" {
 		reqJson.Set("polyapitoken", extData[1])
 	}
-	if len(extData) > 2 {
+	if len(extData) > 2 && extData[2] != "" {
 		reqJson.Set("shoptype", extData[2])
 	} else {
 		reqJson.Set("shoptype", "SOP")
@@ -261,7 +261,7 @@ type Goods struct {
 	Status             string      `json:"status"`
 	Statusdesc         string      `json:"statusdesc"`
 	SkuList            []Sku       `json:"skus"`
-	Sendtype           string      `json:"sendtype"`
+	SendType           string      `json:"sendtype"`
 	Skutype            string      `json:"skutype"`
 	Propertyalias      string      `json:"propertyalias"`
 	Isplatstorageorder string      `json:"isplatstorageorder"`

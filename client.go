@@ -39,4 +39,6 @@ type Client interface {
 	DownloadProductList(pageIndex, pageSize int, status string, extData ...string) (res []*common.Product, hasNextPage bool, body []byte, err error)
 	// 订单下载
 	DownloadOrderList(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus string, orderToken string, extData ...string) (res []*common.OrderInfo, hasNextPage bool, nextToken string, body []byte, err error)
+	// 订单发货
+	LogisticsSend(dto *common.LogisticsSendReqDto, extData ...string) ([]byte, error)
 }
