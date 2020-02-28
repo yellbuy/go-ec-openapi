@@ -68,12 +68,13 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 
 	var req *http.Request
 	data := param.GetRequestData()
-	fmt.Println("data:", data)
+
 	url := router
 	if param["platid"] == "2" {
 		// 走京东地址
 		url = jdRouter
 	}
+	//fmt.Println(strings.NewReader(data))
 	req, err = http.NewRequest("POST", url, strings.NewReader(data))
 	if err != nil {
 		return
@@ -85,6 +86,7 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	response, err = httpClient.Do(req)
 	if err != nil {
 		fmt.Println(err)
+		fmt.Println("data:", data)
 		return
 	}
 
