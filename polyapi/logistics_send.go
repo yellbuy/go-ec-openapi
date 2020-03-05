@@ -13,12 +13,12 @@ func (client *Client) LogisticsSend(dto *common.LogisticsSendReqDto, extData ...
 	data, err := json.Marshal(dto)
 	if err != nil {
 		fmt.Println(err)
-		panic(err)
+		return nil, err
 	}
 	reqJson, err := simplejson.NewJson(data)
 	if err != nil {
 		fmt.Println(err)
-		panic(err)
+		return nil, err
 	}
 	if len(extData) > 0 {
 		reqJson.Set("platvalue", extData[0])
@@ -46,12 +46,14 @@ func (client *Client) LogisticsSend(dto *common.LogisticsSendReqDto, extData ...
 		fmt.Println(err)
 		return nil, err
 	}
-
+	//fmt.Println("bizcontent2：", string(bizcontent))
 	// 通过polyapi自有平台
 	method := "Differ.JH.Business.Send"
+	//return nil, errors.New("test")
 	_, body, err := client.Execute(method, params)
 	if err != nil {
 		fmt.Println(method, err)
 	}
+	//fmt.Println("bizcontent3：", string(bizcontent))
 	return body, err
 }
