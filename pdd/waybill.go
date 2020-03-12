@@ -9,7 +9,7 @@ import (
 	"github.com/yellbuy/go-ec-openapi/common"
 )
 
-func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest) (*common.WaybillApplyNewCols, []byte, error) {
+func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData ...string) (*common.WaybillApplyNewCols, []byte, error) {
 	req := make(map[string]interface{})
 	req["waybill_apply_new_request"] = request
 	params, err := common.InterfaceToParameter(req)

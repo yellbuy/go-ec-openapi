@@ -24,6 +24,8 @@ var (
 	router = "http://39.98.7.126/OpenAPI/do"
 	// 京东请求地址
 	jdRouter = "http://101.124.6.12/OpenAPI/do"
+	// 新地址
+	newRouter = "http://api.polyapi.com/openapi/do"
 	// 测试地址
 	// router = "http://aliyuntest.polyapi.com/OpenAPI/do"
 	// Timeout ...
@@ -73,6 +75,10 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	if param["platid"] == "2" {
 		// 走京东地址
 		url = jdRouter
+	}
+	if param["platid"] == "1002" || param["platid"] == "1008" {
+		// 走新地址
+		url = newRouter
 	}
 	//fmt.Println(strings.NewReader(data))
 	req, err = http.NewRequest("POST", url, strings.NewReader(data))

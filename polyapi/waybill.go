@@ -4,84 +4,294 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"strings"
 
+	simplejson "github.com/bitly/go-simplejson"
 	"github.com/yellbuy/go-ec-openapi/common"
 )
 
-func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest) (*common.WaybillApplyNewCols, []byte, error) {
+func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData ...string) (*common.WaybillApplyNewCols, []byte, error) {
+	if len(request.TradeOrderInfoCols) == 0 {
+		return nil, nil, errors.New("订单信息不能为空")
+	}
+	reqData := request.TradeOrderInfoCols[0]
+	if len(reqData.TradeOrderList) == 0 {
+		return nil, nil, errors.New("订单数据不能为空")
+	}
+	reqDto := new(LogisticsOrderReqDto)
+	reqDto.Orders = make([]*LogisticsOrder, 1)
+	dto := new(LogisticsOrder)
+	dto.OrderNo = reqData.OrderNo
+	dto.PlatTradeNo = reqData.PlatTradeNo
+	dto.NumPackage = "1"
+	dto.OrderType = "JH_Normal"
+	//快递支付方式(立即付款=0，货到付款=1，发件人月结付款=2，收件人月结付款=3，预付款=4，银行转账=5，欠款=6，现金付款=7，第三方付费=8，寄方付=9，收方付=10)
+	//dto.PayMode="0"
+	dto.IsInsurance = "0"
+
+	// 发件人
+	dto.Sender = new(LogisticsAddress)
+	dto.Sender.Name = reqData.SendName
+	dto.Sender.Phone = reqData.SendPhone
+	//dto.Sender.Mobile = reqData.SendName
+	dto.Sender.Province = request.ShippingAddress.Province
+	dto.Sender.City = request.ShippingAddress.City
+	dto.Sender.Area = request.ShippingAddress.Area
+	dto.Sender.Town = request.ShippingAddress.Town
+	dto.Sender.Address = request.ShippingAddress.AddressDetail
+	// 收件人
+	dto.Receiver = new(LogisticsAddress)
+	dto.Receiver = new(LogisticsAddress)
+	dto.Receiver.Name = reqData.ConsigneeName
+	dto.Receiver.Phone = reqData.ConsigneePhone
+	//dto.Sender.Mobile = reqData.SendName
+	dto.Receiver.Province = reqData.ConsigneeAddress.Province
+	dto.Receiver.City = reqData.ConsigneeAddress.City
+	dto.Receiver.Area = reqData.ConsigneeAddress.Area
+	dto.Receiver.Town = reqData.ConsigneeAddress.Town
+	dto.Receiver.Address = reqData.ConsigneeAddress.AddressDetail
+	reqDto.Orders[0] = dto
+	data, err := json.Marshal(reqDto)
+	if err != nil {
+		fmt.Println(err)
+		return nil, nil, err
+	}
+
+	reqJson, err := simplejson.NewJson(data)
+	if err != nil {
+		fmt.Println(err)
+		return nil, nil, err
+	}
+	if len(extData) > 0 {
+		reqJson.Set("platvalue", extData[0])
+	}
+	if len(extData) > 1 {
+		reqJson.Set("polyapitoken", extData[1])
+	}
+	if len(extData) > 2 {
+		reqJson.Set("shoptype", extData[2])
+	} else {
+		reqJson.Set("shoptype", "JH_001")
+	}
+
+	bizcontent, err := reqJson.Encode()
+	if err != nil {
+		fmt.Println(err)
+		return nil, nil, err
+	}
+
 	req := make(map[string]interface{})
-	req["waybill_apply_new_request"] = request
+	req["bizcontent"] = string(bizcontent)
+
+	//fmt.Println("bizcontent：", string(bizcontent))
 	params, err := common.InterfaceToParameter(req)
 	if err != nil {
 		fmt.Println(err)
 		return nil, nil, err
 	}
-	res, _, err := client.Execute("pdd.waybill.get", params)
+	//fmt.Println("bizcontent2：", string(bizcontent))
+	// 通过polyapi自有平台
+	method := "Differ.JH.Logistics.PostOrder"
+	res := new(common.WaybillApplyNewCols)
+	resJson := simplejson.New()
+	resJson, body, err := client.Execute(method, params)
 	if err != nil {
-		fmt.Println(err)
-		return nil, nil, err
+		fmt.Println(method, err)
+		return res, body, err
 	}
-	data, err := res.Encode()
-	if err != nil {
-		fmt.Println(err)
-		return nil, data, err
-	}
-	// fmt.Println("waybill_apply_new_cols:", string(data))
-	dto := new(PddWaybillGetResponse)
-	err = json.Unmarshal(data, dto)
-	if err != nil {
-		fmt.Println(err)
-	}
-	if len(dto.Modules) == 0 {
-		return nil, data, errors.New("响应内容不完整")
-	}
-	result := new(common.WaybillApplyNewCols)
-	result.WaybillApplyNewInfo = make([]*common.WaybillApplyNewInfo, len(dto.Modules))
-	for index, val := range dto.Modules {
-		info := new(common.WaybillApplyNewInfo)
-		info.WaybillCode = val.WaybillCode
-		info.PrintData = val.PrintData
-		result.WaybillApplyNewInfo[index] = info
-		// 根据收货地址返回大头笔信息
-		// ShortAddress string `json:"short_address"`
-		// // 返回的面单号
-		// WaybillCode string `json:"waybill_code"`
-		// // 集包地代码
-		// PackageCenterCode string `json:"package_center_code"`
-		// // 集包地名称
-		// PackageCenterName string `json:"package_center_name"`
-		// // 打印配置项，传给ali-print组件
-		// PrintConfig string `json:"print_config"`
-		// // 面单号对应的物流服务商网点（分支机构）代码
-		// ShippingBranchCode string `json:"shipping_branch_code"`
-		// // 包裹对应的派件（收件）物流服务商网点（分支机构）名称:余杭一部
-		// ConsigneeBranchName string `json:"consignee_branch_name"`
-		// // 面单号对于的物流服务商网点（分支机构）名称:西湖二部
-		// ShippingBranchName string `json:"shipping_branch_name"`
-		// // 包裹对应的派件（收件）物流服务商网点（分支机构）代码
-		// ConsigneeBranchCode string `json:"consignee_branch_code"`
-	}
+	res.WaybillApplyNewInfo = make([]*common.WaybillApplyNewInfo, 1)
+	waybill := resJson.Get("results").GetIndex(0)
+	waybillInfo := new(common.WaybillApplyNewInfo)
+	waybillInfo.WaybillCode, _ = waybill.Get("logisticno").String()
+	waybillInfo.PackageCenterName, _ = waybill.Get("destcode").String()
+	waybillInfo.ShortAddress, _ = waybill.Get("markers").String()
+	res.WaybillApplyNewInfo[0] = waybillInfo
 
-	return result, data, err
+	return res, body, err
 }
 
-type ParamWaybillCloudPrintApplyNewRequest struct {
-	//设定取号返回的云打印报文是否加密
-	NeedEncrypt bool `json:"need_encrypt"`
-	// 物流公司Code
-	WpCode string `json:"wp_code"`
-	// 发货人信息
-	Sender *Sender `json:"sender"`
-	// 请求面单信息，数量限制为10
-	TradeOrderInfoDtos []*TradeOrderInfoDto `json:"trade_order_info_dtos"`
+type LogisticsOrderReqDto struct {
+	Orders []*LogisticsOrder `json:"orders"`
 }
-type Sender struct {
-	Address *Address `json:"address"`
-	Mobile  string   `json:"mobile"`
-	// 姓名
-	Name  string `json:"name"`
-	Phone string `json:"phone"`
+type LogisticsOrder struct {
+	//订单号 必填
+	OrderNo string `json:"orderno"`
+	//必填 平台原始单号(多个原始单号以英文“,”分隔
+	PlatTradeNo string `json:"plattradeno"`
+	// 可选，是否为子母件(子母件=1，非子母件=0；默认0)
+	IsMultiplePieces string `json:"ismultiplepieces"`
+	// 必填 包裹数量(默认填写值为1，有子母件时“IsMultiplePieces=1”包裹数量要和运单号数量一致)
+	NumPackage string `json:"numpackage"`
+	//运单号(仅限于先预约单号的平台，如果是子母单，以半角逗号分隔，主单号在第一个位置，如755123456789,001123456789,002123456789)
+	LogisticNo   string `json:"logisticno"`
+	BusinessType string `json:"businesstype"`
+	BusinessPlat string `json:"businessplat"`
+	// 必填：快递支付方式(立即付款=0，货到付款=1，发件人月结付款=2，收件人月结付款=3，预付款=4，银行转账=5，欠款=6，现金付款=7，第三方付费=8，寄方付=9，收方付=10)
+	PayMode string `json:"paymode"`
+	// 必填：订单类型(普通订单=JH_Normal，退货单=JH_Refund，保价单=JH_Support，货到付款单=JH_COD，海外订单=JH_OverSea，便携式订单=JH_Portable，快递制单=JH_Express，仓储订单=JH_Storage)
+	OrderType string `json:"ordertype"`
+	// 货到付款金额(OrderType=JH_COD时必传)
+	CodPayMoney string `json:"codpaymoney"`
+	// 订单包裹物品金额
+	PackageMoney   string `json:"packagemoney"`
+	Weight         string `json:"weight"`
+	SupporPayMoney string `json:"supporpaymoney"`
+	Length         string `json:"length"`
+	Width          string `json:"width"`
+	Height         string `json:"height"`
+	Volume         string `json:"volume"`
+	IsPickUp       string `json:"ispickup"`
+	ProductType    string `json:"producttype"`
+	LogisticType   string `json:"logistictype"`
+	// 承运公司编码
+	CpCode      string            `json:"cpcode"`
+	DmsSorting  string            `json:"dmssorting"`
+	NeedEncrypt string            `json:"needencrypt"`
+	Sender      *LogisticsAddress `json:"sender"`
+	Receiver    *LogisticsAddress `json:"receiver"`
+
+	Goods        []*LogisticsGoods `json:"goods"`
+	ShipperNo    string            `json:"shipperno"`
+	WareCode     string            `json:"warecode"`
+	BatchNo      string            `json:"batchno"`
+	IsLiquid     string            `json:"isliquid"`
+	IsHasBattery string            `json:"ishasbattery"`
+	// 是否保险，默认0
+	IsInsurance           string `json:"isinsurance"`
+	DeliveryType          string `json:"deliverytype"`
+	BackSignBill          string `json:"backsignbill"`
+	IsLessTruck           string `json:"islesstruck"`
+	CustomerCode          string `json:"customercode"`
+	CustomerName          string `json:"customername"`
+	ImageStyle            string `json:"imagestyle"`
+	InputSite             string `json:"inputsite"`
+	SiteCode              string `json:"sitecode"`
+	IsCheckRange          string `json:"ischeckrange"`
+	TempRangeType         string `json:"temprangetype"`
+	MainSubPayMode        string `json:"mainsubpaymode"`
+	TransType             string `json:"transtype"`
+	IsBbc                 string `json:"isbbc"`
+	TransTypeCode         string `json:"transtypecode"`
+	ProdCode              string `json:"prodcode"`
+	IsNanJi               string `json:"isnanji"`
+	CurrencyType          string `json:"currencytype"`
+	PlatWebSite           string `json:"platwebsite"`
+	CrossCodeId           string `json:"crosscodeid"`
+	DefinedOrderInfo      string `json:"definedorderinfo"`
+	DefinedGoodsInfo      string `json:"definedgoodsinfo"`
+	PayOrderNo            string `json:"payorderno"`
+	PayAmount             string `json:"payamount"`
+	SenderAccount         string `json:"senderaccount"`
+	Is5KgPacking          string `json:"is5kgpacking"`
+	Is3Pl                 string `json:"is3pl"`
+	IsuseStock            string `json:"isusestock"`
+	IsEconomic            string `json:"iseconomic"`
+	SpecialHandling       string `json:"specialhandling"`
+	CodType               string `json:"codtype"`
+	PackageService        string `json:"packageservice"`
+	IsOut                 string `json:"isout"`
+	ReceiverAccount       string `json:"receiveraccount"`
+	ReceiverAccountname   string `json:"receiveraccountname"`
+	IsFresh               string `json:"isfresh"`
+	Remark                string `json:"remark"`
+	CustomerRemark        string `json:"customerremark"`
+	OrderSource           string `json:"ordersource"`
+	ProviderId            string `json:"providerid"`
+	ProviderCode          string `json:"providercode"`
+	ExpressPayMethod      string `json:"expresspaymethod"`
+	UndeliverableDecision string `json:"undeliverabledecision"`
+	ServiceName           string `json:"servicename"`
+	CumstomsCode          string `json:"cumstomscode"`
+	TotalLogisticsNo      string `json:"totallogisticsno"`
+	StockFlag             string `json:"stockflag"`
+	EbpCode               string `json:"ebpcode"`
+	EcpName               string `json:"ecpname"`
+	EcpCodeG              string `json:"ecpcodeg"`
+	EcpNameG              string `json:"ecpnameg"`
+	AgentCode             string `json:"agentcode"`
+	AgentName             string `json:"agentname"`
+	TotalShippingFee      string `json:"totalshippingfee"`
+	FeeUnit               string `json:"feeunit"`
+	ClearCode             string `json:"clearcode"`
+	SellerId              string `json:"sellerid"`
+	UserId                string `json:"user_id"`
+	LogisticsServices     string `json:"logistics_services"`
+	ObjectId              string `json:"object_id"`
+	TemplateUrl           string `json:"template_url"`
+	OrderChannelsType     string `json:"order_channels_type"`
+	TradeOrderList        string `json:"trade_order_list"`
+	LogisticsProductName  string `json:"logisticsproductname"`
+	DeptNo                string `json:"deptno"`
+	SenderTc              string `json:"sendertc"`
+	PickUpDate            string `json:"pickupdate"`
+	InstallFlag           string `json:"installflag"`
+	ThirdCategoryNo       string `json:"thirdcategoryno"`
+	BrandNo               string `json:"brandno"`
+	ProductSku            string `json:"productsku"`
+	PlatCode              string `json:"platcode"`
+	SequenceNo            string `json:"sequenceno"`
+	ChinaShipName         string `json:"chinashipname"`
+	TaxPayType            string `json:"taxpaytype"`
+	TaxSetAccounts        string `json:"taxsetaccounts"`
+	PracelType            string `json:"praceltype"`
+	AddressId             string `json:"addressid"`
+	ConsignPreferenceId   string `json:"consignpreferenceid"`
+	IsKuaiYun             string `json:"iskuaiyun"`
+}
+type LogisticsAddress struct {
+	Name            string `json:"name"`
+	Company         string `json:"company"`
+	Phone           string `json:"phone"`
+	Mobile          string `json:"mobile"`
+	Country         string `json:"country"`
+	Province        string `json:"province"`
+	City            string `json:"city"`
+	Area            string `json:"area"`
+	Town            string `json:"town"`
+	Address         string `json:"address"`
+	Zip             string `json:"zip"`
+	Email           string `json:"email"`
+	UserId          string `json:"userid"`
+	CertificateType string `json:"certificatetype"`
+	Certificate     string `json:"certificate"`
+	CertificateName string `json:"certificatename"`
+	AddressCode     string `json:"addresscode"`
+	Linker          string `json:"linker"`
+	TaxPayerIdent   string `json:"taxpayerident"`
+}
+
+type LogisticsGoods struct {
+	CnName          string `json:"cnname"`
+	EnName          string `json:"enname"`
+	Count           string `json:"count"`
+	CurrencyType    string `json:"currencytype"`
+	Price           string `json:"price"`
+	Weight          string `json:"weight"`
+	Unit            string `json:"unit"`
+	TaxationId      string `json:"taxationid"`
+	ProductId       string `json:"productid"`
+	InnerCount      string `json:"innercount"`
+	Length          string `json:"length"`
+	Width           string `json:"width"`
+	Height          string `json:"height"`
+	DutyMoney       string `json:"dutymoney"`
+	IsBlinsure      string `json:"isblinsure"`
+	Remark          string `json:"remark"`
+	IsAnerOidMarkUp string `json:"isaneroidmarkup"`
+	IsOnlyBattery   string `json:"isonlybattery"`
+	ProductBrand    string `json:"productbrand"`
+	ProductAttrs    string `json:"productattrs"`
+	ProductMaterial string `json:"productmaterial"`
+	HsCode          string `json:"hscode"`
+	GoodUrl         string `json:"goodurl"`
+	CategoryId      string `json:"categoryid"`
+	CategoryId2     string `json:"categoryid2"`
+	PlatTradeNo     string `json:"plattradeno"`
+	OriginCountry   string `json:"origincountry"`
+	OuterId         string `json:"outerid"`
+	Position        string `json:"position"`
+	SupportBattery  string `json:"supportbattery"`
+	Description     string `json:"description"`
+	ElecQuaId       string `json:"elecquaid"`
 }
 type Address struct {
 	Country string `json:"country"`
@@ -92,145 +302,4 @@ type Address struct {
 	Town     string `json:"town"`
 	// 必填.详细地址
 	Detail string `json:"detail"`
-}
-type TradeOrderInfoDto struct {
-	LogisticsServices string `json:"logistics_services"`
-	// 必填	请求id
-	ObjectId string `json:"object_id"`
-	// 必填 订单信息
-	OrderInfo *OrderInfo `json:"order_info"`
-	// 必填 包裹信息
-	PackageInfo *PackageInfo `json:"package_info"`
-	// 非必填 收件人信息
-	Recipient *Recipient `json:"recipient"`
-	// 必填 标准模板模板URL
-	TemplateUrl string `json:"template_url"`
-	// 必填 使用者ID
-	UserId int64 `json:"user_id"`
-}
-type OrderInfo struct {
-	// 必填 订单渠道平台编码
-	OrderChannelsType string `json:"order_channels_type"`
-	// 必填 订单号,数量限制100
-	TradeOrderList []string `json:"trade_order_list"`
-}
-type PackageInfo struct {
-	// 快运货品描述
-	GoodsDescription string `json:"goods_description"`
-	// 包裹id,拆合单使用
-	Id string `json:"id"`
-	// 必填 商品信息,数量限制为100
-	Items []*Item `json:"items"`
-	// 非必填 快运包装方式描述
-	PackagingDescription string `json:"packaging_description"`
-	// 非必填 子母件总包裹数
-	TotalPackagesCount int `json:"total_packages_count"`
-	// 非必填 体积, 单位 ml
-	Volume int64 `json:"volume"`
-	// 非必填 重量,单位 g
-	Weight int `json:"weight"`
-}
-type Item struct {
-	// 必填 数量
-	Count int `json:"count"`
-	// 必填 名称
-	Name string `json:"name"`
-}
-type Recipient struct {
-	Address *Address `json:"address"`
-	Mobile  string   `json:"mobile"`
-	Name    string   `json:"name"`
-	Phone   string   `json:"phone"`
-}
-
-// 拼多多面单响应内容
-type PddWaybillGetResponse struct {
-	Modules []*Module `json:"modules"`
-}
-type Module struct {
-	// 请求id
-	ObjectId string `json:"object_id"`
-	//快运母单号
-	ParentWaybillCode string `json:"parent_waybill_code"`
-	// 面单信息
-	PrintData string `json:"print_data"`
-	// 面单号
-	WaybillCode string `json:"waybill_code"`
-}
-
-func (self *ParamWaybillCloudPrintApplyNewRequest) getParamWaybillCloudPrintApplyNewRequest(req *common.WaybillApplyNewRequest) {
-	self.NeedEncrypt = false
-	self.WpCode = req.CpCode
-	sender := new(Sender)
-	sender.Address = new(Address)
-	//sender.Address.Country=req.ShippingAddress.Country
-	sender.Address.Province = req.ShippingAddress.Province
-	sender.Address.City = req.ShippingAddress.City
-	sender.Address.District = req.ShippingAddress.Area
-	sender.Address.Town = req.ShippingAddress.Town
-	sender.Address.Detail = req.ShippingAddress.AddressDetail
-	// sender.Mobile=orderInfo.SendMobile
-	if len(req.TradeOrderInfoCols) > 0 {
-		orderInfo := req.TradeOrderInfoCols[0]
-		sender.Phone = orderInfo.SendPhone
-		sender.Name = orderInfo.SendName
-	}
-
-	self.Sender = sender
-
-	tradeOrderInfoDtos := make([]*TradeOrderInfoDto, len(req.TradeOrderInfoCols))
-	for index, val := range req.TradeOrderInfoCols {
-		dto := new(TradeOrderInfoDto)
-		if len(val.LogisticsServiceList) > 0 {
-			for k, svc := range val.LogisticsServiceList {
-				if k > 0 {
-					dto.LogisticsServices = dto.LogisticsServices + ","
-				}
-				dto.LogisticsServices = dto.LogisticsServices + svc.ServiceCode
-
-			}
-		}
-		dto.ObjectId = val.ObjectId
-		// 订单信息
-		orderInfo := new(OrderInfo)
-		//orderInfo.OrderChannelsType = val.OrderType
-		if val.PackageId != "" {
-			orderInfo.TradeOrderList = strings.Split(val.PackageId, ",")
-		}
-		dto.OrderInfo = orderInfo
-		// 包裹信息
-		packageInfo := new(PackageInfo)
-		//packageInfo.GoodsDescription=val.ItemName
-		packageInfo.Items = make([]*Item, len(val.PackageItems))
-		for j, pkg := range val.PackageItems {
-			item := new(Item)
-			item.Count = pkg.Count
-			item.Name = pkg.ItemName
-			packageInfo.Items[j] = item
-		}
-		packageInfo.Volume = val.Volumn
-		packageInfo.Weight = val.Weight
-
-		dto.PackageInfo = packageInfo
-
-		recipient := new(Recipient)
-		recipient.Address = new(Address)
-		//recipient.Address.Country = val.ConsigneeAddress.Country
-		recipient.Address.Province = val.ConsigneeAddress.Province
-		recipient.Address.City = val.ConsigneeAddress.City
-		recipient.Address.District = val.ConsigneeAddress.Area
-		recipient.Address.Town = val.ConsigneeAddress.Town
-		recipient.Address.Detail = val.ConsigneeAddress.AddressDetail
-		// sender.Mobile=orderInfo.SendMobile
-		recipient.Phone = val.ConsigneePhone
-		recipient.Name = val.ConsigneeName
-		dto.Recipient = recipient
-		// 必填 标准模板模板URL
-		dto.TemplateUrl = ""
-		dto.UserId = val.RealUserId
-
-		tradeOrderInfoDtos[index] = dto
-	}
-
-	self.TradeOrderInfoDtos = tradeOrderInfoDtos
 }

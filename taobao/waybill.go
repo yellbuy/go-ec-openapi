@@ -7,7 +7,7 @@ import (
 	"github.com/yellbuy/go-ec-openapi/common"
 )
 
-func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest) (*common.WaybillApplyNewCols, []byte, error) {
+func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData ...string) (*common.WaybillApplyNewCols, []byte, error) {
 	for index, _ := range request.TradeOrderInfoCols {
 		request.TradeOrderInfoCols[index].OrderChannelsType = "TB"
 	}

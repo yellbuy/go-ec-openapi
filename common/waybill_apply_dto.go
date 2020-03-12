@@ -61,6 +61,10 @@ type TradeOrderInfo struct {
 
 	// 拼多多接口所需参数
 	ObjectId string `json:"-"`
+
+	// 菠萝派接口所需参数
+	OrderNo     string `json:"-"`
+	PlatTradeNo string `json:"-"`
 }
 
 // 包裹里面的商品名称
