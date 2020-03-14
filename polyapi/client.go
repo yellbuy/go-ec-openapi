@@ -80,7 +80,7 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 		// 走新地址
 		url = newRouter
 	}
-	//fmt.Println(strings.NewReader(data))
+	//fmt.Println("execute:", strings.NewReader(data))
 	req, err = http.NewRequest("POST", url, strings.NewReader(data))
 	if err != nil {
 		return

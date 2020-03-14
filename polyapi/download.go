@@ -107,6 +107,7 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 	reqJson.Set("endtime", endTime)
 	reqJson.Set("timetype", timeType)
 	reqJson.Set("orderstatus", orderStatus)
+	reqJson.Set("nexttoken", orderToken)
 	reqJson.Set("randomnumber", orderToken)
 
 	if len(extData) > 0 && extData[0] != "" {

@@ -88,7 +88,7 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 		fmt.Println(err)
 		return nil, nil, err
 	}
-	//fmt.Println("bizcontent2：", string(bizcontent))
+	//fmt.Printf("params：", params)
 	// 通过polyapi自有平台
 	method := "Differ.JH.Logistics.PostOrder"
 	res := new(common.WaybillApplyNewCols)
