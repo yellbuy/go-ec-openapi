@@ -2,6 +2,7 @@ package taobao
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/yellbuy/go-ec-openapi/common"
@@ -35,4 +36,9 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 		fmt.Println(err)
 	}
 	return result, data, err
+}
+
+func (client *Client) GetWaybillTemplates(request *common.WaybillTemplateRequest, extData ...string) (res *common.WaybillTemplateDto, body []byte, err error) {
+	err = errors.New("未实现")
+	return
 }

@@ -234,3 +234,7 @@ func (self *ParamWaybillCloudPrintApplyNewRequest) getParamWaybillCloudPrintAppl
 
 	self.TradeOrderInfoDtos = tradeOrderInfoDtos
 }
+func (client *Client) GetWaybillTemplates(request *common.WaybillTemplateRequest, extData ...string) (res *common.WaybillTemplateDto, body []byte, err error) {
+	err = errors.New("未实现")
+	return
+}

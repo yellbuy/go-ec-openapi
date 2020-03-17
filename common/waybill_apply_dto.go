@@ -1,5 +1,32 @@
 package common
 
+//电子面单模板请求dto
+type WaybillTemplateRequest struct {
+	//订单信息(所有模版=ALL，客户拥有的模版=OWNER)
+	TemplatesType string `json:"templatestype"`
+	// 快递公司类别
+	LogisticType string `valid:"Required" json:"logistictype"`
+}
+
+// 电子面单查询结果dto
+type WaybillTemplateDto struct {
+	// 承运公司编码
+	CpCode  string                 `json:"cpcode"`
+	Results []*WaybillTemplateInfo `json:"results"`
+}
+
+// 电子面单查询结果信息
+type WaybillTemplateInfo struct {
+	// 模板id
+	Id string `json:"id"`
+	// 模板名称
+	Name string `json:"name"`
+	// 模板url
+	Url string `json:"url"`
+	// 模板url
+	TemplateType string `json:"templatetype"`
+}
+
 // 收\发货地址
 type WaybillAddress struct {
 	//区名称（三级地址）
