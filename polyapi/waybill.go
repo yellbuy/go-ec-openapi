@@ -27,6 +27,7 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	//快递支付方式(立即付款=0，货到付款=1，发件人月结付款=2，收件人月结付款=3，预付款=4，银行转账=5，欠款=6，现金付款=7，第三方付费=8，寄方付=9，收方付=10)
 	dto.PayMode = "9"
 	dto.IsInsurance = "0"
+	dto.OrderSource = "OTHERS"
 
 	// 发件人
 	dto.Sender = new(LogisticsAddress)
@@ -49,13 +50,15 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	dto.Receiver.Area = reqData.ConsigneeAddress.Area
 	dto.Receiver.Town = reqData.ConsigneeAddress.Town
 	dto.Receiver.Address = reqData.ConsigneeAddress.AddressDetail
+	dto.LogisticType = reqData.ProductType
+	//fmt.Println("dto.LogisticType:", dto.LogisticType)
 	if client.Params.PlatId == "566" {
 		// 拼多多需要先获取电子面单模板
 		templateReq := new(common.WaybillTemplateRequest)
 		//订单信息(所有模版=ALL，客户拥有的模版=OWNER)
 		templateReq.TemplatesType = "ALL"
 		// 快递公司类别
-		templateReq.LogisticType = "YTO"
+		templateReq.LogisticType = reqData.ProductType
 		templateRes, body, err := client.GetWaybillTemplates(templateReq, extData...)
 		if err != nil {
 			return nil, body, err
@@ -63,9 +66,21 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 		if len(templateRes.Results) == 0 {
 			return nil, body, fmt.Errorf("电子面单模板信息为空，平台id：%s", client.Params.PlatId)
 		}
+		//beego.Error("%+v", templateRes)
 		dto.TemplateUrl = templateRes.Results[0].Url
+		//fmt.Println("TemplateUrl:", dto.TemplateUrl)
+
+		dto.OrderSource = "PDD"
 	}
+	goods := new(LogisticsGoods)
+	goods.CnName = "商品"
+	goods.Weight = "1"
+	goods.Count = "1"
+	dto.Goods = make([]*LogisticsGoods, 1)
+	dto.Goods[0] = goods
+
 	reqDto.Orders[0] = dto
+
 	data, err := json.Marshal(reqDto)
 	if err != nil {
 		return nil, nil, err
@@ -175,15 +190,16 @@ func (client *Client) GetWaybillTemplates(request *common.WaybillTemplateRequest
 		fmt.Println(method, err)
 		return res, body, err
 	}
-	results, err := resJson.Get("results").Array()
+	root := resJson.Get("results").GetIndex(0)
+	results, err := root.Get("results").Array()
 	if err != nil {
 		fmt.Println(method, err)
 		return res, body, err
 	}
-
+	//fmt.Println("body:", string(body))
 	res.Results = make([]*common.WaybillTemplateInfo, 0)
 	for index := range results {
-		result := resJson.Get("results").GetIndex(index)
+		result := root.Get("results").GetIndex(index)
 		waybillInfo := new(common.WaybillTemplateInfo)
 		waybillInfo.Id, _ = result.Get("id").String()
 		waybillInfo.Name, _ = result.Get("name").String()
@@ -234,7 +250,7 @@ type LogisticsOrder struct {
 	Sender      *LogisticsAddress `json:"sender,omitempty"`
 	Receiver    *LogisticsAddress `json:"receiver,omitempty"`
 
-	Goods        []*LogisticsGoods `json:"goods,omitempty"`
+	Goods        []*LogisticsGoods `json:"goods"`
 	ShipperNo    string            `json:"shipperno,omitempty"`
 	WareCode     string            `json:"warecode,omitempty"`
 	BatchNo      string            `json:"batchno,omitempty"`
