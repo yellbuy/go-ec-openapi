@@ -18,7 +18,7 @@ func EntryOrderCreateParse(body []byte) (res *EntryOrderCreateReqDto, err error)
 type EntryOrderCreateReqDto struct {
 	XMLName    xml.Name             `xml:"request"`
 	EntryOrder *EntryOrderCreateDto `xml:"entryOrder"`
-	OrderLines []*OrderLine         `xml:"orderLines"`
+	OrderLines *OrderLines          `xml:"orderLines"`
 }
 type EntryOrderCreateDto struct {
 	Text              string `xml:",chardata"`
@@ -112,7 +112,9 @@ type EntryOrderCreateDto struct {
 	SourceWarehouseCode   string `xml:"sourceWarehouseCode"`
 	SourceWarehouseName   string `xml:"sourceWarehouseName"`
 }
-
+type OrderLines struct {
+	OrderLineList []*OrderLine `xml:"orderLine"`
+}
 type OrderLine struct {
 	// 货品编码
 	ItemCode string `xml:"itemCode"`
