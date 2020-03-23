@@ -9,21 +9,25 @@ import (
 )
 
 // 入库单下载同步解析
-func EntryOrderCreateParse(body []byte) (res *EntryOrderCreateDto, err error) {
-	res = new(EntryOrderCreateDto)
+func EntryOrderCreateParse(body []byte) (res *EntryOrderCreateReqDto, err error) {
+	res = new(EntryOrderCreateReqDto)
 	err = xml.Unmarshal(body, res)
 	return
 }
 
+type EntryOrderCreateReqDto struct {
+	XMLName    xml.Name             `xml:"request"`
+	EntryOrder *EntryOrderCreateDto `xml:"entryOrder"`
+	OrderLines []*OrderLine         `xml:"orderLines"`
+}
 type EntryOrderCreateDto struct {
-	XMLName           xml.Name `xml:"entryOrder"`
-	Text              string   `xml:",chardata"`
-	EntryOrderCode    string   `xml:"entryOrderCode"`
-	OwnerCode         string   `xml:"ownerCode"`
-	PurchaseOrderCode string   `xml:"purchaseOrderCode"`
-	WarehouseCode     string   `xml:"warehouseCode"`
-	OrderCreateTime   string   `xml:"orderCreateTime"`
-	OrderType         string   `xml:"orderType"`
+	Text              string `xml:",chardata"`
+	EntryOrderCode    string `xml:"entryOrderCode"`
+	OwnerCode         string `xml:"ownerCode"`
+	PurchaseOrderCode string `xml:"purchaseOrderCode"`
+	WarehouseCode     string `xml:"warehouseCode"`
+	OrderCreateTime   string `xml:"orderCreateTime"`
+	OrderType         string `xml:"orderType"`
 	RelatedOrders     struct {
 		Text      string `xml:",chardata"`
 		Remark    string `xml:"remark"`
@@ -107,6 +111,13 @@ type EntryOrderCreateDto struct {
 	WarehouseName         string `xml:"warehouseName"`
 	SourceWarehouseCode   string `xml:"sourceWarehouseCode"`
 	SourceWarehouseName   string `xml:"sourceWarehouseName"`
+}
+
+type OrderLine struct {
+	// 货品编码
+	ItemCode string `xml:"itemCode"`
+	//应收商品数量
+	PlanQty uint `xml:"planQty"`
 }
 
 type EntryOrderCreateResponse struct {
