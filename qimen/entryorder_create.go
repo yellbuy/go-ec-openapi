@@ -117,15 +117,16 @@ type OrderLines struct {
 }
 type OrderLine struct {
 	OrderLineNo string `xml:"orderLineNo"`
-	ItemId      string `xml:"itemId"`
+	ItemId      string `xml:"itemId,omitempty"`
 	// 货品编码
-	ItemCode string `xml:"itemCode"`
+	ItemCode string `xml:"itemCode,omitempty"`
 	//商品数量
-	Quantity      int     `xml:"quantity"`
+	Quantity      int     `xml:"quantity,omitempty"`
 	Amount        float32 `xml:"amount"`
 	PurchasePrice float32 `xml:"purchasePrice"`
 	//应收商品数量
-	PlanQty uint `xml:"planQty"`
+	PlanQty   uint   `xml:"planQty,omitempty"`
+	OwnerCode string `xml:"ownerCode,omitempty"`
 }
 
 type EntryOrderCreateResponse struct {

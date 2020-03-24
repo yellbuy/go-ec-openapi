@@ -33,9 +33,9 @@ type DeliveryOrderCreateDto struct {
 	BuyerName         string  `xml:"buyerName"`
 	BuyerPhone        string  `xml:"buyerPhone"`
 	PresaleOrderType  string  `xml:"presaleOrderType"`
-	itemCode          string  `xml:"itemCode"`
-	itemName          string  `xml:"itemName"`
-	quantity          string  `xml:"quantity"`
+	ItemCode          string  `xml:"itemCode"`
+	ItemName          string  `xml:"itemName"`
+	Quantity          string  `xml:"quantity"`
 	Price             string  `xml:"price"`
 	OrderNote         string  `xml:"orderNote"`
 	LineNumber        int     `xml:"lineNumber"`
@@ -76,7 +76,7 @@ type DeliveryOrderCreateDto struct {
 	LogisticsName string  `xml:"logisticsName"`
 	ExpressCode   string  `xml:"expressCode"`
 	Remark        string  `xml:"remark"`
-	OwnerCode     string  `xml:"ownerCode"`
+
 	// 发件人信息
 	SenderInfo *DeliveryOrderAddress `xml:"senderInfo"`
 	// 收件人信息
@@ -95,6 +95,7 @@ type DeliveryOrderAddress struct {
 	City            string `xml:"city"`
 	Area            string `xml:"area"`
 	Town            string `xml:"town"`
+	DetailAddress   string `xml:"detailAddress"`
 }
 
 type DeliveryOrderCreateResponse struct {
