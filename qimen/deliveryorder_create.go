@@ -1,3 +1,4 @@
+
 /*
 文档地址：https://qimen.taobao.com/qimen/index.htm#/api-doc?fromPage=api-list&&apiServiceId=&officialApiId=26002&_k=xignfc
 */
@@ -76,26 +77,27 @@ type DeliveryOrderCreateDto struct {
 	LogisticsName string  `xml:"logisticsName"`
 	ExpressCode   string  `xml:"expressCode"`
 	Remark        string  `xml:"remark"`
-
+	BuyerMessage  string  `xml:"buyerMessage"`
+	SellerMessage string  `xml:"sellerMessage"`
 	// 发件人信息
 	SenderInfo *DeliveryOrderAddress `xml:"senderInfo"`
 	// 收件人信息
 	ReceiverInfo *DeliveryOrderAddress `xml:"receiverInfo"`
 }
 type DeliveryOrderAddress struct {
-	ReceiverName    string `xml:"receiverName"`
-	ReceiverZipCode string `xml:"receiverZipCode"`
-	ReceiverTel     string `xml:"receiverTel"`
-	ReceiverMobile  string `xml:"receiverMobile"`
-	Fax             string `xml:"fax"`
-	Nick            string `xml:"nick"`
-	Email           string `xml:"email"`
-	CountryCode     string `xml:"countryCode"`
-	Province        string `xml:"province"`
-	City            string `xml:"city"`
-	Area            string `xml:"area"`
-	Town            string `xml:"town"`
-	DetailAddress   string `xml:"detailAddress"`
+	Name          string `xml:"name"`
+	ZipCode       string `xml:"zipCode"`
+	Tel           string `xml:"tel"`
+	Mobile        string `xml:"mobile"`
+	Fax           string `xml:"fax"`
+	Nick          string `xml:"nick"`
+	Email         string `xml:"email"`
+	CountryCode   string `xml:"countryCode"`
+	Province      string `xml:"province"`
+	City          string `xml:"city"`
+	Area          string `xml:"area"`
+	Town          string `xml:"town"`
+	DetailAddress string `xml:"detailAddress"`
 }
 
 type DeliveryOrderCreateResponse struct {
@@ -119,3 +121,5 @@ func NewDeliveryOrderCreateSuccessResponse(deliveryOrderId, warehouseCode, logis
 	dto.OrderLines = make([]*OrderLine, 0)
 	return dto
 }
+
+

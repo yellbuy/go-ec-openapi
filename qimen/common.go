@@ -12,6 +12,13 @@ type Response struct {
 	Message string `xml:"message"`
 }
 
+func NewSuccessResponse() *Response {
+	dto := new(Response)
+	dto.Flag = "success"
+	dto.Code = "0"
+	return dto
+}
+
 func NewFailResponse(code, message string) *Response {
 	dto := new(Response)
 	dto.Flag = "failure"
