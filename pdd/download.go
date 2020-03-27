@@ -15,3 +15,9 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 	err = errors.New("未实现")
 	return
 }
+
+// 退货退款单下载
+func (client *Client) DownloadRefundList(pageIndex, pageSize int, startTime, endTime, timeType, status string, orderToken string, extData ...string) (res []*common.OrderInfo, hasNextPage bool, nextToken string, body []byte, err error) {
+	err = errors.New("未实现")
+	return
+}
