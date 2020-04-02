@@ -102,6 +102,7 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	}
 	defer response.Body.Close()
 	bytes, err = ioutil.ReadAll(response.Body)
+	//fmt.Println(string(bytes))
 	return
 }
 
