@@ -1,4 +1,4 @@
-package kd100
+package kdhelp
 
 import (
 	"encoding/json"
@@ -14,8 +14,7 @@ import (
 )
 
 var (
-	routerAutoNumber = "https://www.kuaidi100.com/autonumber/autoComNum?resultv2=1&text=%s"
-	routerQuery      = "https://www.kuaidi100.com/query?type=%s&postid=%s&temp=0.%s&phone="
+	router = "https://api.m.sm.cn/rest?method=kuaidi.getdata&sc=express_cainiao&q=%s"
 	// router = "http://gw.api.tbsandbox.com/router/rest"
 	// router = "https://baidu.com"
 	// Timeout ...
@@ -41,46 +40,19 @@ func LogisticsQuery(postId string) (resDto *LogisticsQueryResDto, err error) {
 	req := make(map[string]interface{})
 	var bodyBytes []byte
 	// 识别单号对应的快递公司类型
-	bodyBytes, err = client.Execute(fmt.Sprintf(routerAutoNumber, postId), "POST", req)
-
+	// bodyBytes, err = client.Execute(fmt.Sprintf(routerAutoNumber, postId), "POST", req)
+	bodyBytes, err = client.Execute(fmt.Sprintf(router, postId), "GET", req)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	res, err := bytesToResult(bodyBytes)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	arr, err := res.Get("auto").Array()
-	if len(arr) == 0 {
-		err = errors.New("无法识别的快递单号")
-		return
-	}
-	for index := range arr {
-		auto := res.Get("auto").GetIndex(index)
-		var comCode string
-		comCode, err = auto.Get("comCode").String()
-		if err != nil {
-			return resDto, err
-		}
-		bodyBytes, err = client.Execute(fmt.Sprintf(routerQuery, comCode, postId, time.Now().Unix()), "GET", req)
-		if err != nil {
-			fmt.Println(err)
-			continue
-		}
-		err = json.Unmarshal(bodyBytes, resDto)
-		if err != nil {
-			fmt.Println(err)
-			continue
-		}
-		if resDto.Message == "ok" {
-			err = nil
-			return
-		}
 
+	err = json.Unmarshal(bodyBytes, resDto)
+	if err != nil {
+		fmt.Println(err, string(bodyBytes))
+		err = errors.New("抱歉，暂无查询记录")
 	}
-	err = errors.New("抱歉，暂无查询记录")
+
 	return
 	// {"comCode":"","num":"3223","auto":[]}
 	// {"comCode":"","num":"773027491214552","auto":[{"comCode":"shentong","lengthPre":15,"noCount":24218044,"noPre":"773027"},{"comCode":"huitongkuaidi","lengthPre":15,"noCount":10,"noPre":"773027"}]}
@@ -134,19 +106,22 @@ func bytesToResult(bytes []byte) (res *simplejson.Json, err error) {
 }
 
 type LogisticsQueryResDto struct {
-	Message       string `json:"message"`
-	Nu            string `json:"nu"`
-	Ischeck       string `json:"ischeck"`
-	Condition     string `json:"condition"`
-	Com           string `json:"com"`
-	Status        string `json:"status"`
-	State         string `json:"state"`
-	LogisticsNo   string `json:"logisticsNo"`
-	LogisticsName string `json:"logisticsName"`
-	Data          []struct {
-		Time     string      `json:"time"`
-		Ftime    string      `json:"ftime"`
-		Context  string      `json:"context"`
-		Location interface{} `json:"location"`
+	Status int    `json:"status"`
+	Msg    string `json:"msg"`
+	Data   struct {
+		Nu       string `json:"nu"`
+		Company  string `json:"company"`
+		Code     string `json:"code"`
+		Tel      string `json:"tel"`
+		Img      string `json:"img"`
+		URL      string `json:"url"`
+		Status   string `json:"status"`
+		Messages []struct {
+			Context string `json:"context"`
+			Time    string `json:"time"`
+		} `json:"messages"`
+		HasItem    string `json:"hasItem"`
+		SourceName string `json:"source_name"`
+		SourceURL  string `json:"source_url"`
 	} `json:"data"`
 }
