@@ -23,6 +23,6 @@ type OrderCancelReqDto struct {
 	OrderId       string            `xml:"orderId"`
 	OrderType     string            `xml:"orderType"`
 	CancelReason  string            `xml:"cancelReason"`
-	ExtendProps   map[string]string `xml:"cancelReason"`
+	ExtendProps   map[string]string `xml:"extendProps"`
 	remark        string            `xml:"remark"`
 }

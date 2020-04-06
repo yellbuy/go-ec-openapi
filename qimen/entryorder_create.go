@@ -19,6 +19,7 @@ type EntryOrderCreateReqDto struct {
 	XMLName    xml.Name             `xml:"request"`
 	EntryOrder *EntryOrderCreateDto `xml:"entryOrder"`
 	OrderLines *OrderLines          `xml:"orderLines"`
+	Items      *Items               `xml:"items"`
 }
 type EntryOrderCreateDto struct {
 	Text              string `xml:",chardata"`
@@ -128,7 +129,21 @@ type OrderLine struct {
 	PlanQty   uint   `xml:"planQty,omitempty"`
 	OwnerCode string `xml:"ownerCode,omitempty"`
 }
-
+type Items struct {
+	ItemList []*Item `xml:"item"`
+}
+type Item struct {
+	Quantity int    `xml:"quantity"`
+	ExCode   string `xml:"exCode,omitempty"`
+	// 货品编码
+	ItemId string `xml:"itemId,omitempty"`
+	// 货品编码
+	ItemCode      string `xml:"itemCode,omitempty"`
+	InventoryType string `xml:"inventoryType"`
+	PlanQty       int    `xml:"planQty"`
+	//应收商品数量
+	ActualQty int `xml:"actualQty,omitempty"`
+}
 type EntryOrderCreateResponse struct {
 	XMLName xml.Name `xml:"response"`
 	Response

@@ -39,6 +39,7 @@ type EntryOrderConfirmReqDto struct {
 	Text       string      `xml:",chardata"`
 	EntryOrder *EntryOrder `xml:"entryOrder"`
 	OrderLines *OrderLines `xml:"orderLines"`
+	Items      *Items      `xml:"items"`
 }
 type EntryOrder struct {
 	SenderInfo struct {
@@ -57,6 +58,8 @@ type EntryOrder struct {
 	OrderId               string `xml:"orderId"`
 	OrderType             string `xml:"orderType"`
 	WarehouseName         string `xml:"warehouseName"`
+	LogisticsCode         string `xml:"logisticsCode"`
+	LogisticsName         string `xml:"logisticsName"`
 	TotalOrderLines       string `xml:"totalOrderLines"`
 	EntryOrderCode        string `xml:"entryOrderCode"`
 	OwnerCode             string `xml:"ownerCode"`
@@ -65,7 +68,7 @@ type EntryOrder struct {
 	EntryOrderId          string `xml:"entryOrderId"`
 	EntryOrderType        string `xml:"entryOrderType"`
 	OutBizCode            string `xml:"outBizCode"`
-	ConfirmType           string `xml:"confirmType"`
+	ConfirmType           int    `xml:"confirmType"`
 	Status                string `xml:"status"`
 	OperateTime           string `xml:"operateTime"`
 	Remark                string `xml:"remark"`
