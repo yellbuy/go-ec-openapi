@@ -26,7 +26,7 @@ func (client *Client) EntryOrderConfirm(dto *EntryOrderConfirmReqDto) (body []by
 	}
 
 	// 通过奇门代理平台
-	method := "qimen.entryorder.confirm"
+	method := "taobao.qimen.entryorder.confirm"
 	body, err = client.Execute(method, params, bytes)
 	if err != nil {
 		fmt.Println(method, err)
@@ -35,45 +35,61 @@ func (client *Client) EntryOrderConfirm(dto *EntryOrderConfirmReqDto) (body []by
 }
 
 type EntryOrderConfirmReqDto struct {
-	XMLName    xml.Name    `xml:"request"`
-	Text       string      `xml:",chardata"`
-	EntryOrder *EntryOrder `xml:"entryOrder"`
-	OrderLines *OrderLines `xml:"orderLines"`
-	Items      *Items      `xml:"items"`
+	XMLName    xml.Name        `xml:"request"`
+	Text       string          `xml:",chardata"`
+	EntryOrder EntryOrder      `xml:"entryOrder"`
+	OrderLines EntryOrderLines `xml:"orderLines"`
 }
 type EntryOrder struct {
-	SenderInfo struct {
-		Text   string `xml:",chardata"`
-		Remark string `xml:"remark"`
-	} `xml:"senderInfo"`
-	ReceiverInfo struct {
-		Text   string `xml:",chardata"`
-		Remark string `xml:"remark"`
-	} `xml:"receiverInfo"`
-	RelatedOrders struct {
-		Text   string `xml:",chardata"`
-		Remark string `xml:"remark"`
-	} `xml:"relatedOrders"`
-	OrderCode             string `xml:"orderCode"`
-	OrderId               string `xml:"orderId"`
-	OrderType             string `xml:"orderType"`
-	WarehouseName         string `xml:"warehouseName"`
-	LogisticsCode         string `xml:"logisticsCode"`
-	LogisticsName         string `xml:"logisticsName"`
-	TotalOrderLines       string `xml:"totalOrderLines"`
-	EntryOrderCode        string `xml:"entryOrderCode"`
-	OwnerCode             string `xml:"ownerCode"`
-	PurchaseOrderCode     string `xml:"purchaseOrderCode"`
-	WarehouseCode         string `xml:"warehouseCode"`
-	EntryOrderId          string `xml:"entryOrderId"`
-	EntryOrderType        string `xml:"entryOrderType"`
-	OutBizCode            string `xml:"outBizCode"`
-	ConfirmType           int    `xml:"confirmType"`
-	Status                string `xml:"status"`
-	OperateTime           string `xml:"operateTime"`
-	Remark                string `xml:"remark"`
-	SubOrderType          string `xml:"subOrderType"`
-	ResponsibleDepartment string `xml:"responsibleDepartment"`
-	ShopNick              string `xml:"shopNick"`
-	ShopCode              string `xml:"shopCode"`
+	Text            string `xml:",chardata"`
+	TotalOrderLines string `xml:"totalOrderLines"`
+	EntryOrderCode  string `xml:"entryOrderCode"`
+	OwnerCode       string `xml:"ownerCode"`
+	WarehouseCode   string `xml:"warehouseCode"`
+	EntryOrderId    string `xml:"entryOrderId"`
+	EntryOrderType  string `xml:"entryOrderType"`
+	OutBizCode      string `xml:"outBizCode"`
+	ConfirmType     int    `xml:"confirmType"`
+	Status          string `xml:"status"`
+	Freight         string `xml:"freight"`
+	OperateTime     string `xml:"operateTime"`
+	Remark          string `xml:"remark"`
+}
+type EntryOrderLines struct {
+	Text          string           `xml:",chardata"`
+	OrderLineList []EntryOrderLine `xml:"orderLine"`
+}
+
+type EntryOrderLine struct {
+	Text        string `xml:",chardata"`
+	OutBizCode  string `xml:"outBizCode"`
+	OrderLineNo string `xml:"orderLineNo"`
+	OwnerCode   string `xml:"ownerCode"`
+	ItemCode    string `xml:"itemCode"`
+	ItemId      string `xml:"itemId"`
+	SnList      struct {
+		Text string `xml:",chardata"`
+		Sn   string `xml:"sn"`
+	} `xml:"snList"`
+	ItemName      string `xml:"itemName"`
+	InventoryType string `xml:"inventoryType"`
+	PlanQty       int    `xml:"planQty"`
+	ActualQty     int    `xml:"actualQty"`
+	BatchCode     string `xml:"batchCode"`
+	ProductDate   string `xml:"productDate"`
+	ExpireDate    string `xml:"expireDate"`
+	ProduceCode   string `xml:"produceCode"`
+	Batchs        struct {
+		Text  string `xml:",chardata"`
+		Batch struct {
+			Text          string `xml:",chardata"`
+			BatchCode     string `xml:"batchCode"`
+			ProductDate   string `xml:"productDate"`
+			ExpireDate    string `xml:"expireDate"`
+			ProduceCode   string `xml:"produceCode"`
+			InventoryType string `xml:"inventoryType"`
+			ActualQty     string `xml:"actualQty"`
+		} `xml:"batch"`
+	} `xml:"batchs"`
+	Remark string `xml:"remark"`
 }

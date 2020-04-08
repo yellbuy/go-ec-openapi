@@ -103,6 +103,7 @@ func GetSign(appSecret string, params Parameter, isLower bool) string {
 		}
 	}
 	query.WriteString(appSecret)
+	fmt.Println(query.String())
 	// 使用MD5加密
 	h := md5.New()
 	io.Copy(h, query)
@@ -110,7 +111,7 @@ func GetSign(appSecret string, params Parameter, isLower bool) string {
 		// 把二进制转化为大写的十六进制
 		return strings.ToLower(hex.EncodeToString(h.Sum(nil)))
 	}
-	// 把二进制转化为小写的十六进制
+	// 把二进制转化为大写的十六进制
 	return strings.ToUpper(hex.EncodeToString(h.Sum(nil)))
 }
 

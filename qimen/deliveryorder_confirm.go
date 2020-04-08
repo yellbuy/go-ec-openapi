@@ -26,7 +26,7 @@ func (client *Client) DeliveryOrderConfirm(dto *DeliveryOrderConfirmReqDto) (bod
 	}
 
 	// 通过奇门代理平台
-	method := "qimen.deliveryorder.confirm"
+	method := "taobao.qimen.deliveryorder.confirm"
 	body, err = client.Execute(method, params, bytes)
 	if err != nil {
 		fmt.Println(method, err)
