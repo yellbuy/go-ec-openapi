@@ -66,7 +66,7 @@ func getSign(appSecret string, params common.Parameter, body string) string {
 	}
 	query.WriteString(body)
 	query.WriteString(appSecret)
-	fmt.Println(query.String())
+	//fmt.Println(query.String())
 	//query = bytes.NewBufferString("b17cc059ffba3f6cf0d9131359d0be2aapp_key23268761formatxmlmethodtaobao.qimen.entryorder.createsign_methodmd5timestamp2020-04-08 10:56:00v2.0<request></request>b17cc059ffba3f6cf0d9131359d0be2a")
 	// 使用MD5加密
 	h := md5.New()
@@ -86,7 +86,7 @@ func setRequestData(p common.Parameter, params *common.ClientParams, body []byte
 	p["customerId"] = params.PlatId
 	// 设置签名
 	p["sign"] = getSign(params.AppSecret, p, string(body))
-	fmt.Println(p["sign"])
+	//fmt.Println(p["sign"])
 	return p
 }
 
@@ -178,8 +178,8 @@ func aesEncrypt(appSecret string, origData []byte) ([]byte, error) {
 
 // 生成AES加密所需密码
 func genPassword(appSecret string) string {
-	byteArr := []byte(appSecret)
-	fmt.Println(byteArr)
+	//byteArr := []byte(appSecret)
+	//fmt.Println(byteArr)
 	query := bytes.NewBufferString(appSecret)
 	// 使用MD5加密
 	h := md5.New()

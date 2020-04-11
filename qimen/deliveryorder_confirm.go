@@ -125,13 +125,13 @@ type DeliveryOrderLines struct {
 	OrderLineList []DeliveryOrderLine `xml:"orderLine"`
 }
 type DeliveryOrderLine struct {
-	Text            string   `xml:",chardata"`
-	OrderLineNo     string   `xml:"orderLineNo"`
-	OrderSourceCode string   `xml:"orderSourceCode"`
-	SubSourceCode   string   `xml:"subSourceCode"`
-	OwnerCode       []string `xml:"ownerCode"`
-	ItemCode        string   `xml:"itemCode"`
-	ItemId          string   `xml:"itemId"`
+	Text            string `xml:",chardata"`
+	OrderLineNo     string `xml:"orderLineNo"`
+	OrderSourceCode string `xml:"orderSourceCode"`
+	SubSourceCode   string `xml:"subSourceCode"`
+	OwnerCode       string `xml:"ownerCode"`
+	ItemCode        string `xml:"itemCode"`
+	ItemId          string `xml:"itemId"`
 	SnList          struct {
 		Text string `xml:",chardata"`
 		Sn   string `xml:"sn"`
