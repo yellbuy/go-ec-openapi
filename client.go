@@ -14,6 +14,7 @@ const (
 	JD
 	PDD
 	POLYAPI
+	QIMEN
 )
 
 func NewClient(platformType int, params *common.ClientParams) (Client, error) {
