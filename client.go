@@ -44,6 +44,8 @@ type Client interface {
 	DownloadOrderList(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus string, orderToken string, extData ...string) (res []*common.OrderInfo, hasNextPage bool, nextToken string, body []byte, err error)
 	// 退货退款单下载
 	DownloadRefundList(pageIndex, pageSize int, startTime, endTime, timeType, status string, orderToken string, extData ...string) (res []*common.OrderInfo, hasNextPage bool, nextToken string, body []byte, err error)
+	// 退款状态检测(批量)
+	BatchCheckRefundStatus(platorderno []string, extData ...string) (res []*common.BatchCheckRefundStatusRes, body []byte, err error)
 	// 订单发货
 	LogisticsSend(dto *common.LogisticsSendReqDto, extData ...string) ([]byte, error)
 }
