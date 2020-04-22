@@ -34,6 +34,7 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	dto.Sender.Name = reqData.SendName
 	dto.Sender.Phone = reqData.SendPhone
 	//dto.Sender.Mobile = reqData.SendName
+	dto.Sender.Country = request.ShippingAddress.Country
 	dto.Sender.Province = request.ShippingAddress.Province
 	dto.Sender.City = request.ShippingAddress.City
 	dto.Sender.Area = request.ShippingAddress.Area
@@ -44,7 +45,7 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	dto.Receiver = new(LogisticsAddress)
 	dto.Receiver.Name = reqData.ConsigneeName
 	dto.Receiver.Phone = reqData.ConsigneePhone
-	//dto.Sender.Mobile = reqData.SendName
+	dto.Receiver.Country = reqData.ConsigneeAddress.Country
 	dto.Receiver.Province = reqData.ConsigneeAddress.Province
 	dto.Receiver.City = reqData.ConsigneeAddress.City
 	dto.Receiver.Area = reqData.ConsigneeAddress.Area

@@ -30,7 +30,8 @@ type WaybillTemplateInfo struct {
 // 收\发货地址
 type WaybillAddress struct {
 	//区名称（三级地址）
-	Area string `json:"area"`
+	Area    string `json:"area"`
+	Country string `json:"country"`
 	// 省名称，必填（一级地址）
 	Province string `valid:"Required" json:"province"`
 	// 街道\镇名称（四级地址）
