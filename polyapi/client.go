@@ -91,8 +91,7 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	var response *http.Response
 	response, err = httpClient.Do(req)
 	if err != nil {
-		fmt.Println(err)
-		fmt.Println("data:", data)
+		fmt.Println(err, data)
 		return
 	}
 
@@ -191,7 +190,7 @@ func checkConfig(client *Client) error {
 // 账号同步所需的加密方法
 func aesEncrypt(appSecret string, origData []byte) ([]byte, error) {
 	key := genPassword(appSecret)
-	fmt.Println("key:", key)
+	//fmt.Println("key:", key)
 	keyBytes := []byte(key)
 	crypted, _ := openssl.AesECBEncrypt(origData, keyBytes, openssl.PKCS7_PADDING)
 	return crypted, nil
@@ -237,8 +236,8 @@ func aesEncrypt(appSecret string, origData []byte) ([]byte, error) {
 
 // 生成AES加密所需密码
 func genPassword(appSecret string) string {
-	byteArr := []byte(appSecret)
-	fmt.Println(byteArr)
+	//byteArr := []byte(appSecret)
+	//fmt.Println(byteArr)
 	query := bytes.NewBufferString(appSecret)
 	// 使用MD5加密
 	h := md5.New()
