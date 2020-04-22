@@ -24,6 +24,7 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	dto.PlatTradeNo = reqData.PlatTradeNo
 	dto.NumPackage = "1"
 	dto.OrderType = "JH_Normal"
+	dto.BusinessType = "JH_Normal"
 	//快递支付方式(立即付款=0，货到付款=1，发件人月结付款=2，收件人月结付款=3，预付款=4，银行转账=5，欠款=6，现金付款=7，第三方付费=8，寄方付=9，收方付=10)
 	dto.PayMode = "9"
 	dto.IsInsurance = "0"
