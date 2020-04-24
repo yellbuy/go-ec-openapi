@@ -22,6 +22,9 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	dto := new(LogisticsOrder)
 	dto.OrderNo = reqData.OrderNo
 	dto.PlatTradeNo = reqData.PlatTradeNo
+	dto.CustomerCode = reqData.CustomerCode
+	dto.CustomerName = reqData.CustomerName
+
 	dto.NumPackage = "1"
 	dto.OrderType = "JH_Normal"
 	dto.BusinessType = "JH_Normal"
@@ -53,6 +56,10 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	dto.Receiver.Town = reqData.ConsigneeAddress.Town
 	dto.Receiver.Address = reqData.ConsigneeAddress.AddressDetail
 	dto.LogisticType = reqData.ProductType
+	// 京东接口需要传递ProviderCode
+	dto.ProviderCode = reqData.ProductType
+	dto.SiteCode = reqData.SiteCode
+	dto.OrderSource = "0030001"
 	//fmt.Println("dto.LogisticType:", dto.LogisticType)
 	if client.Params.PlatId == "566" {
 		// 拼多多需要先获取电子面单模板

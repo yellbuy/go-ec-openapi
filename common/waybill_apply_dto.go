@@ -91,8 +91,11 @@ type TradeOrderInfo struct {
 	ObjectId string `json:"-"`
 
 	// 菠萝派接口所需参数
-	OrderNo     string `json:"-"`
-	PlatTradeNo string `json:"-"`
+	CustomerCode string `json:"-"`
+	CustomerName string `json:"-"`
+	OrderNo      string `json:"-"`
+	PlatTradeNo  string `json:"-"`
+	SiteCode     string `json:"-"`
 }
 
 // 包裹里面的商品名称
