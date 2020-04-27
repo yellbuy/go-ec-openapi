@@ -148,17 +148,17 @@ type DeliveryOrderLine struct {
 	ProductDate    string  `xml:"productDate"`
 	ExpireDate     string  `xml:"expireDate"`
 	ProduceCode    string  `xml:"produceCode"`
-	Batchs         struct {
-		Text  string `xml:",chardata"`
-		Batch struct {
-			Text          string `xml:",chardata"`
-			BatchCode     string `xml:"batchCode"`
-			ProductDate   string `xml:"productDate"`
-			ExpireDate    string `xml:"expireDate"`
-			ProduceCode   string `xml:"produceCode"`
-			InventoryType string `xml:"inventoryType"`
-			ActualQty     string `xml:"actualQty"`
-		} `xml:"batch"`
-	} `xml:"batchs"`
+	// Batchs         struct {
+	// 	Text  string `xml:",chardata"`
+	// 	Batch struct {
+	// 		Text          string `xml:",chardata"`
+	// 		BatchCode     string `xml:"batchCode"`
+	// 		ProductDate   string `xml:"productDate"`
+	// 		ExpireDate    string `xml:"expireDate"`
+	// 		ProduceCode   string `xml:"produceCode"`
+	// 		InventoryType string `xml:"inventoryType"`
+	// 		ActualQty     string `xml:"actualQty"`
+	// 	} `xml:"batch"`
+	// } `xml:"batchs"`
 	QrCode string `xml:"qrCode"`
 }
