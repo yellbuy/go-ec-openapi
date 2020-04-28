@@ -11,14 +11,14 @@ type BatchCheckRefundStatusOrder struct {
 }
 
 type BatchCheckRefundStatusRes struct {
-	Issuccess                string                 `json:"issuccess"`
-	Code                     string                 `json:"code"`
-	Message                  string                 `json:"message"`
-	PlatOrderNo              string                 `json:"platorderno"`
-	RefundStatus             string                 `json:"refundstatus"`
-	RefundStatusDescription  string                 `json:"refundstatusdescription"`
-	Tradestatus              string                 `json:"tradestatus"`
-	ChildrenRefundStatusList []ChildrenRefundStatus `json:"childrenrefundstatus"`
+	Issuccess                string                  `json:"issuccess"`
+	Code                     string                  `json:"code"`
+	Message                  string                  `json:"message"`
+	PlatOrderNo              string                  `json:"platorderno"`
+	RefundStatus             string                  `json:"refundstatus"`
+	RefundStatusDescription  string                  `json:"refundstatusdescription"`
+	Tradestatus              string                  `json:"tradestatus"`
+	ChildrenRefundStatusList []*ChildrenRefundStatus `json:"childrenrefundstatus"`
 }
 
 type ChildrenRefundStatus struct {

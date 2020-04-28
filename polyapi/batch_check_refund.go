@@ -10,7 +10,7 @@ import (
 )
 
 //批量检测退货
-func (client *Client) BatchCheckRefundStatus(platOrderNoList []string, extData ...string) (res []*common.BatchCheckRefundStatusRes, body []byte, err error) {
+func (client *Client) BatchCheckRefundStatus(platOrderNoList []string, extData ...string) ([]*common.BatchCheckRefundStatusRes, []byte, error) {
 	if len(platOrderNoList) == 0 {
 		return nil, nil, errors.New("单号不能为空")
 	}
@@ -63,10 +63,41 @@ func (client *Client) BatchCheckRefundStatus(platOrderNoList []string, extData .
 	// 通过polyapi自有平台
 	method := "Differ.JH.Business.BatchCheckRefundStatus"
 	//return nil, errors.New("test")
-	_, body, err = client.Execute(method, params)
+	resJson, body, err := client.Execute(method, params)
 	if err != nil {
 		fmt.Println(method, err)
+		return nil, body, err
 	}
+	results, err := resJson.Get("results").Array()
+	if err != nil {
+		fmt.Println(method, err, string(body))
+		return nil, body, err
+	}
+	res := make([]*common.BatchCheckRefundStatusRes, len(results))
+	for index, _ := range results {
+		val := resJson.Get("results").GetIndex(index)
+		model := new(common.BatchCheckRefundStatusRes)
+		model.PlatOrderNo, _ = val.Get("platorderno").String()
+		model.RefundStatus, _ = val.Get("refundstatus").String()
+		model.RefundStatusDescription, _ = val.Get("refundstatusdescription").String()
+		model.Tradestatus, _ = val.Get("tradestatus").String()
+		children, _ := val.Get("childrenrefundstatus").Array()
+		model.ChildrenRefundStatusList = make([]*common.ChildrenRefundStatus, len(children))
+		for childIndex, _ := range children {
+			childJson := val.Get("ChildrenRefundStatus").GetIndex(childIndex)
+			child := new(common.ChildrenRefundStatus)
+			child.RefundNo, _ = childJson.Get("refundno").String()
+			child.SubOrderNo, _ = childJson.Get("suborderno").String()
+			child.ProductName, _ = childJson.Get("productname").String()
+			child.PlatProductId, _ = childJson.Get("platproductid").String()
+			child.TradeGoodsNo, _ = childJson.Get("tradegoodsno").String()
+			child.RefundStatus, _ = childJson.Get("refundstatus").String()
+			child.RefundStatusDescription, _ = childJson.Get("refundstatusdescription").String()
+			model.ChildrenRefundStatusList[childIndex] = child
+		}
+		res[index] = model
+	}
+	
 	//fmt.Println("bizcontent3：", string(bizcontent))
-	return nil, body, err
+	return res, body, err
 }
