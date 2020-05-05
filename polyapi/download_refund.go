@@ -7,7 +7,7 @@ import (
 	"github.com/yellbuy/go-ec-openapi/common"
 )
 
-// 订单下载
+// 退货订单下载
 func (client *Client) DownloadRefundList(pageIndex, pageSize int, startTime, endTime, timeType, status, orderToken string, extData ...string) (res []*common.OrderInfo, hasNextPage bool, nextToken string, body []byte, err error) {
 	res = make([]*common.OrderInfo, 0)
 	hasNextPage = false
@@ -62,7 +62,7 @@ func (client *Client) DownloadRefundList(pageIndex, pageSize int, startTime, end
 	nextToken, _ = resJson.Get("nexttoken").String()
 	hasNextPageStr, _ := resJson.Get("ishasnextpage").String()
 	hasNextPage = hasNextPageStr == "1"
-	orderList, err := resJson.Get("orders").Array()
+	orderList, err := resJson.Get("refunds").Array()
 	if err != nil {
 		fmt.Println(method, err)
 		return res, hasNextPage, nextToken, body, err
@@ -71,23 +71,19 @@ func (client *Client) DownloadRefundList(pageIndex, pageSize int, startTime, end
 		order := resJson.Get("refunds").GetIndex(index)
 		orderInfo := new(common.OrderInfo)
 		orderInfo.PlatOrderNo, _ = order.Get("platorderno").String()
+		orderInfo.SubPlatOrderNo, _ = order.Get("subplatorderno").String()
 		orderInfo.TradeStatus, _ = order.Get("refundstatus").String()
-		orderInfo.Nick, _ = order.Get("buyernick").String()
 		orderInfo.Mobile, _ = order.Get("mobile").String()
 		orderInfo.Phone, _ = order.Get("telephone").String()
 		orderInfo.ReceiverName, _ = order.Get("receivername").String()
+		orderInfo.LogisticName, _ = order.Get("logisticname").String()
+		orderInfo.LogisticNo, _ = order.Get("logisticno").String()
 		// orderInfo.Country, _ = order.Get("country").String()
 		// orderInfo.Province, _ = order.Get("province").String()
 		// orderInfo.City, _ = order.Get("city").String()
 		// orderInfo.Area, _ = order.Get("area").String()
 		// orderInfo.Town, _ = order.Get("town").String()
 		orderInfo.Address, _ = order.Get("address").String()
-		//orderInfo.Zip, _ = order.Get("zip").String()
-		orderInfo.CustomerRemark, _ = order.Get("reason").String()
-		orderInfo.SellerRemark, _ = order.Get("desc").String()
-		//orderInfo.PayOrderNo, _ = order.Get("payorderno").String()
-		orderInfo.GoodsFee, _ = order.Get("payamount").String()
-		orderInfo.TotalAmount, _ = order.Get("totalamount").String()
 		orderInfo.PayTime, _ = order.Get("createtime").String()
 		orderInfo.TradeTime, _ = order.Get("createtime").String()
 

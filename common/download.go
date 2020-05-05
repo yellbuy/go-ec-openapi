@@ -137,8 +137,9 @@ type ServiceOrder struct {
 }
 type OrderInfo struct {
 	ShopType string `json:"shoptype"`
-	//平台订单号   对应ERP原始订单号
-	PlatOrderNo string `json:"platorderno"`
+	//平台订单P号   对应ERP原始订单号
+	PlatOrderNo    string `json:"platorderno"`
+	SubPlatOrderNo string `json:"subplatorderno"`
 	// 订单交易状态  JH_02  等待卖家发货只下载此状态订单
 	TradeStatus            string `json:"tradestatus"`
 	TradeStatusDescription string `json:"tradestatusdescription"`
@@ -181,8 +182,9 @@ type OrderInfo struct {
 	// 物品费用
 	GoodsFee string `json:"goodsfee"`
 	// 支付时间
-	PayTime string `json:"paytime"`
-	GoodsInfoList []*GoodsInfo `json:"goodinfos"`
-
+	PayTime          string          `json:"paytime"`
+	GoodsInfoList    []*GoodsInfo    `json:"goodinfos"`
+	LogisticName     string          `json:"logisticname"`
+	LogisticNo       string          `json:"logisticno"`
 	ServiceOrderList []*ServiceOrder `json:"serviceorders"`
 }
