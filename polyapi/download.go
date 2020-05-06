@@ -8,12 +8,13 @@ import (
 )
 
 // 产品下载
-func (client *Client) DownloadProductList(pageIndex, pageSize int, status string, extData ...string) (res []*common.Product, hasNextPage bool, body []byte, err error) {
+func (client *Client) DownloadProductList(pageIndex, pageSize int, status, productToken string, extData ...string) (res []*common.Product, hasNextPage bool, nextToken string, body []byte, err error) {
 	res = make([]*common.Product, 0)
 	reqJson := simplejson.New()
 	reqJson.Set("pageindex", pageIndex)
 	reqJson.Set("pagesize", pageSize)
 	reqJson.Set("status", status)
+	reqJson.Set("requestid", productToken)
 
 	if len(extData) > 0 {
 		reqJson.Set("platvalue", extData[0])
@@ -31,7 +32,7 @@ func (client *Client) DownloadProductList(pageIndex, pageSize int, status string
 	if resErr != nil {
 		fmt.Println(resErr)
 		err = resErr
-		return res, hasNextPage, body, err
+		return res, hasNextPage, nextToken, body, err
 	}
 
 	req := make(map[string]interface{})
@@ -41,7 +42,7 @@ func (client *Client) DownloadProductList(pageIndex, pageSize int, status string
 	if resErr != nil {
 		fmt.Println(resErr)
 		err = resErr
-		return res, hasNextPage, body, err
+		return res, hasNextPage, nextToken, body, err
 	}
 
 	// 通过奇门代理平台
@@ -52,14 +53,15 @@ func (client *Client) DownloadProductList(pageIndex, pageSize int, status string
 	resJson, body, err = client.Execute("Differ.JH.Business.DownloadProduct", params)
 	if err != nil {
 		fmt.Println(method, err)
-		return res, hasNextPage, body, err
+		return res, hasNextPage, nextToken, body, err
 	}
+	nextToken, _ = resJson.Get("requestid").String()
 	hasNextPageStr, _ := resJson.Get("ishasnextpage").String()
 	hasNextPage = hasNextPageStr == "1"
 	goodsList, err := resJson.Get("goodslist").Array()
 	if err != nil {
 		fmt.Println(method, err)
-		return res, hasNextPage, body, err
+		return res, hasNextPage, nextToken, body, err
 	}
 	for index := range goodsList {
 		goods := resJson.Get("goodslist").GetIndex(index)
@@ -93,7 +95,7 @@ func (client *Client) DownloadProductList(pageIndex, pageSize int, status string
 		}
 		res = append(res, product)
 	}
-	return res, hasNextPage, body, err
+	return res, hasNextPage, nextToken, body, err
 }
 
 // 订单下载
