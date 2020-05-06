@@ -21,7 +21,7 @@ func (client *Client) DownloadRefundList(pageIndex, pageSize int, startTime, end
 	reqJson.Set("refundtype", "JH_04")
 	reqJson.Set("nexttoken", orderToken)
 	reqJson.Set("randomnumber", orderToken)
-
+	//fmt.Println("timetype:", timeType, "status:", status)
 	if len(extData) > 0 && extData[0] != "" {
 		reqJson.Set("platvalue", extData[0])
 	}
