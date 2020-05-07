@@ -14,7 +14,7 @@ func (client *Client) DownloadRefundList(pageIndex, pageSize int, startTime, end
 	reqJson := simplejson.New()
 	reqJson.Set("pageindex", pageIndex)
 	reqJson.Set("pagesize", pageSize)
-	reqJson.Set("starttime", startTime)
+	reqJson.Set("beginTime", startTime)
 	reqJson.Set("endtime", endTime)
 	reqJson.Set("timetype", timeType)
 	reqJson.Set("status", status)
@@ -62,6 +62,13 @@ func (client *Client) DownloadRefundList(pageIndex, pageSize int, startTime, end
 	nextToken, _ = resJson.Get("nexttoken").String()
 	hasNextPageStr, _ := resJson.Get("ishasnextpage").String()
 	hasNextPage = hasNextPageStr == "1"
+	if !hasNextPage {
+		// 进一步按
+		totalcount, _ := resJson.Get("totalcount").Int()
+		if totalcount > pageIndex*pageSize {
+			hasNextPage = true
+		}
+	}
 	orderList, err := resJson.Get("refunds").Array()
 	if err != nil {
 		fmt.Println(method, err)
