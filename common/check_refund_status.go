@@ -17,7 +17,7 @@ type BatchCheckRefundStatusRes struct {
 	PlatOrderNo              string                  `json:"platorderno"`
 	RefundStatus             string                  `json:"refundstatus"`
 	RefundStatusDescription  string                  `json:"refundstatusdescription"`
-	Tradestatus              string                  `json:"tradestatus"`
+	TradeStatus              string                  `json:"tradestatus"`
 	ChildrenRefundStatusList []*ChildrenRefundStatus `json:"childrenrefundstatus"`
 }
 

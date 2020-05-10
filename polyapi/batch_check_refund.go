@@ -80,7 +80,7 @@ func (client *Client) BatchCheckRefundStatus(platOrderNoList []string, extData .
 		model.PlatOrderNo, _ = val.Get("platorderno").String()
 		model.RefundStatus, _ = val.Get("refundstatus").String()
 		model.RefundStatusDescription, _ = val.Get("refundstatusdescription").String()
-		model.Tradestatus, _ = val.Get("tradestatus").String()
+		model.TradeStatus, _ = val.Get("tradestatus").String()
 		children, _ := val.Get("childrenrefundstatus").Array()
 		model.ChildrenRefundStatusList = make([]*common.ChildrenRefundStatus, len(children))
 		for childIndex, _ := range children {
@@ -97,7 +97,7 @@ func (client *Client) BatchCheckRefundStatus(platOrderNoList []string, extData .
 		}
 		res[index] = model
 	}
-	
+
 	//fmt.Println("bizcontent3：", string(bizcontent))
 	return res, body, err
 }

@@ -28,6 +28,8 @@ var (
 	pddRouter = "http://pdd.polyapi.com/openapi/do"
 	// 新地址
 	newRouter = "http://api.polyapi.com/openapi/do"
+	// 订单退款检测地址
+	refundCheckRouter = "http://online.polyapi.com"
 	// 测试地址
 	// router = "http://aliyuntest.polyapi.com/OpenAPI/do"
 	// Timeout ...
@@ -74,7 +76,10 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	data := param.GetRequestData()
 
 	url := router
-	if param["platid"] == "2" {
+	if param["method"] == "Differ.JH.Business.BatchCheckRefundStatus" {
+		// 退款检测专用地址
+		url = refundCheckRouter
+	} else if param["platid"] == "2" {
 		// 走京东地址
 		url = jdRouter
 	} else if param["platid"] == "107" {
