@@ -29,7 +29,7 @@ var (
 	// 新地址
 	newRouter = "http://api.polyapi.com/openapi/do"
 	// 订单退款检测地址
-	refundCheckRouter = "http://online.polyapi.com"
+	refundCheckRouter = "http://online.polyapi.com/openapi/do"
 	// 测试地址
 	// router = "http://aliyuntest.polyapi.com/OpenAPI/do"
 	// Timeout ...
