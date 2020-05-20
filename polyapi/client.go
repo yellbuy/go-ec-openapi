@@ -67,6 +67,12 @@ func setRequestData(p common.Parameter, params *common.ClientParams) common.Para
 
 // execute 执行API接口
 func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
+	defer func() { // 必须要先声明defer，否则不能捕获到panic异常
+		if e := recover(); e != nil {
+			err = fmt.Errorf("%s", e)
+			fmt.Println(fmt.Sprintf("polyapi execute error:%s", e))
+		}
+	}()
 	err = checkConfig(client)
 	if err != nil {
 		return
