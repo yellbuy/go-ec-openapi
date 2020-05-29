@@ -2,6 +2,7 @@ package polyapi
 
 import (
 	"fmt"
+	"strconv"
 
 	simplejson "github.com/bitly/go-simplejson"
 	"github.com/yellbuy/go-ec-openapi/common"
@@ -191,7 +192,12 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 			goods.PlatSkuId, _ = goodsJson.Get("platskuid").String()
 			goods.OutItemId, _ = goodsJson.Get("outitemid").String()
 			goods.RefundStatus, _ = goodsJson.Get("refundstatus").String()
-			goods.GoodsCount, _ = goodsJson.Get("goodscount").String()
+			goodsCount, err := goodsJson.Get("goodscount").String()
+			if err != nil {
+				goodsCountInt, _ := goodsJson.Get("goodscount").Int()
+				goodsCount = strconv.Itoa(goodsCountInt)
+			}
+			goods.GoodsCount = goodsCount
 			goods.TradeGoodsName, _ = goodsJson.Get("tradegoodsname").String()
 			goods.TradeGoodsSpec, _ = goodsJson.Get("tradegoodsspec").String()
 			goods.Price, _ = goodsJson.Get("price").String()
