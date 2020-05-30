@@ -143,6 +143,14 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	waybillInfo.WaybillCode, _ = waybill.Get("logisticno").String()
 	waybillInfo.PackageCenterName, _ = waybill.Get("destcode").String()
 	waybillInfo.ShortAddress, _ = waybill.Get("markers").String()
+	packages, hasPackages := waybill.CheckGet("packages")
+	if hasPackages {
+		pkg := packages.GetIndex(0)
+		if pkg != nil {
+			waybillInfo.PrintInfo, _ = pkg.String()
+		}
+
+	}
 	res.WaybillApplyNewInfo[0] = waybillInfo
 
 	return res, body, err
