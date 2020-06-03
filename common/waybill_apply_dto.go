@@ -150,8 +150,6 @@ type WaybillApplyDto struct {
 	ShippingBranchName string `json:"shipping_branch_name"`
 	// 包裹对应的派件（收件）物流服务商网点（分支机构）代码
 	ConsigneeBranchCode string `json:"consignee_branch_code"`
-	// 打印信息
-	PrintInfo string `json:"print_info"`
 }
 type WaybillApplyNewInfo struct {
 	WaybillApplyDto

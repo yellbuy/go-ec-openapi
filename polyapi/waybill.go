@@ -147,7 +147,7 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	if hasPackages {
 		pkg := packages.GetIndex(0)
 		if pkg != nil {
-			waybillInfo.PrintInfo, _ = pkg.Get("printinfo").String()
+			waybillInfo.PrintConfig, _ = pkg.Get("printinfo").String()
 		}
 
 	}
