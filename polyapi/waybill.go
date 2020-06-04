@@ -32,6 +32,7 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	dto.PayMode = "9"
 	dto.IsInsurance = "0"
 	dto.OrderSource = "OTHERS"
+	dto.BusinessPlat = "OTHERS"
 
 	// 发件人
 	dto.Sender = new(LogisticsAddress)
@@ -72,11 +73,12 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 		if err != nil {
 			return nil, body, err
 		}
-		if len(templateRes.Results) == 0 {
+		templateLen := len(templateRes.Results)
+		if templateLen == 0 {
 			return nil, body, fmt.Errorf("电子面单模板信息为空，平台id：%s", client.Params.PlatId)
 		}
-		//beego.Error("%+v", templateRes)
-		dto.TemplateUrl = templateRes.Results[0].Url
+		//取最后一个模板
+		dto.TemplateUrl = templateRes.Results[templateLen-1].Url
 		//fmt.Println("TemplateUrl:", dto.TemplateUrl)
 
 		dto.OrderSource = "PDD"
