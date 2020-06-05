@@ -33,6 +33,7 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	dto.IsInsurance = "0"
 	dto.OrderSource = "OTHERS"
 	dto.BusinessPlat = "OTHERS"
+	dto.LogisticsProductName = "JH_02"
 
 	// 发件人
 	dto.Sender = new(LogisticsAddress)
@@ -61,8 +62,9 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	dto.ProviderCode = reqData.ProductType
 	dto.SiteCode = reqData.SiteCode
 	dto.OrderSource = "0030001"
+	dto.CpCode = request.CpCode
 	//fmt.Println("dto.LogisticType:", dto.LogisticType)
-	if client.Params.PlatId == "566" {
+	if client.Params.PlatId == "548" || client.Params.PlatId == "566" {
 		// 拼多多需要先获取电子面单模板
 		templateReq := new(common.WaybillTemplateRequest)
 		//订单信息(所有模版=ALL，客户拥有的模版=OWNER)
