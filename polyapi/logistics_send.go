@@ -3,6 +3,7 @@ package polyapi
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 
 	simplejson "github.com/bitly/go-simplejson"
 	"github.com/yellbuy/go-ec-openapi/common"
@@ -53,6 +54,12 @@ func (client *Client) LogisticsSend(dto *common.LogisticsSendReqDto, extData ...
 	_, body, err := client.Execute(method, params)
 	if err != nil {
 		fmt.Println(method, err)
+		// 延时1秒，重新执行
+		time.Sleep(1 * time.Second)
+		_, body, err = client.Execute(method, params)
+		if err != nil {
+			fmt.Println(method, err)
+		}
 	}
 	//fmt.Println("bizcontent3：", string(bizcontent))
 	return body, err

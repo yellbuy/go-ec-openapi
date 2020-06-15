@@ -49,6 +49,8 @@ type Client struct {
 func InitClient(appKey, appSecret, session string) *Client {
 	client := new(Client)
 	client.Params = &common.ClientParams{appKey, appSecret, session, ""}
+	// 超时时间默认10秒
+	Timeout = time.Duration(10 * time.Second)
 	return client
 }
 func setRequestData(p common.Parameter, params *common.ClientParams) common.Parameter {
