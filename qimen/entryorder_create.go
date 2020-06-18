@@ -127,7 +127,7 @@ type OrderLine struct {
 	PurchasePrice float32 `xml:"purchasePrice"`
 	ActualPrice   float32 `xml:"actualPrice"`
 	//应收商品数量
-	PlanQty   uint   `xml:"planQty,omitempty"`
+	PlanQty   int   `xml:"planQty,omitempty"`
 	OwnerCode string `xml:"ownerCode,omitempty"`
 }
 type Items struct {

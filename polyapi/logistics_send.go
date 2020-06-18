@@ -29,6 +29,9 @@ func (client *Client) LogisticsSend(dto *common.LogisticsSendReqDto, extData ...
 	}
 	if len(extData) > 2 {
 		reqJson.Set("shoptype", extData[2])
+	} else if client.Params.PlatId == "2" {
+		// 京东物流需要单独处理店铺类型值
+		reqJson.Set("shoptype", "SOP")
 	} else {
 		reqJson.Set("shoptype", "JH_001")
 	}
