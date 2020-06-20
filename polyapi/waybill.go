@@ -138,12 +138,18 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	resJson := simplejson.New()
 	resJson, body, err := client.Execute(method, params)
 	if err != nil {
-		fmt.Println(method, err)
+		//fmt.Println(method, err)
 		return res, body, err
 	}
 	res.WaybillApplyNewInfo = make([]*common.WaybillApplyNewInfo, 1)
 	waybill := resJson.Get("results").GetIndex(0)
 	waybillInfo := new(common.WaybillApplyNewInfo)
+	isSuccess, _ := waybill.Get("issuccess").String()
+	if isSuccess == "0" {
+		// 不成功，返回错误信息
+		message, _ := waybill.Get("message").String()
+		return res, body, errors.New(message)
+	}
 	waybillInfo.WaybillCode, _ = waybill.Get("logisticno").String()
 	waybillInfo.PackageCenterName, _ = waybill.Get("destcode").String()
 	waybillInfo.ShortAddress, _ = waybill.Get("markers").String()
