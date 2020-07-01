@@ -88,6 +88,12 @@ func (client *Client) DownloadProductList(pageIndex, pageSize int, status, produ
 			sku.SkuCode, _ = skuJson.Get("skuouterid").String()
 			sku.SkuPrice, _ = skuJson.Get("skuprice").String()
 			sku.SkuQuantity, _ = skuJson.Get("skuquantity").String()
+			// if client.Params.PlatId == "1" {
+			// 	// 淘宝平台，取商品的属性别名
+			// 	sku.SkuName = product.PropertyAlias
+			// } else {
+			// 	sku.SkuName, _ = skuJson.Get("skuname").String()
+			// }
 			sku.SkuName, _ = skuJson.Get("skuname").String()
 			sku.SkuProperty, _ = skuJson.Get("skuproperty").String()
 			sku.SkuPictureUrl, _ = skuJson.Get("skupictureurl").String()

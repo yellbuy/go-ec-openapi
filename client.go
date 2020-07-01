@@ -10,11 +10,12 @@ import (
 )
 
 const (
-	TB = iota
-	JD
-	PDD
-	POLYAPI
-	QIMEN
+	YB      = 1
+	POLYAPI = 3
+	QIMEN   = 4
+	TB      = 5
+	JD      = 6
+	PDD     = 7
 )
 
 func NewClient(platformType int, params *common.ClientParams) (Client, error) {
