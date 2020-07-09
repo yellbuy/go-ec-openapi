@@ -33,7 +33,7 @@ func KuaidiLogisticsQuery(logisticsCode string) (resDto *KuaidiLogisticsQueryRes
 		fmt.Println(err)
 		return
 	}
-	comList := make([]*KuaidiLogisticsQueryResDto, 0)
+	comList := make(map[string]KuaidiCompanyQueryResDto)
 	err = json.Unmarshal(bodyBytes, &comList)
 	if err != nil {
 		fmt.Println(err, string(bodyBytes))
@@ -52,7 +52,7 @@ func KuaidiLogisticsQuery(logisticsCode string) (resDto *KuaidiLogisticsQueryRes
 			err = json.Unmarshal(bodyBytes, resDto)
 			if err != nil {
 				fmt.Println(err, string(bodyBytes))
-			} else if val.Success {
+			} else if resDto.Success {
 				return
 			}
 		}
@@ -80,7 +80,7 @@ type KuaidiLogisticsQueryResDto struct {
 	ExName  string `json:"exname"`
 	Nu      string `json:"nu"`
 	Reason  string `json:"reason"`
-	Data    struct {
+	Data    []struct {
 		Context string `json:"context"`
 		Time    string `json:"time"`
 	} `json:"data"`
