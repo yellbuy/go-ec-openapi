@@ -59,6 +59,11 @@ func (client *Client) LogisticsSend(dto *common.LogisticsSendReqDto, extData ...
 		fmt.Println(method, err)
 		// 延时1秒，重新执行
 		time.Sleep(1 * time.Second)
+		params, err = common.InterfaceToParameter(req)
+		if err != nil {
+			fmt.Println(err)
+			return nil, err
+		}
 		_, body, err = client.Execute(method, params)
 		if err != nil {
 			fmt.Println(method, err)
