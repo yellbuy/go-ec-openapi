@@ -25,7 +25,8 @@ var (
 	// 京东请求地址
 	jdRouter = "http://101.124.6.12/OpenAPI/do"
 	// 拼多多请求地址
-	pddRouter = "http://pdd.polyapi.com/openapi/do"
+	//pddRouter = "http://pdd.polyapi.com/openapi/do"
+	pddRouter = "http://aliyuntest.polyapi.com/openapi/do"
 	// 新地址
 	newRouter = "http://api.polyapi.com/openapi/do"
 	// 订单退款检测地址
@@ -90,7 +91,8 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	} else if param["platid"] == "2" {
 		// 走京东地址
 		url = jdRouter
-	} else if param["platid"] == "107" {
+	} else if param["platid"] == "47" {
+		// 走拼多多地址
 		url = pddRouter
 	} else if param["platid"] == "1002" || param["platid"] == "1008" {
 		// 走新地址

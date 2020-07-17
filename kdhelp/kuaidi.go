@@ -42,22 +42,35 @@ func KuaidiLogisticsQuery(logisticsCode string) (resDto *KuaidiLogisticsQueryRes
 	if len(comList) == 0 {
 		err = errors.New("单号不正确")
 	}
-	for _, val := range comList {
-		// 识别单号对应的快递公司类型
-		// bodyBytes, err = client.Execute(fmt.Sprintf(routerAutoNumber, postId), "POST", req)
-		bodyBytes, err = client.Execute(fmt.Sprintf(kuaidiSelectCourierInfoRouter, logisticsCode, val.ExName), "GET", req)
-		if err != nil {
-			fmt.Println(err)
-		} else {
-			err = json.Unmarshal(bodyBytes, resDto)
+	var index int
+	for index = 0; index < len(comList); index++ {
+		if val, ok := comList[fmt.Sprintf("%d", index)]; ok {
+			url := fmt.Sprintf(kuaidiSelectCourierInfoRouter, logisticsCode, val.ExName)
+			//url = "http://www.kuaidi.com/index-ajaxselectcourierinfo-3103616296777-yunda.html"
+			bodyBytes, err = client.Execute(url, "POST", req)
 			if err != nil {
-				fmt.Println(err, string(bodyBytes))
-			} else if resDto.Success {
-				return
+				fmt.Println(err)
+			} else {
+				err = json.Unmarshal(bodyBytes, resDto)
+				if err != nil {
+					fmt.Println(err, string(bodyBytes))
+				} else if resDto.Success {
+					if len(resDto.Data) > 1 {
+						fmt.Println("KuaidiLogisticsQuery:", resDto)
+						return
+					} else if len(resDto.Data) == 1 && resDto.Data[0].Context != "查无结果" {
+						fmt.Println("KuaidiLogisticsQuery:", resDto)
+						return
+					} else {
+						fmt.Println("KuaidiLogisticsQuery url:", url, resDto)
+					}
+				} else {
+					fmt.Println("KuaidiLogisticsQuery url:", url, resDto)
+				}
 			}
 		}
-
 	}
+	fmt.Println("KuaidiLogisticsQuery:", logisticsCode, comList)
 	err = errors.New("抱歉，暂无查询记录")
 	return
 	// {"comCode":"","num":"3223","auto":[]}

@@ -34,6 +34,12 @@ func execute(client *Client, url, method string, param common.Parameter) (bytes 
 		return
 	}
 	req.Header.Add("Content-Type", "application/json;charset=UTF-8")
+	if strings.Index(url, "kuaidi.com") >= 0 {
+		req.Header.Add("Host", "www.kuaidi.com")
+		req.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36")
+		req.Header.Add("Referer", "http://www.kuaidi.com")
+	}
+
 	httpClient := &http.Client{}
 	httpClient.Timeout = Timeout
 	var response *http.Response
