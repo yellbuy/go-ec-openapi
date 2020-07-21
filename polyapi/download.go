@@ -1,6 +1,7 @@
 package polyapi
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 
@@ -10,6 +11,12 @@ import (
 
 // 产品下载
 func (client *Client) DownloadProductList(pageIndex, pageSize int, status, productToken string, extData ...string) (res []*common.Product, hasNextPage bool, nextToken string, body []byte, err error) {
+	defer func() { // 必须要先声明defer，否则不能捕获到panic异常
+		if err1 := recover(); err1 != nil {
+			fmt.Println(err1) // 这里的err其实就是panic传入的内容，55
+			err = errors.New("接口异常")
+		}
+	}()
 	res = make([]*common.Product, 0)
 	reqJson := simplejson.New()
 	reqJson.Set("pageindex", pageIndex)
