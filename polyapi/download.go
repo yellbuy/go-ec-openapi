@@ -114,6 +114,14 @@ func (client *Client) DownloadProductList(pageIndex, pageSize int, status, produ
 
 // 订单下载
 func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus, orderToken string, extData ...string) (res []*common.OrderInfo, hasNextPage bool, nextToken string, body []byte, err error) {
+	defer func() {
+		e := recover()
+		if e == nil {
+			return
+		} else {
+			err = fmt.Errorf("%s", e)
+		}
+	}()
 	res = make([]*common.OrderInfo, 0)
 	hasNextPage = false
 	reqJson := simplejson.New()
