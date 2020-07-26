@@ -7,14 +7,14 @@ import (
 	"strings"
 )
 
-// http://www.kuaidi.com/
+// http://www.kuaidi.com/file.html
 
 var (
-	kuaidiSelectInfoRouter        = "http://www.kuaidi.com/index-ajaxselectinfo-%s.html"
+	kuaidiSelectInfoRouter        = "http://api.kuaidi.com/openapi.html?id=%s&com=%s&nu=%s&show=0&muti=0&order=desc"
 	kuaidiSelectCourierInfoRouter = "http://www.kuaidi.com/index-ajaxselectcourierinfo-%s-%s.html"
 )
 
-func KuaidiLogisticsQuery(logisticsCode string) (resDto *KuaidiLogisticsQueryResDto, err error) {
+func KuaidiLogisticsQuery(appKey, logisticsCode string) (resDto *KuaidiLogisticsQueryResDto, err error) {
 	logisticsCode = strings.TrimSpace(logisticsCode)
 	if logisticsCode == "" {
 		return nil, errors.New("运单号不能为空")
@@ -45,7 +45,7 @@ func KuaidiLogisticsQuery(logisticsCode string) (resDto *KuaidiLogisticsQueryRes
 	var index int
 	for index = 0; index < len(comList); index++ {
 		if val, ok := comList[fmt.Sprintf("%d", index)]; ok {
-			url := fmt.Sprintf(kuaidiSelectCourierInfoRouter, logisticsCode, val.ExName)
+			url := fmt.Sprintf(kuaidiSelectCourierInfoRouter, appKey, logisticsCode, val.ExName)
 			//url = "http://www.kuaidi.com/index-ajaxselectcourierinfo-3103616296777-yunda.html"
 			bodyBytes, err = client.Execute(url, "POST", req)
 			if err != nil {

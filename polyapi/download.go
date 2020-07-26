@@ -14,6 +14,7 @@ func (client *Client) DownloadProductList(pageIndex, pageSize int, status, produ
 	defer func() { // 必须要先声明defer，否则不能捕获到panic异常
 		if err1 := recover(); err1 != nil {
 			fmt.Println(err1) // 这里的err其实就是panic传入的内容，55
+			//time.Sleep(time.Duration(30) * time.Second)
 			err = errors.New("接口异常")
 		}
 	}()
