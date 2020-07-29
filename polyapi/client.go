@@ -25,8 +25,8 @@ var (
 	// 京东请求地址
 	jdRouter = "http://101.124.6.12/OpenAPI/do"
 	// 拼多多请求地址
-	//pddRouter = "http://pdd.polyapi.com/openapi/do"
-	pddRouter = "http://aliyuntest.polyapi.com/openapi/do"
+	pddRouter = "http://pdd.polyapi.com/openapi/do"
+	//pddRouter = "http://aliyuntest.polyapi.com/openapi/do"
 	// 新地址
 	newRouter = "http://api.polyapi.com/openapi/do"
 	// 订单退款检测地址
