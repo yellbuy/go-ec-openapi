@@ -126,6 +126,7 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 	res = make([]*common.OrderInfo, 0)
 	hasNextPage = false
 	reqJson := simplejson.New()
+	reqJson.Set("isuseinterface", true)
 	reqJson.Set("pageindex", pageIndex)
 	reqJson.Set("pagesize", pageSize)
 	reqJson.Set("starttime", startTime)
