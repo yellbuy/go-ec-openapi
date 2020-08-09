@@ -14,6 +14,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/astaxie/beego"
 	"github.com/thinkoner/openssl"
 
 	"github.com/yellbuy/go-ec-openapi/cache"
@@ -100,6 +101,8 @@ func execute(client *Client, param common.Parameter, body []byte) (bytes []byte,
 	var req *http.Request
 	fullUrl := param.GetRequestData()
 	fullUrl = fmt.Sprintf("%s?%s", router, fullUrl)
+	//fmt.Println(fullUrl,string(body))
+	beego.Debug(fullUrl, string(body))
 	req, err = http.NewRequest("POST", fullUrl, strings.NewReader(string(body)))
 	if err != nil {
 		return
