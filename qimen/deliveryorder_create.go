@@ -1,4 +1,3 @@
-
 /*
 文档地址：https://qimen.taobao.com/qimen/index.htm#/api-doc?fromPage=api-list&&apiServiceId=&officialApiId=26002&_k=xignfc
 */
@@ -41,7 +40,7 @@ type DeliveryOrderCreateDto struct {
 	OrderNote         string  `xml:"orderNote"`
 	LineNumber        int     `xml:"lineNumber"`
 	Status            string  `xml:"status"`
-	ConfirmType       string  `xml:"confirmType"`
+	ConfirmType       int     `xml:"confirmType"`
 	OrderConfirmTime  string  `xml:"orderConfirmTime"`
 	OrderStatus       string  `xml:"orderStatus"`
 	ShopCode          string  `xml:"shopCode"`
@@ -121,5 +120,3 @@ func NewDeliveryOrderCreateSuccessResponse(deliveryOrderId, warehouseCode, logis
 	dto.OrderLines = make([]*OrderLine, 0)
 	return dto
 }
-
-
