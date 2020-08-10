@@ -88,7 +88,7 @@ type DeliveryOrder struct {
 	OrderType         string `xml:"orderType"`
 	Status            string `xml:"status"`
 	OutBizCode        string `xml:"outBizCode"`
-	ConfirmType       string `xml:"confirmType"`
+	ConfirmType       int `xml:"confirmType"`
 	OrderConfirmTime  string `xml:"orderConfirmTime"`
 	OperatorCode      string `xml:"operatorCode"`
 	OperatorName      string `xml:"operatorName"`
