@@ -88,7 +88,7 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	if param["method"] == "Differ.JH.Business.BatchCheckRefundStatus" {
 		// 退款检测专用地址
 		url = refundCheckRouter
-	} else if param["platid"] == "2" {
+	} else if param["platid"] == "2" || param["platid"] == "544" {
 		// 走京东地址
 		url = jdRouter
 	} else if param["platid"] == "47" {
