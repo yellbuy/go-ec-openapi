@@ -15,24 +15,26 @@ import (
 )
 
 type AddressInfo struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-	Result  struct {
-		// 街道
-		Street string `json:"street"`
-		// 完整名称
-		FullName string `json:"full_name"`
-		// 电话
-		Phone string `json:"telephone"`
-		// 手机
-		Mobile string `json:"mobile"`
-		// 省
-		Province string `json:"province"`
-		// 市
-		City string `json:"city"`
-		// 区
-		County string `json:"area"`
-	} `json:"result"`
+	Code    int     `json:"code"`
+	Message string  `json:"message"`
+	Result  Address `json:"result"`
+}
+
+type Address struct {
+	// 街道
+	Street string `json:"street"`
+	// 完整名称
+	FullName string `json:"full_name"`
+	// 电话
+	Phone string `json:"telephone"`
+	// 手机
+	Mobile string `json:"mobile"`
+	// 省
+	Province string `json:"province"`
+	// 市
+	City string `json:"city"`
+	// 区
+	County string `json:"area"`
 }
 
 func calcAuthorization(source string, secretId string, secretKey string) (auth string, datetime string, err error) {
