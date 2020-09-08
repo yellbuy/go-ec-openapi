@@ -16,11 +16,11 @@ func ReturnOrderCreateParse(body []byte) (res *ReturnOrderCreateReqDto, err erro
 }
 
 type ReturnOrderCreateReqDto struct {
-	XMLName     xml.Name              `xml:"request"`
-	ReturnOrder *ReturnOrderCreateDto `xml:"returnOrder"`
-	OrderLines  *OrderLines           `xml:"orderLines"`
+	XMLName     xml.Name        `xml:"request"`
+	ReturnOrder *ReturnOrderDto `xml:"returnOrder"`
+	OrderLines  *OrderLines     `xml:"orderLines"`
 }
-type ReturnOrderCreateDto struct {
+type ReturnOrderDto struct {
 	Text                 string `xml:",chardata"`
 	ReturnOrderCode      string `xml:"returnOrderCode"`
 	OwnerCode            string `xml:"ownerCode"`

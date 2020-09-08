@@ -37,6 +37,6 @@ func (client *Client) ReturnOrderConfirm(dto *ReturnOrderConfirmReqDto) (body []
 type ReturnOrderConfirmReqDto struct {
 	XMLName     xml.Name             `xml:"request"`
 	Text        string               `xml:",chardata"`
-	ReturnOrder ReturnOrderCreateDto `xml:"returnOrder"`
+	ReturnOrder ReturnOrderDto `xml:"returnOrder"`
 	OrderLines  ReturnOrderLines     `xml:"orderLines"`
 }
