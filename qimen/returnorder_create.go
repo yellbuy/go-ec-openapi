@@ -57,7 +57,7 @@ type ReturnOrderDto struct {
 }
 
 type ReturnOrderLines struct {
-	OrderLineList []*ReturnOrderLine `xml:"orderLine"`
+	OrderLineList []ReturnOrderLine `xml:"orderLine"`
 }
 type ReturnOrderLine struct {
 	OrderLineNo        string `xml:"orderLineNo"`
