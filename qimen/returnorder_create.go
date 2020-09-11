@@ -23,6 +23,8 @@ type ReturnOrderCreateReqDto struct {
 type ReturnOrderDto struct {
 	Text                 string `xml:",chardata"`
 	ReturnOrderCode      string `xml:"returnOrderCode"`
+	ReturnOrderId        string `xml:"returnOrderId"`
+	OutBizCode           string `xml:"outBizCode"`
 	OwnerCode            string `xml:"ownerCode"`
 	WarehouseCode        string `xml:"warehouseCode"`
 	OrderType            string `xml:"orderType"`
