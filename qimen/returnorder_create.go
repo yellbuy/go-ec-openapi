@@ -21,26 +21,18 @@ type ReturnOrderCreateReqDto struct {
 	OrderLines  *OrderLines     `xml:"orderLines"`
 }
 type ReturnOrderDto struct {
-	Text                 string `xml:",chardata"`
-	ReturnOrderCode      string `xml:"returnOrderCode"`
-	ReturnOrderId        string `xml:"returnOrderId"`
-	OutBizCode           string `xml:"outBizCode"`
-	OwnerCode            string `xml:"ownerCode"`
-	WarehouseCode        string `xml:"warehouseCode"`
-	OrderType            string `xml:"orderType"`
-	SourcePlatformCode   string `xml:"sourcePlatformCode"`
-	SourcePlatformName   string `xml:"sourcePlatformName"`
-	ShopNick             string `xml:"shopNick"`
-	SellerNick           string `xml:"sellerNick"`
-	OrderFlag            string `xml:"orderFlag"`
-	PreDeliveryOrderCode string `xml:"preDeliveryOrderCode"`
-	PreDeliveryOrderId   string `xml:"preDeliveryOrderId"`
-	LogisticsCode        string `xml:"logisticsCode"`
-	LogisticsName        string `xml:"logisticsName"`
-	ExpressCode          string `xml:"expressCode"`
-	ReturnReason         string `xml:"returnReason"`
-	BuyerNick            string `xml:"buyerNick"`
-	SenderInfo           struct {
+	Text            string `xml:",chardata"`
+	ReturnOrderCode string `xml:"returnOrderCode"`
+	ReturnOrderId   string `xml:"returnOrderId"`
+	OutBizCode      string `xml:"outBizCode"`
+	OwnerCode       string `xml:"ownerCode"`
+	WarehouseCode   string `xml:"warehouseCode"`
+	OrderType       string `xml:"orderType"`
+	ReturnReason    string `xml:"returnReason"`
+	LogisticsCode   string `xml:"logisticsCode"`
+	LogisticsName   string `xml:"logisticsName"`
+	ExpressCode     string `xml:"expressCode"`
+	SenderInfo      struct {
 		Text          string `xml:",chardata"`
 		Company       string `xml:"company"`
 		Name          string `xml:"name"`
@@ -54,7 +46,7 @@ type ReturnOrderDto struct {
 		Area          string `xml:"area"`
 		Town          string `xml:"town"`
 		DetailAddress string `xml:"detailAddress"`
-	} `xml:"senderInfo"`
+	} `xml:"senderInfo,omitempty"`
 	Remark string `xml:"remark"`
 }
 
@@ -90,7 +82,7 @@ type ReturnOrderLine struct {
 			InventoryType string `xml:"inventoryType"`
 			ActualQty     string `xml:"actualQty"`
 		} `xml:"batch"`
-	} `xml:"batchs"`
+	} `xml:"batchs,omitempty"`
 	QrCode string `xml:"qrCode"`
 }
 
