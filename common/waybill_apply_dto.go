@@ -118,6 +118,10 @@ type LogisticsService struct {
 type WaybillApplyNewRequest struct {
 	// 物流服务商编码，必填
 	CpCode string `valid:"Required" json:"cp_code"`
+	// 菠萝派业务类型
+	BusinessType uint `json:"business_type"`
+	// 菠萝派支付方式
+	PayMode uint8 `json:"pay_mode"`
 	// 收\发货地址，必填
 	ShippingAddress *WaybillAddress `valid:"Required" json:"shipping_address"`
 	// 订单数据，必填
