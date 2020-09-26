@@ -102,9 +102,10 @@ func execute(client *Client, param common.Parameter, body []byte) (bytes []byte,
 	fullUrl := param.GetRequestData()
 	fullUrl = fmt.Sprintf("%s?%s", router, fullUrl)
 	//fmt.Println(fullUrl,string(body))
-	beego.Debug(fullUrl, string(body))
+
 	req, err = http.NewRequest("POST", fullUrl, strings.NewReader(string(body)))
 	if err != nil {
+		beego.Error(fullUrl, string(body))
 		return
 	}
 	//fmt.Println(fullUrl, string(body))
@@ -114,7 +115,7 @@ func execute(client *Client, param common.Parameter, body []byte) (bytes []byte,
 	var response *http.Response
 	response, err = httpClient.Do(req)
 	if err != nil {
-		fmt.Println(err, fullUrl)
+		beego.Error(err, fullUrl)
 		return
 	}
 	defer response.Body.Close()
@@ -134,7 +135,7 @@ func (client *Client) Execute(method string, param common.Parameter, data []byte
 	param = setRequestData(param, client.Params, data)
 	body, err = execute(client, param, data)
 	if err != nil {
-		fmt.Println(err)
+		beego.Error(err)
 		return
 	}
 
@@ -146,11 +147,11 @@ func bytesToResult(bytes []byte) (err error) {
 	res := new(Response)
 	err = xml.Unmarshal(bytes, res)
 	if err != nil {
-		fmt.Println(string(bytes))
+		beego.Error(err)
 		return
 	}
 	if res.Flag != "success" {
-		fmt.Println(string(bytes))
+		beego.Error(string(bytes))
 		err = fmt.Errorf("%s，错误代码：%s", res.Message, res.Code)
 	}
 	return err

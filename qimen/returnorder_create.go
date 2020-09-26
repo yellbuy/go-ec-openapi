@@ -64,17 +64,20 @@ type ReturnOrderLine struct {
 		Text string `xml:",chardata"`
 		Sn   string `xml:"sn"`
 	} `xml:"snList"`
-	InventoryType string             `xml:"inventoryType"`
-	PlanQty       int                `xml:"planQty"`
-	ActualQty     int                `xml:"actualQty"`
-	BatchCode     string             `xml:"batchCode"`
-	ProductDate   string             `xml:"productDate"`
-	ExpireDate    string             `xml:"expireDate"`
-	ProduceCode   string             `xml:"produceCode"`
-	Batchs        []ReturnOrderBatch `xml:"batchs,omitempty"`
-	QrCode        string             `xml:"qrCode"`
+	InventoryType string       `xml:"inventoryType"`
+	PlanQty       int          `xml:"planQty"`
+	ActualQty     int          `xml:"actualQty"`
+	BatchCode     string       `xml:"batchCode"`
+	ProductDate   string       `xml:"productDate"`
+	ExpireDate    string       `xml:"expireDate"`
+	ProduceCode   string       `xml:"produceCode"`
+	Batchs        ReturnBatchs `xml:"batchs,omitempty"`
+	QrCode        string       `xml:"qrCode"`
 }
-type ReturnOrderBatch struct {
+type ReturnBatchs struct {
+	BatchList []ReturnBatch `xml:"batch"`
+}
+type ReturnBatch struct {
 	Text          string `xml:",chardata"`
 	BatchCode     string `xml:"batchCode"`
 	ProductDate   string `xml:"productDate"`
