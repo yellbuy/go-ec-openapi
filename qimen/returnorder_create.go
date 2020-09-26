@@ -64,28 +64,25 @@ type ReturnOrderLine struct {
 		Text string `xml:",chardata"`
 		Sn   string `xml:"sn"`
 	} `xml:"snList"`
-	InventoryType string `xml:"inventoryType"`
-	PlanQty       int    `xml:"planQty"`
-	ActualQty     int    `xml:"actualQty"`
+	InventoryType string             `xml:"inventoryType"`
+	PlanQty       int                `xml:"planQty"`
+	ActualQty     int                `xml:"actualQty"`
+	BatchCode     string             `xml:"batchCode"`
+	ProductDate   string             `xml:"productDate"`
+	ExpireDate    string             `xml:"expireDate"`
+	ProduceCode   string             `xml:"produceCode"`
+	Batchs        []ReturnOrderBatch `xml:"batchs,omitempty"`
+	QrCode        string             `xml:"qrCode"`
+}
+type ReturnOrderBatch struct {
+	Text          string `xml:",chardata"`
 	BatchCode     string `xml:"batchCode"`
 	ProductDate   string `xml:"productDate"`
 	ExpireDate    string `xml:"expireDate"`
 	ProduceCode   string `xml:"produceCode"`
-	Batchs        struct {
-		Text  string `xml:",chardata"`
-		Batch struct {
-			Text          string `xml:",chardata"`
-			BatchCode     string `xml:"batchCode"`
-			ProductDate   string `xml:"productDate"`
-			ExpireDate    string `xml:"expireDate"`
-			ProduceCode   string `xml:"produceCode"`
-			InventoryType string `xml:"inventoryType"`
-			ActualQty     string `xml:"actualQty"`
-		} `xml:"batch"`
-	} `xml:"batchs,omitempty"`
-	QrCode string `xml:"qrCode"`
+	InventoryType string `xml:"inventoryType"`
+	ActualQty     int    `xml:"actualQty"`
 }
-
 type ReturnOrderCreateResponse struct {
 	XMLName xml.Name `xml:"response"`
 	Response
