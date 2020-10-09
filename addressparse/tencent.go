@@ -38,8 +38,8 @@ type Address struct {
 }
 
 func calcAuthorization(source string, secretId string, secretKey string) (auth string, datetime string, err error) {
-	timeLocation, _ := time.LoadLocation("Local")
-	datetime = time.Now().In(timeLocation).Format("Mon, 02 Jan 2006 15:04:05 GMT")
+	//timeLocation, _ := time.LoadLocation("Local")
+	datetime = time.Now().In(time.UTC).Format("Mon, 02 Jan 2006 15:04:05 GMT")
 	signStr := fmt.Sprintf("x-date: %s\nx-source: %s", datetime, source)
 
 	// hmac-sha1
