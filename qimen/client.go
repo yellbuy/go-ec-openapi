@@ -16,7 +16,6 @@ import (
 
 	"github.com/astaxie/beego"
 	"github.com/thinkoner/openssl"
-
 	"github.com/yellbuy/go-ec-openapi/cache"
 	"github.com/yellbuy/go-ec-openapi/common"
 )
@@ -40,7 +39,8 @@ var (
 )
 
 type Client struct {
-	Params *common.ClientParams
+	Params  *common.ClientParams
+	BaseUrl string
 }
 
 func InitClient(appKey, appSecret, session, customerId string) *Client {
@@ -100,7 +100,11 @@ func execute(client *Client, param common.Parameter, body []byte) (bytes []byte,
 
 	var req *http.Request
 	fullUrl := param.GetRequestData()
-	fullUrl = fmt.Sprintf("%s?%s", router, fullUrl)
+	baseUrl := router
+	if client.BaseUrl != "" {
+		baseUrl = client.BaseUrl
+	}
+	fullUrl = fmt.Sprintf("%s?%s", baseUrl, fullUrl)
 	//fmt.Println(fullUrl,string(body))
 
 	req, err = http.NewRequest("POST", fullUrl, strings.NewReader(string(body)))
