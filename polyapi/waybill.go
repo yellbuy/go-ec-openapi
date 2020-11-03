@@ -7,6 +7,7 @@ import (
 
 	simplejson "github.com/bitly/go-simplejson"
 	"github.com/yellbuy/go-ec-openapi/common"
+
 )
 
 func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData ...string) (*common.WaybillApplyNewCols, []byte, error) {
@@ -40,6 +41,7 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	} else {
 		dto.PayMode = "9"
 	}
+	dto.ShipperNo = request.ShipperNo
 	dto.IsInsurance = "0"
 	dto.OrderSource = "OTHERS"
 	dto.BusinessPlat = "OTHERS"
@@ -264,6 +266,7 @@ type LogisticsOrder struct {
 	LogisticNo   string `json:"logisticno,omitempty"`
 	BusinessType string `json:"businesstype,omitempty"`
 	BusinessPlat string `json:"businessplat,omitempty"`
+
 	// 必填：快递支付方式(立即付款=0，货到付款=1，发件人月结付款=2，收件人月结付款=3，预付款=4，银行转账=5，欠款=6，现金付款=7，第三方付费=8，寄方付=9，收方付=10)
 	PayMode string `json:"paymode,omitempty"`
 	// 必填：订单类型(普通订单=JH_Normal，退货单=JH_Refund，保价单=JH_Support，货到付款单=JH_COD，海外订单=JH_OverSea，便携式订单=JH_Portable，快递制单=JH_Express，仓储订单=JH_Storage)
@@ -288,12 +291,13 @@ type LogisticsOrder struct {
 	Sender      *LogisticsAddress `json:"sender,omitempty"`
 	Receiver    *LogisticsAddress `json:"receiver,omitempty"`
 
-	Goods        []*LogisticsGoods `json:"goods"`
-	ShipperNo    string            `json:"shipperno,omitempty"`
-	WareCode     string            `json:"warecode,omitempty"`
-	BatchNo      string            `json:"batchno,omitempty"`
-	IsLiquid     string            `json:"isliquid,omitempty"`
-	IsHasBattery string            `json:"ishasbattery,omitempty"`
+	Goods []*LogisticsGoods `json:"goods"`
+	// 月结账号
+	ShipperNo    string `json:"shipperno,omitempty"`
+	WareCode     string `json:"warecode,omitempty"`
+	BatchNo      string `json:"batchno,omitempty"`
+	IsLiquid     string `json:"isliquid,omitempty"`
+	IsHasBattery string `json:"ishasbattery,omitempty"`
 	// 是否保险，默认0
 	IsInsurance           string `json:"isinsurance,omitempty"`
 	DeliveryType          string `json:"deliverytype,omitempty"`
