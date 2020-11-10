@@ -31,7 +31,7 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	if dto.OrderType == "" {
 		dto.OrderType = "JH_Normal"
 	}
-	dto.CodPayMoney=reqData.CodPayMoney
+	dto.CodPayMoney = reqData.CodPayMoney
 
 	if request.BusinessType > 0 {
 		dto.BusinessType = fmt.Sprintf("%d", request.BusinessType)
