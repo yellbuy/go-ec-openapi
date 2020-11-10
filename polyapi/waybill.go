@@ -27,7 +27,11 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	dto.CustomerName = reqData.CustomerName
 
 	dto.NumPackage = "1"
-	dto.OrderType = "JH_Normal"
+	dto.OrderType = reqData.OrderType
+	if dto.OrderType == "" {
+		dto.OrderType = "JH_Normal"
+	}
+	dto.CodPayMoney=reqData.CodPayMoney
 
 	if request.BusinessType > 0 {
 		dto.BusinessType = fmt.Sprintf("%d", request.BusinessType)
@@ -272,7 +276,7 @@ type LogisticsOrder struct {
 	// 必填：订单类型(普通订单=JH_Normal，退货单=JH_Refund，保价单=JH_Support，货到付款单=JH_COD，海外订单=JH_OverSea，便携式订单=JH_Portable，快递制单=JH_Express，仓储订单=JH_Storage)
 	OrderType string `json:"ordertype,omitempty"`
 	// 货到付款金额(OrderType=JH_COD时必传)
-	CodPayMoney string `json:"codpaymoney,omitempty"`
+	CodPayMoney float64 `json:"codpaymoney,omitempty"`
 	// 订单包裹物品金额
 	PackageMoney   string `json:"packagemoney,omitempty"`
 	Weight         string `json:"weight,omitempty"`

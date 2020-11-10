@@ -120,6 +120,10 @@ type WaybillApplyNewRequest struct {
 	CpCode string `valid:"Required" json:"cp_code"`
 	// 菠萝派业务类型
 	BusinessType uint `json:"business_type"`
+	// 菠萝派订单类型
+	OrderType string `json:"ordertype"`
+	// 菠萝派货到付款金额,OrderType=JH_COD时必传
+	CodPayMoney float64 `json:"codpaymoney"`
 	// 菠萝派月结帐号
 	ShipperNo string `json:"shipperno"`
 	// 菠萝派支付方式
