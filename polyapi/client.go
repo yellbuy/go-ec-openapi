@@ -12,11 +12,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/thinkoner/openssl"
-
 	simplejson "github.com/bitly/go-simplejson"
+	"github.com/thinkoner/openssl"
 	"github.com/yellbuy/go-ec-openapi/cache"
 	"github.com/yellbuy/go-ec-openapi/common"
+
 )
 
 var (
@@ -31,6 +31,8 @@ var (
 	newRouter = "http://api.polyapi.com/openapi/do"
 	// 订单退款检测地址
 	refundCheckRouter = "http://online.polyapi.com/openapi/do"
+	// 顺丰丰桥地址
+	sfRouter = "http://online.polyapi.com/openapi/do"
 	// 测试地址
 	// router = "http://aliyuntest.polyapi.com/OpenAPI/do"
 	// Timeout ...
@@ -97,6 +99,9 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	} else if param["platid"] == "1002" || param["platid"] == "1008" {
 		// 走新地址
 		url = newRouter
+	} else if param["platid"] == "584" {
+		//顺丰丰桥地址
+		url = sfRouter
 	}
 	//fmt.Println("execute:", strings.NewReader(data))
 	req, err = http.NewRequest("POST", url, strings.NewReader(data))
