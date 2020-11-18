@@ -33,6 +33,8 @@ var (
 	refundCheckRouter = "http://online.polyapi.com/openapi/do"
 	// 顺丰丰桥地址
 	sfRouter = "http://online.polyapi.com/openapi/do"
+	// 京东物流地址
+	jdExpRouter = "http://jd.polyapi.com/OpenAPI/do"
 	// 测试地址
 	// router = "http://aliyuntest.polyapi.com/OpenAPI/do"
 	// Timeout ...
@@ -102,6 +104,9 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	} else if param["platid"] == "584" {
 		//顺丰丰桥地址
 		url = sfRouter
+	} else if param["platid"] == "528" {
+		//京东物流地址
+		url = jdExpRouter
 	}
 	//fmt.Println("execute:", strings.NewReader(data))
 	req, err = http.NewRequest("POST", url, strings.NewReader(data))
