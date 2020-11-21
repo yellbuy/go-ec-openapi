@@ -23,6 +23,7 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	dto := new(LogisticsOrder)
 	dto.OrderNo = reqData.OrderNo
 	dto.PlatTradeNo = reqData.PlatTradeNo
+	// 月结账号
 	dto.CustomerCode = reqData.CustomerCode
 	dto.CustomerName = reqData.CustomerName
 
