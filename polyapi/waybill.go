@@ -26,6 +26,15 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	// 月结账号
 	dto.CustomerCode = reqData.CustomerCode
 	dto.CustomerName = reqData.CustomerName
+	// 是否保价
+	dto.IsInsurance = reqData.IsInsurance
+	//保价金额
+	dto.SupporPayMoney = reqData.SupporPayMoney
+	// 销售平台
+	dto.BusinessPlat = reqData.BusinessPlat
+	if dto.BusinessPlat == "" {
+		dto.BusinessPlat = "OTHERS"
+	}
 
 	dto.NumPackage = "1"
 	dto.OrderType = reqData.OrderType
@@ -47,9 +56,7 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 		dto.PayMode = "9"
 	}
 	dto.ShipperNo = request.ShipperNo
-	dto.IsInsurance = "0"
 	dto.OrderSource = "OTHERS"
-	dto.BusinessPlat = "OTHERS"
 	dto.LogisticsProductName = "JH_02"
 
 	// 发件人
@@ -279,16 +286,17 @@ type LogisticsOrder struct {
 	// 货到付款金额(OrderType=JH_COD时必传)
 	CodPayMoney float64 `json:"codpaymoney,omitempty"`
 	// 订单包裹物品金额
-	PackageMoney   string `json:"packagemoney,omitempty"`
-	Weight         string `json:"weight,omitempty"`
-	SupporPayMoney string `json:"supporpaymoney,omitempty"`
-	Length         string `json:"length,omitempty"`
-	Width          string `json:"width,omitempty"`
-	Height         string `json:"height,omitempty"`
-	Volume         string `json:"volume,omitempty"`
-	IsPickUp       string `json:"ispickup,omitempty"`
-	ProductType    string `json:"producttype,omitempty"`
-	LogisticType   string `json:"logistictype,omitempty"`
+	PackageMoney string `json:"packagemoney,omitempty"`
+	Weight       string `json:"weight,omitempty"`
+	//保价金额
+	SupporPayMoney float64 `json:"supporpaymoney,omitempty"`
+	Length         string  `json:"length,omitempty"`
+	Width          string  `json:"width,omitempty"`
+	Height         string  `json:"height,omitempty"`
+	Volume         string  `json:"volume,omitempty"`
+	IsPickUp       string  `json:"ispickup,omitempty"`
+	ProductType    string  `json:"producttype,omitempty"`
+	LogisticType   string  `json:"logistictype,omitempty"`
 	// 承运公司编码
 	CpCode      string            `json:"cpcode,omitempty"`
 	DmsSorting  string            `json:"dmssorting,omitempty"`
@@ -304,7 +312,7 @@ type LogisticsOrder struct {
 	IsLiquid     string `json:"isliquid,omitempty"`
 	IsHasBattery string `json:"ishasbattery,omitempty"`
 	// 是否保险，默认0
-	IsInsurance           string `json:"isinsurance,omitempty"`
+	IsInsurance           uint8  `json:"isinsurance,omitempty"`
 	DeliveryType          string `json:"deliverytype,omitempty"`
 	BackSignBill          string `json:"backsignbill,omitempty"`
 	IsLessTruck           string `json:"islesstruck,omitempty"`

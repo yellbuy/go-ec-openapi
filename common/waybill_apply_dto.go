@@ -97,6 +97,12 @@ type TradeOrderInfo struct {
 	OrderNo      string `json:"-"`
 	PlatTradeNo  string `json:"-"`
 	SiteCode     string `json:"-"`
+	// 是否保价
+	IsInsurance uint8 `json:"-"`
+	//保价金额
+	SupporPayMoney float64 `json:"-"`
+	// 销售平台
+	BusinessPlat string `json:"-"`
 }
 
 // 包裹里面的商品名称
