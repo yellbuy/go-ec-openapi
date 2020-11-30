@@ -21,7 +21,8 @@ import (
 
 var (
 	// 正式地址
-	router = "http://39.98.7.126/OpenAPI/do"
+	//router = "http://39.98.7.126/OpenAPI/do"
+	router = "http://online.polyapi.com/openapi/do"
 	// 京东请求地址
 	jdRouter = "http://101.124.6.12/OpenAPI/do"
 	// 拼多多请求地址

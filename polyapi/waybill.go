@@ -82,14 +82,23 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	dto.Receiver.Town = reqData.ConsigneeAddress.Town
 	dto.Receiver.Address = reqData.ConsigneeAddress.AddressDetail
 	dto.LogisticType = reqData.ProductType
+	//fmt.Println("dto.LogisticType:", dto.LogisticType)
+
 	// 京东接口需要传递ProviderCode
 	dto.ProviderCode = reqData.ProductType
 	dto.SiteCode = reqData.SiteCode
 	dto.OrderSource = "0030001"
 	dto.CpCode = request.CpCode
-	//fmt.Println("dto.LogisticType:", dto.LogisticType)
+	// EMS相关参数
+	dto.MainSubPayMode = "1"
+	dto.TransType = "0"
+	dto.TransTypeCode = "1"
+	dto.ProdCode = "0300000000"
+	dto.IsNanJi = "1"
+	dto.NeedEncrypt = 1
+
 	if client.Params.PlatId == "548" || client.Params.PlatId == "566" {
-		// 拼多多需要先获取电子面单模板
+		// 菜鸟、拼多多需要先获取电子面单模板
 		templateReq := new(common.WaybillTemplateRequest)
 		//订单信息(所有模版=ALL，客户拥有的模版=OWNER)
 		templateReq.TemplatesType = "ALL"
@@ -300,7 +309,7 @@ type LogisticsOrder struct {
 	// 承运公司编码
 	CpCode      string            `json:"cpcode,omitempty"`
 	DmsSorting  string            `json:"dmssorting,omitempty"`
-	NeedEncrypt string            `json:"needencrypt,omitempty"`
+	NeedEncrypt uint8             `json:"needencrypt,omitempty"`
 	Sender      *LogisticsAddress `json:"sender,omitempty"`
 	Receiver    *LogisticsAddress `json:"receiver,omitempty"`
 
