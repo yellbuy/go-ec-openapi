@@ -156,6 +156,7 @@ type OrderInfo struct {
 	CustomerRemark string `json:"customeremark"`
 	//卖家备注
 	SellerRemark string `json:"sellerremark"`
+	ShipTypeName string `json:"shiptypename"`
 	BuyerMobile  string `json:"buyermobile"`
 	// 收件人姓名
 	ReceiverName string `json:"receivername"`

@@ -186,6 +186,14 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	waybillInfo.WaybillCode, _ = waybill.Get("logisticno").String()
 	waybillInfo.PackageCenterName, _ = waybill.Get("destcode").String()
 	waybillInfo.ShortAddress, _ = waybill.Get("markers").String()
+
+	originCrossCode, _ := waybill.Get("origincrosscode").String()
+	originTableTrolleyCode, _ := waybill.Get("origintabletrolleycode").String()
+	destCrossCode, _ := waybill.Get("destcrosscode").String()
+	destTableTrolleyCode, _ := waybill.Get("desttabletrolleycode").String()
+
+	waybillInfo.ShortAddress = fmt.Sprintf("%s,%s,%s,%s,%s", waybillInfo.ShortAddress, originCrossCode, originTableTrolleyCode, destCrossCode, destTableTrolleyCode)
+
 	packages, hasPackages := waybill.CheckGet("packages")
 	if hasPackages {
 		pkg := packages.GetIndex(0)

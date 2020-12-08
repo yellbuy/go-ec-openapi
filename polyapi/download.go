@@ -7,6 +7,7 @@ import (
 
 	simplejson "github.com/bitly/go-simplejson"
 	"github.com/yellbuy/go-ec-openapi/common"
+
 )
 
 // 产品下载
@@ -34,7 +35,12 @@ func (client *Client) DownloadProductList(pageIndex, pageSize int, status, produ
 	if len(extData) > 2 {
 		reqJson.Set("shoptype", extData[2])
 	} else {
-		reqJson.Set("shoptype", "JH_001")
+		if client.Params.PlatId == "13" {
+			// 苏宁易购的参数
+			reqJson.Set("shoptype", "0")
+		} else {
+			reqJson.Set("shoptype", "JH_001")
+		}
 	}
 
 	bizcontent, resErr := reqJson.Encode()
@@ -199,6 +205,7 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 		orderInfo.Zip, _ = order.Get("zip").String()
 		orderInfo.CustomerRemark, _ = order.Get("customerremark").String()
 		orderInfo.SellerRemark, _ = order.Get("sellerremark").String()
+		orderInfo.ShipTypeName, _ = order.Get("shiptypename").String()
 		orderInfo.PayOrderNo, _ = order.Get("payorderno").String()
 		orderInfo.GoodsFee, _ = order.Get("goodsfee").String()
 		orderInfo.TotalAmount, _ = order.Get("totalamount").String()
