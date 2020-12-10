@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
 
 	simplejson "github.com/bitly/go-simplejson"
 	"github.com/yellbuy/go-ec-openapi/common"
@@ -185,14 +186,26 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	}
 	waybillInfo.WaybillCode, _ = waybill.Get("logisticno").String()
 	waybillInfo.PackageCenterName, _ = waybill.Get("destcode").String()
-	waybillInfo.ShortAddress, _ = waybill.Get("markers").String()
+	destName, _ := waybill.Get("destname").String()
+	if destName != "" {
+		waybillInfo.PackageCenterName = fmt.Sprintf("%s-%s", waybillInfo.PackageCenterName, destName)
+	}
 
-	originCrossCode, _ := waybill.Get("origincrosscode").String()
+	waybillInfo.OriginName, _ = waybill.Get("originname").String()
+
+	waybillInfo.OriginCrossCode, _ = waybill.Get("origincrosscode").String()
 	originTableTrolleyCode, _ := waybill.Get("origintabletrolleycode").String()
+	if originTableTrolleyCode != "" {
+		waybillInfo.OriginCrossCode = fmt.Sprintf("%s-%s", waybillInfo.OriginCrossCode, originTableTrolleyCode)
+	}
+
+	waybillInfo.ShortAddress, _ = waybill.Get("markers").String()
 	destCrossCode, _ := waybill.Get("destcrosscode").String()
 	destTableTrolleyCode, _ := waybill.Get("desttabletrolleycode").String()
-
-	waybillInfo.ShortAddress = fmt.Sprintf("%s,%s,%s,%s,%s", waybillInfo.ShortAddress, originCrossCode, originTableTrolleyCode, destCrossCode, destTableTrolleyCode)
+	if destCrossCode != "" || destTableTrolleyCode != "" {
+		waybillInfo.ShortAddress = fmt.Sprintf("%s-%s-%s", waybillInfo.ShortAddress, destCrossCode, destTableTrolleyCode)
+	}
+	waybillInfo.ShortAddress = strings.Trim(waybillInfo.ShortAddress, "-")
 
 	packages, hasPackages := waybill.CheckGet("packages")
 	if hasPackages {

@@ -154,6 +154,10 @@ type WaybillApplyDto struct {
 	PackageCenterCode string `json:"package_center_code"`
 	// 集包地名称
 	PackageCenterName string `json:"package_center_name"`
+	// 物流始发站点
+	OriginName string `json:"origin_name"`
+	// 始发网点编码
+	OriginCrossCode string `json:"origin_cross_code"`
 	// 打印配置项，传给ali-print组件
 	PrintConfig string `json:"print_config"`
 	// 面单号对应的物流服务商网点（分支机构）代码
