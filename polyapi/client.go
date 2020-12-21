@@ -26,8 +26,8 @@ var (
 	// 京东请求地址
 	jdRouter = "http://jd.polyapi.com/OpenAPI/do"
 	// 拼多多请求地址
-	//pddRouter = "http://pdd.polyapi.com/openapi/do"
-	pddRouter = "http://pddtest.polyapi.com/OpenAPI/do"
+	pddRouter = "http://pdd.polyapi.com/openapi/do"
+	//pddRouter = "http://pddtest.polyapi.com/OpenAPI/do"
 	// 新地址
 	newRouter = "http://aliyun.polyapi.com/OpenAPI/do"
 	// 订单退款检测地址
@@ -36,7 +36,8 @@ var (
 	// 京东订单退款检测地址
 	refundCheckJdRouter = "http://jd.polyapi.com/OpenAPI/do"
 	// 拼多多退款检测地址
-	refundCheckPddRouter = "http://pddtest.polyapi.com/OpenAPI/do"
+	//refundCheckPddRouter = "http://pddtest.polyapi.com/OpenAPI/do"
+	refundCheckPddRouter = "http://pdd.polyapi.com/OpenAPI/do"
 
 	// 顺丰丰桥地址
 	sfRouter = "http://online.polyapi.com/openapi/do"
