@@ -26,6 +26,7 @@ func (client *Client) DownloadOrderListByQimen(pageIndex, pageSize int, startTim
 	reqJson.Set("starttime", startTime)
 	reqJson.Set("endtime", endTime)
 	reqJson.Set("timetype", timeType)
+	reqJson.Set("token", "ed7d59ddb5a74df0a63d7307cea0435f")
 	reqJson.Set("orderstatus", orderStatus)
 
 	if len(extData) > 0 && extData[0] != "" {

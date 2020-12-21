@@ -22,16 +22,16 @@ import (
 var (
 	// 正式地址
 	//router = "http://39.98.7.126/OpenAPI/do"
-	router = "http://aliyun.polyapi.com/OpenAPI/do"
+	router = "http://aliyuntest.polyapi.com/OpenAPI/do"
 	// 京东请求地址
 	jdRouter = "http://jd.polyapi.com/OpenAPI/do"
 	// 拼多多请求地址
 	pddRouter = "http://pdd.polyapi.com/openapi/do"
 	//pddRouter = "http://pddtest.polyapi.com/OpenAPI/do"
 	// 新地址
-	newRouter = "http://aliyun.polyapi.com/OpenAPI/do"
+	newRouter = "http://aliyuntest.polyapi.com/OpenAPI/do"
 	// 订单退款检测地址
-	refundCheckRouter = "http://aliyun.polyapi.com/OpenAPI/do"
+	refundCheckRouter = "http://aliyuntest.polyapi.com/OpenAPI/do"
 	//refundCheckRouter = "http://online.polyapi.com/openapi/do"
 	// 京东订单退款检测地址
 	refundCheckJdRouter = "http://jd.polyapi.com/OpenAPI/do"
