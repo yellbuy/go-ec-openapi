@@ -7,6 +7,7 @@ import (
 	"github.com/yellbuy/go-ec-openapi/pdd"
 	"github.com/yellbuy/go-ec-openapi/polyapi"
 	"github.com/yellbuy/go-ec-openapi/taobao"
+
 )
 
 const (
@@ -43,6 +44,8 @@ type Client interface {
 	DownloadProductList(pageIndex, pageSize int, status, pordectToken string, extData ...string) (res []*common.Product, hasNextPage bool, nextToken string, body []byte, err error)
 	// 订单下载
 	DownloadOrderList(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus string, orderToken string, extData ...string) (res []*common.OrderInfo, hasNextPage bool, nextToken string, body []byte, err error)
+	// 订单下载
+	DownloadOrderListByQimen(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus string, extData ...string) (hasNextPage bool, body []byte, err error)
 	// 退货退款单下载
 	DownloadRefundList(pageIndex, pageSize int, startTime, endTime, timeType, status string, orderToken string, extData ...string) (res []*common.OrderInfo, hasNextPage bool, nextToken string, body []byte, err error)
 	// 退款状态检测(批量)

@@ -22,16 +22,22 @@ import (
 var (
 	// 正式地址
 	//router = "http://39.98.7.126/OpenAPI/do"
-	router = "http://online.polyapi.com/openapi/do"
+	router = "http://aliyun.polyapi.com/OpenAPI/do"
 	// 京东请求地址
-	jdRouter = "http://101.124.6.12/OpenAPI/do"
+	jdRouter = "http://jd.polyapi.com/OpenAPI/do"
 	// 拼多多请求地址
 	//pddRouter = "http://pdd.polyapi.com/openapi/do"
-	pddRouter = "http://pddtest.polyapi.com/openapi/do"
+	pddRouter = "http://pddtest.polyapi.com/OpenAPI/do"
 	// 新地址
-	newRouter = "http://api.polyapi.com/openapi/do"
+	newRouter = "http://aliyun.polyapi.com/OpenAPI/do"
 	// 订单退款检测地址
-	refundCheckRouter = "http://online.polyapi.com/openapi/do"
+	refundCheckRouter = "http://aliyun.polyapi.com/OpenAPI/do"
+	//refundCheckRouter = "http://online.polyapi.com/openapi/do"
+	// 京东订单退款检测地址
+	refundCheckJdRouter = "http://jd.polyapi.com/OpenAPI/do"
+	// 拼多多退款检测地址
+	refundCheckPddRouter = "http://pddtest.polyapi.com/OpenAPI/do"
+
 	// 顺丰丰桥地址
 	sfRouter = "http://online.polyapi.com/openapi/do"
 	// 京东物流地址
@@ -93,6 +99,13 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	if param["method"] == "Differ.JH.Business.BatchCheckRefundStatus" {
 		// 退款检测专用地址
 		url = refundCheckRouter
+		if param["platid"] == "2" || param["platid"] == "544" {
+			// 走京东退款检测地址
+			url = refundCheckJdRouter
+		} else if param["platid"] == "47" {
+			// 走拼多多退款检测地址
+			url = refundCheckPddRouter
+		}
 	} else if param["platid"] == "2" || param["platid"] == "544" {
 		// 走京东地址
 		url = jdRouter
