@@ -29,7 +29,7 @@ var (
 	pddRouter = "http://pdd.polyapi.com/openapi/do"
 	//pddRouter = "http://pddtest.polyapi.com/OpenAPI/do"
 	// 新地址
-	newRouter = "http://aliyuntest.polyapi.com/OpenAPI/do"
+	newRouter = "http://api.polyapi.com/openapi/do"
 	// 订单退款检测地址
 	refundCheckRouter = "http://aliyuntest.polyapi.com/OpenAPI/do"
 	//refundCheckRouter = "http://online.polyapi.com/openapi/do"
