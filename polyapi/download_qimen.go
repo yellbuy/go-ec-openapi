@@ -26,14 +26,14 @@ func (client *Client) DownloadOrderListByQimen(pageIndex, pageSize int, startTim
 	reqJson.Set("starttime", startTime)
 	reqJson.Set("endtime", endTime)
 	reqJson.Set("timetype", timeType)
-	reqJson.Set("token", "ed7d59ddb5a74df0a63d7307cea0435f")
+	reqJson.Set("polyapitoken", "ed7d59ddb5a74df0a63d7307cea0435f")
 	reqJson.Set("orderstatus", orderStatus)
 
 	if len(extData) > 0 && extData[0] != "" {
 		reqJson.Set("platvalue", extData[0])
 	}
 	if len(extData) > 1 && extData[1] != "" {
-		reqJson.Set("polyapitoken", extData[1])
+		reqJson.Set("token", extData[1])
 	}
 	if len(extData) > 2 && extData[2] != "" {
 		reqJson.Set("shoptype", extData[2])
