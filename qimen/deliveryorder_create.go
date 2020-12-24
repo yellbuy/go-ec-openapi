@@ -7,6 +7,7 @@ package qimen
 import (
 	"encoding/xml"
 	"time"
+
 )
 
 // 销售单下载同步解析
@@ -20,6 +21,7 @@ type DeliveryOrderCreateReqDto struct {
 	XMLName       xml.Name                `xml:"request"`
 	DeliveryOrder *DeliveryOrderCreateDto `xml:"deliveryOrder"`
 	OrderLines    *OrderLines             `xml:"orderLines"`
+	ExtendProps   *ExtendProps            `xml:"extendProps"`
 }
 type DeliveryOrderCreateDto struct {
 	WarehouseCode     string  `xml:"warehouseCode"`
@@ -82,6 +84,10 @@ type DeliveryOrderCreateDto struct {
 	SenderInfo *DeliveryOrderAddress `xml:"senderInfo"`
 	// 收件人信息
 	ReceiverInfo *DeliveryOrderAddress `xml:"receiverInfo"`
+}
+type ExtendProps struct {
+	Key1 string `xml:"key1"`
+	Key2 string `xml:"key2"`
 }
 type DeliveryOrderAddress struct {
 	Name          string `xml:"name"`

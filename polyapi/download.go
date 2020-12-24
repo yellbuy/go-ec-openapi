@@ -182,10 +182,17 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 	nextToken, _ = resJson.Get("nexttoken").String()
 	hasNextPageStr, _ := resJson.Get("ishasnextpage").String()
 	hasNextPage = hasNextPageStr == "1"
+	res, err = PolyApiOrderParse(resJson)
+	return res, hasNextPage, nextToken, body, err
+}
+
+// 菠萝派订单解析
+func PolyApiOrderParse(resJson *simplejson.Json) ([]*common.OrderInfo, error) {
+	res := make([]*common.OrderInfo, 0)
 	orderList, err := resJson.Get("orders").Array()
 	if err != nil {
-		fmt.Println(method, err)
-		return res, hasNextPage, nextToken, body, err
+		fmt.Println(err)
+		return res, err
 	}
 	for index := range orderList {
 		order := resJson.Get("orders").GetIndex(index)
@@ -236,7 +243,7 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 		}
 		res = append(res, orderInfo)
 	}
-	return res, hasNextPage, nextToken, body, err
+	return res, nil
 }
 
 func NewSuccessResDto(isSuccess bool, code int, message, itemId string) *SuccessResDto {
