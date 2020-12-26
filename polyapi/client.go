@@ -162,6 +162,10 @@ func (client *Client) Execute(method string, param common.Parameter) (res *simpl
 	return
 }
 
+func BytesToJson(bytes []byte) (res *simplejson.Json, err error) {
+	return bytesToResult(bytes)
+}
+
 func bytesToResult(bytes []byte) (res *simplejson.Json, err error) {
 	res, err = simplejson.NewJson(bytes)
 	if err != nil {

@@ -182,18 +182,19 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 	nextToken, _ = resJson.Get("nexttoken").String()
 	hasNextPageStr, _ := resJson.Get("ishasnextpage").String()
 	hasNextPage = hasNextPageStr == "1"
-	res, err = PolyApiOrderParse(resJson)
+	res, err = orderParse(resJson)
 	return res, hasNextPage, nextToken, body, err
 }
 
-// 菠萝派订单解析
-func PolyApiOrderParse(resJson *simplejson.Json) ([]*common.OrderInfo, error) {
+// 菠萝派订单解析，Key键值全小写
+func orderParse(resJson *simplejson.Json) ([]*common.OrderInfo, error) {
 	res := make([]*common.OrderInfo, 0)
 	orderList, err := resJson.Get("orders").Array()
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("PolyApiOrderParse err:", err)
 		return res, err
 	}
+	//fmt.Println("PolyApiOrderParse len:", len(orderList))
 	for index := range orderList {
 		order := resJson.Get("orders").GetIndex(index)
 		orderInfo := new(common.OrderInfo)
@@ -239,6 +240,67 @@ func PolyApiOrderParse(resJson *simplejson.Json) ([]*common.OrderInfo, error) {
 			goods.TradeGoodsSpec, _ = goodsJson.Get("tradegoodsspec").String()
 			goods.Price, _ = goodsJson.Get("price").String()
 			goods.DiscountMoney, _ = goodsJson.Get("discountmoney").String()
+			orderInfo.GoodsInfoList[j] = goods
+		}
+		res = append(res, orderInfo)
+	}
+	return res, nil
+}
+
+// 菠萝派订单解析
+func PolyApiOrderParse(resJson *simplejson.Json) ([]*common.OrderInfo, error) {
+	res := make([]*common.OrderInfo, 0)
+	orderList, err := resJson.Get("Orders").Array()
+	if err != nil {
+		fmt.Println("PolyApiOrderParse err:", err)
+		return res, err
+	}
+	//fmt.Println("PolyApiOrderParse len:", len(orderList))
+	for index := range orderList {
+		order := resJson.Get("Orders").GetIndex(index)
+		orderInfo := new(common.OrderInfo)
+		orderInfo.PlatOrderNo, _ = order.Get("PlatOrderNo").String()
+		orderInfo.TradeStatus, _ = order.Get("TradeStatus").String()
+		orderInfo.Nick, _ = order.Get("Nick").String()
+		orderInfo.Mobile, _ = order.Get("Mobile").String()
+		orderInfo.Phone, _ = order.Get("Phone").String()
+		orderInfo.ReceiverName, _ = order.Get("ReceiverName").String()
+		orderInfo.Country, _ = order.Get("Country").String()
+		orderInfo.Province, _ = order.Get("Province").String()
+		orderInfo.City, _ = order.Get("City").String()
+		orderInfo.Area, _ = order.Get("Area").String()
+		orderInfo.Town, _ = order.Get("Town").String()
+		orderInfo.Address, _ = order.Get("Address").String()
+		orderInfo.Zip, _ = order.Get("Zip").String()
+		orderInfo.CustomerRemark, _ = order.Get("CustomerRemark").String()
+		orderInfo.SellerRemark, _ = order.Get("SellerRemark").String()
+		orderInfo.ShipTypeName, _ = order.Get("ShipTypeName").String()
+		orderInfo.PayOrderNo, _ = order.Get("PayOrderNo").String()
+		orderInfo.GoodsFee, _ = order.Get("GoodsFee").String()
+		orderInfo.TotalAmount, _ = order.Get("TotalAmount").String()
+		orderInfo.PayTime, _ = order.Get("PayTime").String()
+		orderInfo.TradeTime, _ = order.Get("TradeTime").String()
+
+		goodsList, _ := order.Get("GoodInfos").Array()
+		orderInfo.GoodsInfoList = make([]*common.GoodsInfo, len(goodsList))
+		for j := range goodsList {
+			goodsJson := order.Get("GoodInfos").GetIndex(j)
+			goods := new(common.GoodsInfo)
+			goods.SubOrderNo, _ = goodsJson.Get("SubOrderNO").String()
+			goods.PlatGoodsId, _ = goodsJson.Get("PlatGoodsID").String()
+			goods.PlatSkuId, _ = goodsJson.Get("PlatSkuID").String()
+			goods.OutItemId, _ = goodsJson.Get("OutItemId").String()
+			goods.RefundStatus, _ = goodsJson.Get("RefundStatus").String()
+			goodsCount, err := goodsJson.Get("GoodsCount").String()
+			if err != nil {
+				goodsCountInt, _ := goodsJson.Get("GoodsCount").Int()
+				goodsCount = strconv.Itoa(goodsCountInt)
+			}
+			goods.GoodsCount = goodsCount
+			goods.TradeGoodsName, _ = goodsJson.Get("TradeGoodsName").String()
+			goods.TradeGoodsSpec, _ = goodsJson.Get("TradeGoodsSpec").String()
+			goods.Price, _ = goodsJson.Get("Price").String()
+			goods.DiscountMoney, _ = goodsJson.Get("DiscountMoney").String()
 			orderInfo.GoodsInfoList[j] = goods
 		}
 		res = append(res, orderInfo)
