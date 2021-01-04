@@ -79,5 +79,5 @@ func (client *Client) DownloadOrderListByQimen(pageIndex, pageSize int, startTim
 		hasNextPage = true
 	}
 	fmt.Println(method, pageIndex, pageSize, total, hasNextPage)
-	return hasNextPage, body, err
+	return hasNextPage, body, nil
 }
