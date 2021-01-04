@@ -65,7 +65,7 @@ func (client *Client) DownloadOrderListByQimen(pageIndex, pageSize int, startTim
 		return hasNextPage, body, err
 	}
 	total, _ := resJson.Get("numtotalorder").Int()
-	if (pageIndex+1)*pageSize < total {
+	if pageIndex*pageSize < total {
 		hasNextPage = true
 	}
 	return hasNextPage, body, err
