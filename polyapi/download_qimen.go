@@ -65,6 +65,7 @@ func (client *Client) DownloadOrderListByQimen(pageIndex, pageSize int, startTim
 		fmt.Println(method, err)
 		return hasNextPage, body, err
 	}
+
 	total, err := resJson.Get("numtotalorder").Int()
 	if err != nil {
 		str, err := resJson.Get("numtotalorder").String()
@@ -77,5 +78,6 @@ func (client *Client) DownloadOrderListByQimen(pageIndex, pageSize int, startTim
 	if pageIndex*pageSize < total {
 		hasNextPage = true
 	}
+	fmt.Println(method, pageIndex, pageSize, total, hasNextPage)
 	return hasNextPage, body, err
 }
