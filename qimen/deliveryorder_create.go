@@ -88,6 +88,10 @@ type DeliveryOrderCreateDto struct {
 type ExtendProps struct {
 	Key1 string `xml:"key1"`
 	Key2 string `xml:"key2"`
+	// 起始时间
+	Key3 string `xml:"key3"`
+	// 结束时间
+	Key77 string `xml:"key77"`
 }
 type DeliveryOrderAddress struct {
 	Name          string `xml:"name"`
