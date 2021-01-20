@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/astaxie/beego"
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/thinkoner/openssl"
 	"github.com/yellbuy/go-ec-openapi/cache"
 	"github.com/yellbuy/go-ec-openapi/common"
@@ -110,7 +110,7 @@ func execute(client *Client, param common.Parameter, body []byte) (bytes []byte,
 
 	req, err = http.NewRequest("POST", fullUrl, strings.NewReader(string(body)))
 	if err != nil {
-		beego.Error(fullUrl, string(body))
+		logs.Error(fullUrl, string(body))
 		return
 	}
 	//fmt.Println(fullUrl, string(body))
@@ -120,7 +120,7 @@ func execute(client *Client, param common.Parameter, body []byte) (bytes []byte,
 	var response *http.Response
 	response, err = httpClient.Do(req)
 	if err != nil {
-		beego.Error(err, fullUrl)
+		logs.Error(err, fullUrl)
 		return
 	}
 	defer response.Body.Close()
@@ -140,7 +140,7 @@ func (client *Client) Execute(method string, param common.Parameter, data []byte
 	param = setRequestData(param, client.Params, data)
 	body, err = execute(client, param, data)
 	if err != nil {
-		beego.Error(err)
+		logs.Error(err)
 		return
 	}
 
@@ -152,11 +152,11 @@ func bytesToResult(bytes []byte) (err error) {
 	res := new(Response)
 	err = xml.Unmarshal(bytes, res)
 	if err != nil {
-		beego.Error(err)
+		logs.Error(err)
 		return
 	}
 	if res.Flag != "success" {
-		beego.Error(string(bytes))
+		logs.Error(string(bytes))
 		err = fmt.Errorf("%s，错误代码：%s", res.Message, res.Code)
 	}
 	return err
