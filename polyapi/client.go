@@ -16,7 +16,6 @@ import (
 	"github.com/thinkoner/openssl"
 	"github.com/yellbuy/go-ec-openapi/cache"
 	"github.com/yellbuy/go-ec-openapi/common"
-
 )
 
 var (
@@ -40,7 +39,7 @@ var (
 	refundCheckPddRouter = "http://pdd.polyapi.com/OpenAPI/do"
 
 	// 顺丰丰桥地址
-	sfRouter = "http://online.polyapi.com/openapi/do"
+	sfRouter = "http://aliyuntest.polyapi.com/OpenAPI/do"
 	// 京东物流地址
 	jdExpRouter = "http://jd.polyapi.com/OpenAPI/do"
 	// 测试地址
