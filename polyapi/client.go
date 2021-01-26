@@ -16,12 +16,13 @@ import (
 	"github.com/thinkoner/openssl"
 	"github.com/yellbuy/go-ec-openapi/cache"
 	"github.com/yellbuy/go-ec-openapi/common"
+
 )
 
 var (
 	// 正式地址
 	//router = "http://39.98.7.126/OpenAPI/do"
-	router = "http://aliyuntest.polyapi.com/OpenAPI/do"
+	router = "http://aliyun.polyapi.com/OpenAPI/do"
 	// 京东请求地址
 	jdRouter = "http://jd.polyapi.com/OpenAPI/do"
 	// 拼多多请求地址
@@ -30,7 +31,7 @@ var (
 	// 新地址
 	newRouter = "http://api.polyapi.com/openapi/do"
 	// 订单退款检测地址
-	refundCheckRouter = "http://aliyuntest.polyapi.com/OpenAPI/do"
+	refundCheckRouter = "http://aliyun.polyapi.com/OpenAPI/do"
 	//refundCheckRouter = "http://online.polyapi.com/openapi/do"
 	// 京东订单退款检测地址
 	refundCheckJdRouter = "http://jd.polyapi.com/OpenAPI/do"
@@ -39,7 +40,7 @@ var (
 	refundCheckPddRouter = "http://pdd.polyapi.com/OpenAPI/do"
 
 	// 顺丰丰桥地址
-	sfRouter = "http://aliyuntest.polyapi.com/OpenAPI/do"
+	sfRouter = "http://aliyun.polyapi.com/OpenAPI/do"
 	// 京东物流地址
 	jdExpRouter = "http://jd.polyapi.com/OpenAPI/do"
 	// 测试地址
