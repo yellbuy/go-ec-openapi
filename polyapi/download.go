@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/astaxie/beego/logs"
 	simplejson "github.com/bitly/go-simplejson"
 	"github.com/yellbuy/go-ec-openapi/common"
-
 )
 
 // 产品下载
@@ -182,6 +182,7 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 	nextToken, _ = resJson.Get("nexttoken").String()
 	hasNextPageStr, _ := resJson.Get("ishasnextpage").String()
 	hasNextPage = hasNextPageStr == "1"
+	logs.Debug("订单内容：", resJson)
 	res, err = orderParse(resJson)
 	return res, hasNextPage, nextToken, body, err
 }

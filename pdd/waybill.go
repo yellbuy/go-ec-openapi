@@ -238,3 +238,7 @@ func (client *Client) GetWaybillTemplates(request *common.WaybillTemplateRequest
 	err = errors.New("未实现")
 	return
 }
+func (client *Client) CancelWaybill(request []common.WaybillCancel, extData ...string) (*common.WaybillCancelReturn, error) {
+	err := errors.New("未实现")
+	return nil, err
+}

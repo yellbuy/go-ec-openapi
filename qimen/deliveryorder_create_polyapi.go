@@ -6,7 +6,6 @@ package qimen
 
 import (
 	"encoding/xml"
-
 )
 
 // 菠萝派销售单下载同步解析

@@ -8,9 +8,24 @@ import (
 
 	simplejson "github.com/bitly/go-simplejson"
 	"github.com/yellbuy/go-ec-openapi/common"
-
 )
 
+func (client *Client) CancelWaybill(request []common.WaybillCancel, extData ...string) (*common.WaybillCancelReturn, error) {
+	//开始提交数据
+	method := "Differ.JH.Logistics.Cancel"
+	req := make(map[string]interface{})
+	req["orders"] = request
+	params, err := common.InterfaceToParameter(req)
+	//此处可能还要加工Json
+	_, body, err := client.Execute(method, params)
+	if err != nil {
+		return nil, err
+	}
+	OutData := new(common.WaybillCancelReturn)
+	//将结果转换为结构体输出
+	err1 := json.Unmarshal(body, &OutData)
+	return OutData, err1
+}
 func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData ...string) (*common.WaybillApplyNewCols, []byte, error) {
 	if len(request.TradeOrderInfoCols) == 0 {
 		return nil, nil, errors.New("订单信息不能为空")

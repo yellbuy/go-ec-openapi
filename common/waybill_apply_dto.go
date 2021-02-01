@@ -121,6 +121,40 @@ type LogisticsService struct {
 	ServiceCode string `json:"service_code"`
 }
 
+// 电子面单取消结构体
+type WaybillCancel struct {
+	Orderno      string  `valid:"Required" json:"orderno"` //客户订单号
+	Logisticno   string  `json:"logisticno"`               //运单号
+	Logistictype string  `json:"logistictype"`             //物流类型(EMS=JH_001，圆通=JH_002，韵达=J...
+	Weight       float64 `json:"weight"`                   //订单货物总重量(单位千克)
+	Volumn       string  `json:"volumn"`                   //订单货物总体积(单位厘米)
+	Remark       string  `json:"remark"`                   //*取消原因
+	Warecode     string  `json:"warecode"`                 //*仓库编码
+	Providercode string  `json:"providercode"`             //*承运商编码//京东必填
+	Operatorname string  `json:"operatorname"`             //*取消操作人//京东必填
+	Sendercoutry string  `json:"sendercoutry"`             //*发货人国家（用于判断取消哪个线路的包裹）
+}
+
+// 电子面单取消返回结构体主表
+type WaybillCancelReturn struct {
+	code             string                    `valid:"Required" json:"code"`
+	msg              string                    `json:"msg"`
+	subcode          string                    `json:"subcode"`
+	submessage       string                    `json:"submessage"`
+	polyapitotalms   int64                     `json:"polyapitotalms"`
+	polyapirequestid string                    `json:"polyapirequestid"`
+	results          []WaybillCancelReturnData `valid:"Required" json:"results"`
+}
+
+// 电子面单取消返回结构体数据表
+type WaybillCancelReturnData struct {
+	Issuccess  int    `valid:"Required" json:"issuccess"`
+	Errorcode  string `json:"errorcode"`
+	Message    string `json:"message"`
+	Orderno    string `json:"orderno"`
+	Logisticno string `json:"logisticno"`
+}
+
 // 电子面单请求结构体
 type WaybillApplyNewRequest struct {
 	// 物流服务商编码，必填

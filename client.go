@@ -40,6 +40,8 @@ type Client interface {
 	GetWaybill(request *common.WaybillApplyNewRequest, extData ...string) (res *common.WaybillApplyNewCols, body []byte, err error)
 	// 电子面单模板查询
 	GetWaybillTemplates(request *common.WaybillTemplateRequest, extData ...string) (res *common.WaybillTemplateDto, body []byte, err error)
+	// 电子面单取消
+	CancelWaybill(request []common.WaybillCancel, extData ...string)(*common.WaybillCancelReturn, error)
 	// 商品下载
 	DownloadProductList(pageIndex, pageSize int, status, pordectToken string, extData ...string) (res []*common.Product, hasNextPage bool, nextToken string, body []byte, err error)
 	// 订单下载
