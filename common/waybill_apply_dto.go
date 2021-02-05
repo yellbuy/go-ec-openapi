@@ -121,6 +121,11 @@ type LogisticsService struct {
 	ServiceCode string `json:"service_code"`
 }
 
+// 电子面单取消结构体发送内容
+type WaybillCancelSend struct {
+	Orders []WaybillCancel `json:"orders"`
+}
+
 // 电子面单取消结构体
 type WaybillCancel struct {
 	Orderno      string  `valid:"Required" json:"orderno"` //客户订单号
@@ -137,18 +142,18 @@ type WaybillCancel struct {
 
 // 电子面单取消返回结构体主表
 type WaybillCancelReturn struct {
-	code             string                    `valid:"Required" json:"code"`
-	msg              string                    `json:"msg"`
-	subcode          string                    `json:"subcode"`
-	submessage       string                    `json:"submessage"`
-	polyapitotalms   int64                     `json:"polyapitotalms"`
-	polyapirequestid string                    `json:"polyapirequestid"`
-	results          []WaybillCancelReturnData `valid:"Required" json:"results"`
+	Code             string                     `json:"code"`
+	Msg              string                     `json:"msg"`
+	Subcode          string                     `json:"subcode"`
+	Submessage       string                     `json:"submessage"`
+	Polyapitotalms   string                     `json:"polyapitotalms"`
+	Polyapirequestid string                     `json:"polyapirequestid"`
+	Results          []*WaybillCancelReturnData `valid:"Required" json:"results"`
 }
 
 // 电子面单取消返回结构体数据表
 type WaybillCancelReturnData struct {
-	Issuccess  int    `valid:"Required" json:"issuccess"`
+	Issuccess  string `json:"issuccess"`
 	Errorcode  string `json:"errorcode"`
 	Message    string `json:"message"`
 	Orderno    string `json:"orderno"`
