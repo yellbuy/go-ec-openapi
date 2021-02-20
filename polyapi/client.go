@@ -30,7 +30,7 @@ var (
 	// 新地址
 	newRouter = "http://api.polyapi.com/openapi/do"
 	// 订单退款检测地址
-	refundCheckRouter = "http://aliyuntest.polyapi.com/OpenAPI/do"
+	refundCheckRouter = "http://aliyun.polyapi.com/OpenAPI/do"
 	//refundCheckRouter = "http://online.polyapi.com/openapi/do"
 	// 京东订单退款检测地址
 	refundCheckJdRouter = "http://jd.polyapi.com/OpenAPI/do"
@@ -105,6 +105,8 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 		} else if param["platid"] == "47" {
 			// 走拼多多退款检测地址
 			url = refundCheckPddRouter
+		} else if param["platid"] == "1008" {
+			url = newRouter
 		}
 	} else if param["platid"] == "2" || param["platid"] == "544" {
 		// 走京东地址
