@@ -10,7 +10,19 @@ import (
 	simplejson "github.com/bitly/go-simplejson"
 	"github.com/yellbuy/go-ec-openapi/common"
 )
-
+func (client *Client) DownloadOrderListV2(request common.DownLoadOrderListPostBizcontent, extData ...string) (*common.DownloadOrderListReturn,error) {
+	method := "Differ.JH.Business.GetOrder" //定义菠萝派订单下载接口
+	params, err := common.InterfaceToParameter(request)
+	jsonstr, body, err := client.Execute(method, params)
+	if err != nil {
+		return nil, err
+	}
+	logs.Debug("返回内容:", jsonstr)
+	var OutData common.DownloadOrderListReturn
+	err = json.Unmarshal(body, &OutData)
+	return &OutData, err
+	
+}
 func (client *Client) CancelWaybill(request []common.WaybillCancel, extData ...string) (*common.WaybillCancelReturn, error) {
 	//开始提交数据
 	method := "Differ.JH.Logistics.Cancel"
@@ -43,7 +55,9 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	dto := new(LogisticsOrder)
 	dto.OrderNo = reqData.OrderNo
 	dto.PlatTradeNo = reqData.PlatTradeNo
-	dto.LogisticsServices = request.LogisticsServices
+	if len(request.LogisticsServices) > 0 {
+		dto.LogisticsServices = request.LogisticsServices
+	}
 	// 月结账号
 	dto.CustomerCode = reqData.CustomerCode
 	dto.CustomerName = reqData.CustomerName

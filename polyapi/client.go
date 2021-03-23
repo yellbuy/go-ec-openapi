@@ -21,7 +21,7 @@ import (
 var (
 	// 正式地址
 	//router = "http://39.98.7.126/OpenAPI/do"
-	router = "http://aliyuntest.polyapi.com/OpenAPI/do"
+	router = "http://aliyun.polyapi.com/OpenAPI/do"
 	// 京东请求地址
 	jdRouter = "http://jd.polyapi.com/OpenAPI/do"
 	// 拼多多请求地址
@@ -39,7 +39,7 @@ var (
 	refundCheckPddRouter = "http://pdd.polyapi.com/OpenAPI/do"
 
 	// 顺丰丰桥地址
-	sfRouter = "http://aliyuntest.polyapi.com/OpenAPI/do"
+	sfRouter = "http://aliyun.polyapi.com/OpenAPI/do"
 	// 京东物流地址
 	jdExpRouter = "http://jd.polyapi.com/OpenAPI/do"
 	// 测试地址

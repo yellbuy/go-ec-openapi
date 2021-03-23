@@ -44,6 +44,8 @@ type Client interface {
 	CancelWaybill(request []common.WaybillCancel, extData ...string)(*common.WaybillCancelReturn, error)
 	// 商品下载
 	DownloadProductList(pageIndex, pageSize int, status, pordectToken string, extData ...string) (res []*common.Product, hasNextPage bool, nextToken string, body []byte, err error)
+	// 订单下载V2
+	DownloadOrderListV2(request common.DownLoadOrderListPostBizcontent, extData ...string) (*common.DownloadOrderListReturn,error)
 	// 订单下载
 	DownloadOrderList(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus string, orderToken string, extData ...string) (res []*common.OrderInfo, hasNextPage bool, nextToken string, body []byte, err error)
 	// 订单下载
