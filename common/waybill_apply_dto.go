@@ -22,11 +22,12 @@ type DownloadOrderListReturn struct {
 	Msg              string                          `valid:"MaxSize(64)" json:"msg"`
 	Subcode          string                          `valid:"MaxSize(200)" json:"subcode"`
 	Submessage       string                          `valid:"MaxSize(200)" json:"submessage"`
-	Polyapitotalms   int                             `json:"polyapitotalms"`
+	Polyapitotalms   string                          `json:"polyapitotalms"`
 	Polyapirequestid string                          `valid:"MaxSize(64)" json:"polyapirequestid"`
-	Ishasnextpage    int                             `json:"ishasnextpage"`
-	Numtotalorder    int                             `json:"numtotalorder"`
+	Ishasnextpage    string                          `json:"ishasnextpage"`
+	Numtotalorder    string                          `json:"numtotalorder"`
 	Orders           []DownLoadOrderListOrdersReturn `json:"orders"`
+	Nexttoken        string                          `json:"nexttoken"`
 }
 type DownLoadOrderListOrdersReturn struct {
 	// shoptype	string	可选	通用	25	店铺类型(普通=JH_001，分销=JH_002，经销=...+..	JH_001
@@ -128,35 +129,35 @@ type DownLoadOrderListOrdersReturn struct {
 	Email                  string            `json:"email"`
 	Customerremark         string            `json:"customerremark"`
 	Sellerremark           string            `json:"sellerremark"`
-	Postfee                float64           `json:"postfee"`
-	Postinsurancefee       float64           `json:"postinsurancefee"`
-	Goodsfee               float64           `json:"goodsfee"`
-	Servicefee             float64           `json:"servicefee"`
-	Totalamount            float64           `json:"totalamount"`
-	Realpaymoney           float64           `json:"realpaymoney"`
-	Favourablemoney        float64           `json:"favourablemoney"`
-	Platdiscountmoney      float64           `json:"platdiscountmoney"`
-	Taxamount              float64           `json:"taxamount"`
-	Tariffamount           float64           `json:"tariffamount"`
-	Addedvalueamount       float64           `json:"addedvalueamount"`
-	Consumptiondutyamount  float64           `json:"consumptiondutyamount"`
-	Commissionvalue        float64           `json:"commissionvalue"`
+	Postfee                string            `json:"postfee"`
+	Postinsurancefee       string            `json:"postinsurancefee"`
+	Goodsfee               string            `json:"goodsfee"`
+	Servicefee             string            `json:"servicefee"`
+	Totalamount            string            `json:"totalamount"`
+	Realpaymoney           string            `json:"realpaymoney"`
+	Favourablemoney        string            `json:"favourablemoney"`
+	Platdiscountmoney      string            `json:"platdiscountmoney"`
+	Taxamount              string            `json:"taxamount"`
+	Tariffamount           string            `json:"tariffamount"`
+	Addedvalueamount       string            `json:"addedvalueamount"`
+	Consumptiondutyamount  string            `json:"consumptiondutyamount"`
+	Commissionvalue        string            `json:"commissionvalue"`
 	Paytime                string            `json:"paytime"`
 	Sendtype               string            `json:"sendtype"`
 	Sendstyle              string            `json:"sendstyle"`
-	Codservicefee          float64           `json:"codservicefee"`
+	Codservicefee          string            `json:"codservicefee"`
 	Sellerflag             string            `json:"sellerflag"`
 	Cardtype               string            `json:"cardtype"`
 	Idcard                 string            `json:"idcard"`
 	Idcardtruename         string            `json:"idcardtruename"`
 	Idcardimgs             string            `json:"idcardimgs"`
 	Whsecode               string            `json:"whsecode"`
-	Ishwgflag              int               `json:"ishwgflag"`
+	Ishwgflag              string            `json:"ishwgflag"`
 	Deliverytype           string            `json:"deliverytype"`
 	Shopid                 string            `json:"shopid"`
 	Mdbid                  string            `json:"mdbid"`
 	Salespin               string            `json:"salespin"`
-	Isneedinvoice          uint8             `json:"isneedinvoice"`
+	Isneedinvoice          string            `json:"isneedinvoice"`
 	Invoicetype            string            `json:"invoicetype"`
 	Invoicebusinesstype    string            `json:"invoicebusinesstype"`
 	Invoicetitle           string            `json:"invoicetitle"`
@@ -176,11 +177,11 @@ type DownLoadOrderListOrdersReturn struct {
 	Serviceorders          []ServiceOrdersV2 `json:"serviceorders"`
 }
 type ServiceOrdersV2 struct {
-	Serviceid    string  `json:"serviceid"`
-	Servicename  string  `json:"servicename"`
-	Servicetype  string  `json:"servicetype"`
-	Serviceprice float64 `json:"serviceprice"`
-	Servicenum   int     `json:"servicenum"`
+	Serviceid    string `json:"serviceid"`
+	Servicename  string `json:"servicename"`
+	Servicetype  string `json:"servicetype"`
+	Serviceprice string `json:"serviceprice"`
+	Servicenum   string `json:"servicenum"`
 }
 type CouponDetailV2 struct {
 	Sku_id     string `json:"sku_id"`
@@ -188,54 +189,54 @@ type CouponDetailV2 struct {
 	Type       string `json:"type"`
 	Price      string `json:"price"`
 	Code       string `json:"code"`
-	Couponnum  int    `json:"couponnum"`
+	Couponnum  string `json:"couponnum"`
 }
 type GoodInfoV2 struct {
-	Productid             string  `json:"productid"`
-	Suborderno            string  `json:"suborderno"`
-	Taxsuborderno         string  `json:"taxsuborderno"`
-	Tradegoodsno          string  `json:"tradegoodsno"`
-	Tradegoodsname        string  `json:"tradegoodsname"`
-	Tradegoodsspec        string  `json:"tradegoodsspec"`
-	Goodscount            uint    `json:"goodscount"`
-	Price                 float64 `json:"price"`
-	Refundcount           int     `json:"refundcount"`
-	Discountmoney         float64 `json:"discountmoney"`
-	Taxamount             float64 `json:"taxamount"`
-	Tariffamount          float64 `json:"tariffamount"`
-	Addedvalueamount      float64 `json:"addedvalueamount"`
-	Consumptiondutyamount float64 `json:"consumptiondutyamount"`
-	Refundstatus          string  `json:"refundstatus"`
-	Status                string  `json:"status"`
-	Remark                string  `json:"remark"`
-	Outskuid              string  `json:"outskuid"`
-	Platgoodsid           string  `json:"platgoodsid"`
-	Platskuid             string  `json:"platskuid"`
-	Outitemid             string  `json:"outitemid"`
-	Subgoods              string  `json:"subgoods"`
-	Isgift                string  `json:"isgift"`
-	Ishwgflag             int     `json:"ishwgflag"`
-	Deliverytype          string  `json:"deliverytype"`
-	Payorderid            string  `json:"payorderid"`
-	Packageorderid        string  `json:"packageorderid"`
-	Activityamount        float64 `json:"activityamount"`
-	Specialamount         float64 `json:"specialamount"`
-	Couponamount          float64 `json:"couponamount"`
-	Productitemid         string  `json:"productitemid"`
-	Goodscount2           string  `json:"goodscount2"`
-	Isplatstorageorder    int     `json:"isplatstorageorder"`
-	Pictureurl            string  `json:"pictureurl"`
-	Goodtype              string  `json:"goodtype"`
-	Estimatecontime       string  `json:"estimatecontime"`
-	Fenxiaoprice          string  `json:"fenxiaoprice"`
-	Fenxiaopayment        float64 `json:"fenxiaopayment"`
-	Suborderitemno        string  `json:"suborderitemno"`
-	Goodsorderattr        string  `json:"goodsorderattr"`
-	Ispresale             int     `json:"ispresale"`
-	Serialnumbers         string  `json:"serialnumbers"`
-	Cantsendreason        string  `json:"cantsendreason"`
-	Cansendgoods          string  `json:"cansendgoods"`
-	Fenxiaofreight        string  `json:"fenxiaofreight"`
+	Productid             string `json:"productid"`
+	Suborderno            string `json:"suborderno"`
+	Taxsuborderno         string `json:"taxsuborderno"`
+	Tradegoodsno          string `json:"tradegoodsno"`
+	Tradegoodsname        string `json:"tradegoodsname"`
+	Tradegoodsspec        string `json:"tradegoodsspec"`
+	Goodscount            string `json:"goodscount"`
+	Price                 string `json:"price"`
+	Refundcount           string `json:"refundcount"`
+	Discountmoney         string `json:"discountmoney"`
+	Taxamount             string `json:"taxamount"`
+	Tariffamount          string `json:"tariffamount"`
+	Addedvalueamount      string `json:"addedvalueamount"`
+	Consumptiondutyamount string `json:"consumptiondutyamount"`
+	Refundstatus          string `json:"refundstatus"`
+	Status                string `json:"status"`
+	Remark                string `json:"remark"`
+	Outskuid              string `json:"outskuid"`
+	Platgoodsid           string `json:"platgoodsid"`
+	Platskuid             string `json:"platskuid"`
+	Outitemid             string `json:"outitemid"`
+	Subgoods              string `json:"subgoods"`
+	Isgift                string `json:"isgift"`
+	Ishwgflag             string `json:"ishwgflag"`
+	Deliverytype          string `json:"deliverytype"`
+	Payorderid            string `json:"payorderid"`
+	Packageorderid        string `json:"packageorderid"`
+	Activityamount        string `json:"activityamount"`
+	Specialamount         string `json:"specialamount"`
+	Couponamount          string `json:"couponamount"`
+	Productitemid         string `json:"productitemid"`
+	Goodscount2           string `json:"goodscount2"`
+	Isplatstorageorder    string `json:"isplatstorageorder"`
+	Pictureurl            string `json:"pictureurl"`
+	Goodtype              string `json:"goodtype"`
+	Estimatecontime       string `json:"estimatecontime"`
+	Fenxiaoprice          string `json:"fenxiaoprice"`
+	Fenxiaopayment        string `json:"fenxiaopayment"`
+	Suborderitemno        string `json:"suborderitemno"`
+	Goodsorderattr        string `json:"goodsorderattr"`
+	Ispresale             string `json:"ispresale"`
+	Serialnumbers         string `json:"serialnumbers"`
+	Cantsendreason        string `json:"cantsendreason"`
+	Cansendgoods          string `json:"cansendgoods"`
+	Fenxiaofreight        string `json:"fenxiaofreight"`
 }
 
 type DownLoadOrderListPostBizcontent struct {
@@ -263,6 +264,7 @@ type DownLoadOrderListPostBizcontent struct {
 	Randomnumber    string `valid:"MaxSize(64)" json:"randomnumber"`
 	Isneedflag      int    `json:"isneedflag"`
 	Isnotneeddetail int    `json:"isnotneeddetail"`
+	Nexttoken       string `json:"nexttoken"`
 }
 
 // 电子面单查询结果dto

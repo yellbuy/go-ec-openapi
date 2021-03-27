@@ -46,7 +46,8 @@ func (client *Client) CancelWaybill(request []common.WaybillCancel, extData ...s
 	err := errors.New("未实现")
 	return nil, err
 }
-func (client *Client) DownloadOrderListV2(request common.DownLoadOrderListPostBizcontent, extData ...string) (*common.DownloadOrderListReturn,error){
+func (client *Client) DownloadOrderListV2(request common.DownLoadOrderListPostBizcontent, extData ...string) (common.DownloadOrderListReturn, error) {
 	err := errors.New("未实现")
-	return nil, err
+	var OutData common.DownloadOrderListReturn
+	return OutData, err
 }

@@ -10,18 +10,22 @@ import (
 	simplejson "github.com/bitly/go-simplejson"
 	"github.com/yellbuy/go-ec-openapi/common"
 )
-func (client *Client) DownloadOrderListV2(request common.DownLoadOrderListPostBizcontent, extData ...string) (*common.DownloadOrderListReturn,error) {
+
+func (client *Client) DownloadOrderListV2(request common.DownLoadOrderListPostBizcontent, extData ...string) (common.DownloadOrderListReturn, error) {
 	method := "Differ.JH.Business.GetOrder" //定义菠萝派订单下载接口
-	params, err := common.InterfaceToParameter(request)
-	jsonstr, body, err := client.Execute(method, params)
-	if err != nil {
-		return nil, err
-	}
-	logs.Debug("返回内容:", jsonstr)
+	bizcontent, err := json.Marshal(request)
+	req := make(map[string]interface{})
+	req["bizcontent"] = string(bizcontent)
+	params, err := common.InterfaceToParameter(req)
+	_, body, err := client.Execute(method, params)
+	//logs.Debug(string(body))
 	var OutData common.DownloadOrderListReturn
+	if err != nil {
+		return OutData, err
+	}
 	err = json.Unmarshal(body, &OutData)
-	return &OutData, err
-	
+	return OutData, err
+
 }
 func (client *Client) CancelWaybill(request []common.WaybillCancel, extData ...string) (*common.WaybillCancelReturn, error) {
 	//开始提交数据
