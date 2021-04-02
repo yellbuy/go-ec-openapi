@@ -18,14 +18,16 @@ func (client *Client) DownloadOrderListV2(request common.DownLoadOrderListPostBi
 	req["bizcontent"] = string(bizcontent)
 	params, err := common.InterfaceToParameter(req)
 	_, body, err := client.Execute(method, params)
-	//logs.Debug(string(body))
+	logs.Debug(string(body))
 	var OutData common.DownloadOrderListReturn
 	if err != nil {
 		return OutData, err
 	}
 	err = json.Unmarshal(body, &OutData)
+	if OutData.Code == "10000" {
+		err = nil
+	}
 	return OutData, err
-
 }
 func (client *Client) CancelWaybill(request []common.WaybillCancel, extData ...string) (*common.WaybillCancelReturn, error) {
 	//开始提交数据
