@@ -1,4 +1,3 @@
-package polyapi
 
 import (
 	"encoding/json"
