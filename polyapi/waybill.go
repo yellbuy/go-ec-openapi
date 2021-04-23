@@ -6,25 +6,66 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/astaxie/beego/logs"
 	simplejson "github.com/bitly/go-simplejson"
 	"github.com/yellbuy/go-ec-openapi/common"
 )
 
+func (client *Client) CheckRefundV2(request common.BatchCheckRefundStatusBizcontent, extData ...string) (common.CheckRefundReturn, error) {
+	method := "Differ.JH.Business.BatchCheckRefundStatus" //定义菠萝派退款检测批量接口
+	bizcontent, err := json.Marshal(request)
+	req := make(map[string]interface{})
+	req["bizcontent"] = string(bizcontent)
+	params, err := common.InterfaceToParameter(req)
+	_, body, err := client.Execute(method, params)
+	//logs.Debug(string(body))
+	var OutData common.CheckRefundReturn
+	if err != nil {
+		return OutData, err
+	}
+	err = json.Unmarshal(body, &OutData)
+	if OutData.Code == "10000" {
+		err = nil
+	}
+	return OutData, err
+}
+
+func (client *Client) DownloadOrderListV2(request common.DownLoadOrderListPostBizcontent, extData ...string) (common.DownloadOrderListReturn, error) {
+	method := "Differ.JH.Business.GetOrder" //定义菠萝派订单下载接口
+	bizcontent, err := json.Marshal(request)
+	req := make(map[string]interface{})
+	req["bizcontent"] = string(bizcontent)
+	params, err := common.InterfaceToParameter(req)
+	_, body, err := client.Execute(method, params)
+	//logs.Debug(string(body))
+	var OutData common.DownloadOrderListReturn
+	if err != nil {
+		return OutData, err
+	}
+	err = json.Unmarshal(body, &OutData)
+	if OutData.Code == "10000" {
+		err = nil
+	}
+	return OutData, err
+}
 func (client *Client) CancelWaybill(request []common.WaybillCancel, extData ...string) (*common.WaybillCancelReturn, error) {
 	//开始提交数据
 	method := "Differ.JH.Logistics.Cancel"
+	var reqA common.WaybillCancelSend
+	reqA.Orders = request
+	bizcontent, err := json.Marshal(reqA)
 	req := make(map[string]interface{})
-	req["orders"] = request
+	req["bizcontent"] = string(bizcontent)
 	params, err := common.InterfaceToParameter(req)
 	//此处可能还要加工Json
-	_, body, err := client.Execute(method, params)
+	jsonstr, body, err := client.Execute(method, params)
 	if err != nil {
 		return nil, err
 	}
-	OutData := new(common.WaybillCancelReturn)
-	//将结果转换为结构体输出
-	err1 := json.Unmarshal(body, &OutData)
-	return OutData, err1
+	logs.Debug("返回内容:", jsonstr)
+	var OutData common.WaybillCancelReturn
+	err = json.Unmarshal(body, &OutData)
+	return &OutData, err
 }
 func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData ...string) (*common.WaybillApplyNewCols, []byte, error) {
 	if len(request.TradeOrderInfoCols) == 0 {
@@ -39,6 +80,9 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	dto := new(LogisticsOrder)
 	dto.OrderNo = reqData.OrderNo
 	dto.PlatTradeNo = reqData.PlatTradeNo
+	if len(request.LogisticsServices) > 0 {
+		dto.LogisticsServices = request.LogisticsServices
+	}
 	// 月结账号
 	dto.CustomerCode = reqData.CustomerCode
 	dto.CustomerName = reqData.CustomerName
@@ -81,9 +125,9 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	dto.Sender.Phone = reqData.SendPhone
 	//dto.Sender.Mobile = reqData.SendName
 	dto.Sender.Country = request.ShippingAddress.Country
-	dto.Sender.Province = request.ShippingAddress.Province
-	dto.Sender.City = request.ShippingAddress.City
-	dto.Sender.Area = request.ShippingAddress.Area
+	dto.Sender.Province = common.GetStrCn(request.ShippingAddress.Province)
+	dto.Sender.City = common.GetStrCn(request.ShippingAddress.City)
+	dto.Sender.Area = common.GetStrCn(request.ShippingAddress.Area)
 	dto.Sender.Town = request.ShippingAddress.Town
 	dto.Sender.Address = request.ShippingAddress.AddressDetail
 	// 收件人
@@ -91,9 +135,9 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	dto.Receiver = new(LogisticsAddress)
 	dto.Receiver.Name = reqData.ConsigneeName
 	dto.Receiver.Phone = reqData.ConsigneePhone
-	dto.Receiver.Country = reqData.ConsigneeAddress.Country
-	dto.Receiver.Province = reqData.ConsigneeAddress.Province
-	dto.Receiver.City = reqData.ConsigneeAddress.City
+	dto.Receiver.Country = common.GetStrCn(reqData.ConsigneeAddress.Country)
+	dto.Receiver.Province = common.GetStrCn(reqData.ConsigneeAddress.Province)
+	dto.Receiver.City = common.GetStrCn(reqData.ConsigneeAddress.City)
 	dto.Receiver.Area = reqData.ConsigneeAddress.Area
 	dto.Receiver.Town = reqData.ConsigneeAddress.Town
 	dto.Receiver.Address = reqData.ConsigneeAddress.AddressDetail

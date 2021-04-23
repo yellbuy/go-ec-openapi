@@ -16,7 +16,6 @@ import (
 	"github.com/thinkoner/openssl"
 	"github.com/yellbuy/go-ec-openapi/cache"
 	"github.com/yellbuy/go-ec-openapi/common"
-
 )
 
 var (
@@ -106,6 +105,8 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 		} else if param["platid"] == "47" {
 			// 走拼多多退款检测地址
 			url = refundCheckPddRouter
+		} else if param["platid"] == "1008" {
+			url = newRouter
 		}
 	} else if param["platid"] == "2" || param["platid"] == "544" {
 		// 走京东地址

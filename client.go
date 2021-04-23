@@ -7,7 +7,6 @@ import (
 	"github.com/yellbuy/go-ec-openapi/pdd"
 	"github.com/yellbuy/go-ec-openapi/polyapi"
 	"github.com/yellbuy/go-ec-openapi/taobao"
-
 )
 
 const (
@@ -41,9 +40,13 @@ type Client interface {
 	// 电子面单模板查询
 	GetWaybillTemplates(request *common.WaybillTemplateRequest, extData ...string) (res *common.WaybillTemplateDto, body []byte, err error)
 	// 电子面单取消
-	CancelWaybill(request []common.WaybillCancel, extData ...string)(*common.WaybillCancelReturn, error)
+	CancelWaybill(request []common.WaybillCancel, extData ...string) (*common.WaybillCancelReturn, error)
 	// 商品下载
 	DownloadProductList(pageIndex, pageSize int, status, pordectToken string, extData ...string) (res []*common.Product, hasNextPage bool, nextToken string, body []byte, err error)
+	// 订单下载V2
+	CheckRefundV2(request common.BatchCheckRefundStatusBizcontent, extData ...string) (common.CheckRefundReturn, error)
+	// 订单退款检测批量V2
+	DownloadOrderListV2(request common.DownLoadOrderListPostBizcontent, extData ...string) (common.DownloadOrderListReturn, error)
 	// 订单下载
 	DownloadOrderList(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus string, orderToken string, extData ...string) (res []*common.OrderInfo, hasNextPage bool, nextToken string, body []byte, err error)
 	// 订单下载

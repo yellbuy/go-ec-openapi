@@ -112,3 +112,13 @@ type ShippingInfo struct {
 	CertificateType string `json:"certificatetype"`
 	Certificate     string `json:"certificate"`
 }
+
+func GetStrCn(str string) (cnStr string) {
+	r := []rune(str)
+	for i := 0; i < len(r); i++ {
+		if r[i] <= 40869 && r[i] >= 19968 {
+			cnStr = cnStr + string(r[i])
+		}
+	}
+	return
+}
