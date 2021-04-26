@@ -1,3 +1,4 @@
+package common
 
 type LogisticsSendReqDto struct {
 	PlatOrderNo  string `json:"platorderno"`
