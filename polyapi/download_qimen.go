@@ -2,11 +2,9 @@ package polyapi
 
 import (
 	"fmt"
-	"strconv"
 
 	simplejson "github.com/bitly/go-simplejson"
 	"github.com/yellbuy/go-ec-openapi/common"
-
 )
 
 // 订单下载
@@ -65,19 +63,20 @@ func (client *Client) DownloadOrderListByQimen(pageIndex, pageSize int, startTim
 		fmt.Println(method, err)
 		return hasNextPage, body, err
 	}
-
-	total, err := resJson.Get("numtotalorder").Int()
-	if err != nil {
-		str, err := resJson.Get("numtotalorder").String()
-		if err != nil {
-			fmt.Println(method, err)
-			return hasNextPage, body, err
-		}
-		total, _ = strconv.Atoi(str)
-	}
-	if pageIndex*pageSize < total {
-		hasNextPage = true
-	}
-	fmt.Println(method, pageIndex, pageSize, total, hasNextPage)
+	hasNextPageStr, _ := resJson.Get("ishasnextpage").String()
+	hasNextPage = hasNextPageStr == "1"
+	// total, err := resJson.Get("numtotalorder").Int()
+	// if err != nil {
+	// 	str, err := resJson.Get("numtotalorder").String()
+	// 	if err != nil {
+	// 		fmt.Println(method, err)
+	// 		return hasNextPage, body, err
+	// 	}
+	// 	total, _ = strconv.Atoi(str)
+	// }
+	// if pageIndex*pageSize < total {
+	// 	hasNextPage = true
+	// }
+	//fmt.Println(method, pageIndex, pageSize, total, hasNextPage)
 	return hasNextPage, body, nil
 }

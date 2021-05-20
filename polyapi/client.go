@@ -42,6 +42,8 @@ var (
 	sfRouter = "http://aliyun.polyapi.com/OpenAPI/do"
 	// 京东物流地址
 	jdExpRouter = "http://jd.polyapi.com/OpenAPI/do"
+	// 奇门订单下载地址
+	qimenRouter = "http://online.polyapi.com/openapi/do"
 	// 测试地址
 	// router = "http://aliyuntest.polyapi.com/OpenAPI/do"
 	// Timeout ...
@@ -108,6 +110,9 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 		} else if param["platid"] == "1008" {
 			url = newRouter
 		}
+	} else if param["method"] == "Differ.JH.Other.DelegateQimenGetOrder" {
+		// 奇门委托专用地址
+		url = qimenRouter
 	} else if param["platid"] == "2" || param["platid"] == "544" {
 		// 走京东地址
 		url = jdRouter
