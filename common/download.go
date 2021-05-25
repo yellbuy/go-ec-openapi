@@ -52,6 +52,7 @@ type Product struct {
 	ProductId          string      `json:"platproductid"`
 	ProductName        string      `json:"name"`
 	ProductCode        string      `json:"outerid"`
+	BarCode            string      `json:"barcode"` //奇门字段
 	Price              string      `json:"price"`
 	Num                string      `json:"num"`
 	PictureUrl         string      `json:"pictureurl"`
@@ -79,6 +80,7 @@ type Sku struct {
 	SkuType       string `json:"skutype"`
 	SkuPictureUrl string `json:"skupictureurl"`
 	SkuName2      string `json:"skuname2"`
+	SkuBarCode    string `json:"barcode"` //奇门字段
 }
 
 type SubGoods struct {
@@ -152,6 +154,7 @@ type OrderInfo struct {
 	Phone                  string `json:"phone"`
 	Mobile                 string `json:"mobile"`
 	Email                  string `json:"email"`
+	Oaid                   string `json:"oaid"`
 	//买家备注
 	CustomerRemark string `json:"customeremark"`
 	//卖家备注

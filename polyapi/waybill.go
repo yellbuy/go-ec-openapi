@@ -11,6 +11,21 @@ import (
 	"github.com/yellbuy/go-ec-openapi/common"
 )
 
+func (client *Client) LogisticsPostOrder(request common.WmsLogisticsPostOrder, extData ...string) (common.WmsLogisticsReturn, error) {
+	method := "Differ.JH.Logistics.PostOrder" //定义菠萝派退款检测批量接口
+	bizcontent, err := json.Marshal(request)
+	req := make(map[string]interface{})
+	req["bizcontent"] = string(bizcontent)
+	params, err := common.InterfaceToParameter(req)
+	_, body, err := client.Execute(method, params)
+	//logs.Debug(string(body))
+	var OutData common.WmsLogisticsReturn
+	if err != nil {
+		return OutData, err
+	}
+	err = json.Unmarshal(body, &OutData)
+	return OutData, err
+}
 func (client *Client) CheckRefundV2(request common.BatchCheckRefundStatusBizcontent, extData ...string) (common.CheckRefundReturn, error) {
 	method := "Differ.JH.Business.BatchCheckRefundStatus" //定义菠萝派退款检测批量接口
 	bizcontent, err := json.Marshal(request)
@@ -78,6 +93,8 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	reqDto := new(LogisticsOrderReqDto)
 	reqDto.Orders = make([]*LogisticsOrder, 1)
 	dto := new(LogisticsOrder)
+	dto.Oaid = reqData.Oaid
+	logs.Debug("提交的内容", reqData)
 	dto.OrderNo = reqData.OrderNo
 	dto.PlatTradeNo = reqData.PlatTradeNo
 	if len(request.LogisticsServices) > 0 {
@@ -355,6 +372,8 @@ type LogisticsOrderReqDto struct {
 	Orders []*LogisticsOrder `json:"orders"`
 }
 type LogisticsOrder struct {
+	//淘宝解密
+	Oaid string `json:"oaid,omitempty"`
 	//订单号 必填
 	OrderNo string `json:"orderno,omitempty"`
 	//必填 平台原始单号(多个原始单号以英文“,”分隔

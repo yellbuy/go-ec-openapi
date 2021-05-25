@@ -27,9 +27,11 @@ func GoodsSyncParse(body []byte) (res []*common.Product, warehouseCode, ownerCod
 		product.ProductId = goods.ItemId
 		product.ProductCode = goods.ItemCode
 		product.ProductName = goods.ItemName
+		product.BarCode = goods.BarCode
 
 		product.SkuList = make([]*common.Sku, 1)
 		sku := new(common.Sku)
+		sku.SkuBarCode = product.BarCode
 		if goods.SkuProperty == "" {
 			sku.SkuId = product.ProductId
 			sku.SkuCode = product.ProductCode

@@ -281,6 +281,7 @@ func PolyApiOrderParse(resJson *simplejson.Json) ([]*common.OrderInfo, error) {
 		orderInfo.TotalAmount, _ = order.Get("TotalAmount").String()
 		orderInfo.PayTime, _ = order.Get("PayTime").String()
 		orderInfo.TradeTime, _ = order.Get("TradeTime").String()
+		orderInfo.Oaid, _ = order.Get("Oaid").String()
 
 		goodsList, _ := order.Get("GoodInfos").Array()
 		orderInfo.GoodsInfoList = make([]*common.GoodsInfo, len(goodsList))
