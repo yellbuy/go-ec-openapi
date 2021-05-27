@@ -82,6 +82,24 @@ func (client *Client) CancelWaybill(request []common.WaybillCancel, extData ...s
 	err = json.Unmarshal(body, &OutData)
 	return &OutData, err
 }
+func (client *Client) TBDecrypt(request []*BusinessBatchTBDecryptOrders, extData ...string) (*BusinessBatchTBDecryptReturn, error) {
+	//开始提交数据
+	method := "Differ.JH.Business.BatchTBDecrypt"
+	var reqA BusinessBatchTBDecryptBizcontent
+	reqA.Orders = request
+	bizcontent, err := json.Marshal(reqA)
+	req := make(map[string]interface{})
+	req["bizcontent"] = string(bizcontent)
+	params, err := common.InterfaceToParameter(req)
+	//此处可能还要加工Json
+	_, body, err := client.Execute(method, params)
+	if err != nil {
+		return nil, err
+	}
+	var OutData BusinessBatchTBDecryptReturn
+	err = json.Unmarshal(body, &OutData)
+	return &OutData, err
+}
 func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData ...string) (*common.WaybillApplyNewCols, []byte, error) {
 	if len(request.TradeOrderInfoCols) == 0 {
 		return nil, nil, errors.New("订单信息不能为空")
@@ -566,4 +584,56 @@ type Address struct {
 	Town     string `json:"town,omitempty"`
 	// 必填.详细地址
 	Detail string `json:"detail,omitempty"`
+}
+
+//菠萝派解密接口
+type BusinessBatchTBDecryptBizcontent struct {
+	Randomnumber string                          `json:"randomnumber"` //!必填	通用	64	淘宝随机字符串	tbxLGzL2r67me4zhYLHtDNvxxqPfjlgkAdU88pSPT55=
+	Orders       []*BusinessBatchTBDecryptOrders `json:"orders"`       //!必填	通用	-	订单集合	-
+	Ismask       json.Number                     `json:"ismask"`       //!必填	拼多多	64	是否需要调用脱敏解密接口(不需要=0，需要=...	1
+}
+type BusinessBatchTBDecryptOrders struct {
+	Platorderno string                        `json:"platorderno"` //!必填	通用	32	平台订单号	TS04594434433
+	Oaid        string                        `json:"oaid"`        //可选	通用	256	解密标识	2w2RYE45iahnF4aiaJ7pHKCJ3Hwnbgnq2PH3AfpQVyWZNHKS9wNgAAOUfCVt9XZMetogNHwc
+	Items       []*BusinessBatchTBDecryptItem `json:"items"`       //!必填	通用	-	待加密密钥集合	-
+}
+type BusinessBatchTBDecryptItem struct {
+	Secret string `json:"Secret"` //!必填	通用	256	待解密字符串	$136$rplMdffh4+x9GhkdlddxHg==$1$
+	Type   string `json:"Type"`   //!必填	通用	256	密钥类别(收货人=RECEIVER_NAME，买家nick=...
+}
+type BusinessBatchTBDecryptReturn struct {
+	Code             string                               `json:"code"`             //!必填	通用	64	返回码	10000
+	Msg              string                               `json:"msg"`              //!必填	通用	64	返回消息	Success
+	Subcode          string                               `json:"subcode"`          //!必填	通用	200	子集编码	LXO.JD.REQUEST_FAIL
+	Submessage       string                               `json:"submessage"`       //!必填	通用	200	子级消息	订单已出库
+	Polyapitotalms   json.Number                          `json:"polyapitotalms"`   //!必填	通用	64	菠萝派总耗时	102
+	Polyapirequestid string                               `json:"polyapirequestid"` //!必填	通用	64	请求菠萝派编号	20161222154212742
+	Orders           []*BusinessBatchTBDecryptReturnOrder `json:"orders"`
+}
+type BusinessBatchTBDecryptReturnOrder struct {
+	Issuccess     json.Number                         `json:"issuccess"`   //!必填	通用	1	是否成功(0表示失败；1表示成功)	0
+	Message       string                              `json:"message"`     //可选	通用	256	是否成功	订单已出库
+	Platorderno   string                              `json:"platorderno"` //!必填	通用	32	平台订单号	TS04594434433
+	Items         []*BusinessBatchTBDecryptReturnItem `json:"items"`       //必填	通用	-	待解密结果集合	-
+	Addressdetail string                              `json:"addressdetail"`
+	Area          string                              `json:"area"`
+	City          string                              `json:"city"`
+	Country       string                              `json:"country"`
+	Messagefrom   string                              `json:"messagefrom"`
+	Mobile        string                              `json:"mobile"`
+	Name          string                              `json:"name"`
+	Oaid          string                              `json:"oaid"`
+	Phone         string                              `json:"phone"`
+	Province      string                              `json:"province"`
+	Subcode       string                              `json:"subcode"`
+	Submessage    string                              `json:"submessage"`
+	Town          string                              `json:"town"`
+	Zip           string                              `json:"zip"`
+}
+type BusinessBatchTBDecryptReturnItem struct {
+	Issuccess json.Number `json:"issuccess"` //！必填	通用	1	是否成功(0表示失败；1表示成功)	0
+	Message   string      `json:"message"`   //可选	通用	256	是否成功	订单已出库
+	Secret    string      `json:"secret"`    //!必填	通用	256	待解密字符串	$136$rplMdffh4+x9GhkdlddxHg==$1$
+	Type      string      `json:"type"`      //!必填	通用	256	密钥类别(收货人=RECEIVER_NAME，买家nick=...
+	Secretstr string      `json:"secretstr"` //!必填	通用	256	解密后字符串	15044558868
 }

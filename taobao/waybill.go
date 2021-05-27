@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/yellbuy/go-ec-openapi/common"
+	"github.com/yellbuy/go-ec-openapi/polyapi"
 )
 
 func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData ...string) (*common.WaybillApplyNewCols, []byte, error) {
@@ -54,5 +55,10 @@ func (client *Client) DownloadOrderListV2(request common.DownLoadOrderListPostBi
 func (client *Client) CheckRefundV2(request common.BatchCheckRefundStatusBizcontent, extData ...string) (common.CheckRefundReturn, error) {
 	err := errors.New("未实现")
 	var OutData common.CheckRefundReturn
+	return OutData, err
+}
+func (client *Client) TBDecrypt(request []*polyapi.BusinessBatchTBDecryptOrders, extData ...string) (*polyapi.BusinessBatchTBDecryptReturn, error) {
+	err := errors.New("未实现")
+	var OutData *polyapi.BusinessBatchTBDecryptReturn
 	return OutData, err
 }

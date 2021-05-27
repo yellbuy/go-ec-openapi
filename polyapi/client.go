@@ -37,7 +37,8 @@ var (
 	// 拼多多退款检测地址
 	//refundCheckPddRouter = "http://pddtest.polyapi.com/OpenAPI/do"
 	refundCheckPddRouter = "http://pdd.polyapi.com/OpenAPI/do"
-
+	//淘宝解密接口
+	TBDecryptRouter = "http://api.polyapi.com/openapi/do"
 	// 顺丰丰桥地址
 	sfRouter = "http://aliyun.polyapi.com/OpenAPI/do"
 	// 京东物流地址
@@ -128,6 +129,8 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	} else if param["platid"] == "528" {
 		//京东物流地址
 		url = jdExpRouter
+	} else if param["method"] == "Differ.JH.Business.BatchTBDecrypt" {
+		url = TBDecryptRouter
 	}
 	//fmt.Println("execute:", strings.NewReader(data))
 	req, err = http.NewRequest("POST", url, strings.NewReader(data))
