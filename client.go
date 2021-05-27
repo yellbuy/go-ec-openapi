@@ -57,4 +57,6 @@ type Client interface {
 	BatchCheckRefundStatus(platorderno []string, extData ...string) (res []*common.BatchCheckRefundStatusRes, body []byte, err error)
 	// 订单发货
 	LogisticsSend(dto *common.LogisticsSendReqDto, extData ...string) ([]byte, error)
+	// 淘宝订单解密
+	TBDecrypt(request []*polyapi.BusinessBatchTBDecryptOrders, extData ...string) (*polyapi.BusinessBatchTBDecryptReturn, error)
 }
