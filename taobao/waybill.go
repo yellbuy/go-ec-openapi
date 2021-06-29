@@ -38,7 +38,10 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	}
 	return result, data, err
 }
-
+func (client *Client) GetWaybillV2(request []*common.WmsLogisticsPostOrder) (*common.WmsLogisticsReturn, error) {
+	err := errors.New("未实现")
+	return nil, err
+}
 func (client *Client) GetWaybillTemplates(request *common.WaybillTemplateRequest, extData ...string) (res *common.WaybillTemplateDto, body []byte, err error) {
 	err = errors.New("未实现")
 	return

@@ -7,7 +7,6 @@ package qimen
 import (
 	"encoding/xml"
 	"time"
-
 )
 
 // 销售单下载同步解析
@@ -107,6 +106,7 @@ type DeliveryOrderAddress struct {
 	Area          string `xml:"area"`
 	Town          string `xml:"town"`
 	DetailAddress string `xml:"detailAddress"`
+	Oaid          string `xml:"oaid"`
 }
 
 type DeliveryOrderCreateResponse struct {

@@ -3,10 +3,10 @@ package polyapi
 import (
 	"encoding/json"
 	"fmt"
-	"time"
-
+	"github.com/astaxie/beego/logs"
 	simplejson "github.com/bitly/go-simplejson"
 	"github.com/yellbuy/go-ec-openapi/common"
+	"time"
 )
 
 // 订单发货
@@ -56,7 +56,7 @@ func (client *Client) LogisticsSend(dto *common.LogisticsSendReqDto, extData ...
 	//return nil, errors.New("test")
 	_, body, err := client.Execute(method, params)
 	if err != nil {
-		fmt.Println(method, err)
+		logs.Debug(method, err)
 		// 延时1秒，重新执行
 		time.Sleep(1 * time.Second)
 		params, err = common.InterfaceToParameter(req)
@@ -69,6 +69,5 @@ func (client *Client) LogisticsSend(dto *common.LogisticsSendReqDto, extData ...
 			fmt.Println(method, err)
 		}
 	}
-	//fmt.Println("bizcontent3：", string(bizcontent))
 	return body, err
 }

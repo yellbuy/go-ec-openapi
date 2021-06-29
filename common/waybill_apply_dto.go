@@ -30,6 +30,7 @@ type DownloadOrderListReturn struct {
 	Numtotalorder    json.Number                     `json:"numtotalorder"`
 	Orders           []DownLoadOrderListOrdersReturn `json:"orders"`
 	Nexttoken        string                          `json:"nexttoken"`
+	Tid              int64
 }
 type DownLoadOrderListOrdersReturn struct {
 	// shoptype	string	可选	通用	25	店铺类型(普通=JH_001，分销=JH_002，经销=...+..	JH_001
@@ -178,6 +179,8 @@ type DownLoadOrderListOrdersReturn struct {
 	Coupondetails          []CouponDetailV2  `json:"coupondetails"`
 	Serviceorders          []ServiceOrdersV2 `json:"serviceorders"`
 	Oaid                   string            `json:"oaid"`
+	Shopname               string            `json:"shopname"`
+	Tid                    int64             `json:"tid"`
 }
 type ServiceOrdersV2 struct {
 	Serviceid    string      `json:"serviceid"`
@@ -522,7 +525,9 @@ type WaybillApplyNewInfo struct {
 	// 兼容pdd的接口，电子面单内容
 	PrintData string `json:"-"`
 }
-
+type WmsLogisticsBizcontent struct {
+	Orders []*WmsLogisticsPostOrder
+}
 type WmsLogisticsPostOrder struct {
 	Orderno                     string                //!必填	通用	32	订单号	FO58965555996
 	Plattradeno                 string                //可选	通用	32	平台原始单号(多个原始单号以英文“,”分隔...	YS567417751123

@@ -10,6 +10,10 @@ import (
 	"github.com/yellbuy/go-ec-openapi/polyapi"
 )
 
+func (client *Client) GetWaybillV2(request []*common.WmsLogisticsPostOrder) (*common.WmsLogisticsReturn, error) {
+	err := errors.New("未实现")
+	return nil, err
+}
 func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData ...string) (*common.WaybillApplyNewCols, []byte, error) {
 	req := make(map[string]interface{})
 	req["waybill_apply_new_request"] = request

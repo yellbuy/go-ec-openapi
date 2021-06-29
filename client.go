@@ -59,4 +59,6 @@ type Client interface {
 	LogisticsSend(dto *common.LogisticsSendReqDto, extData ...string) ([]byte, error)
 	// 淘宝订单解密
 	TBDecrypt(request []*polyapi.BusinessBatchTBDecryptOrders, extData ...string) (*polyapi.BusinessBatchTBDecryptReturn, error)
+	// 预约电子面单V2
+	GetWaybillV2(request []*common.WmsLogisticsPostOrder) (*common.WmsLogisticsReturn, error)
 }

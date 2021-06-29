@@ -121,6 +121,7 @@ type OrderLine struct {
 	ItemId      string `xml:"itemId,omitempty"`
 	// 货品编码
 	ItemCode string `xml:"itemCode,omitempty"`
+	ItemName string `xml:"itemName"`
 	//商品数量
 	Quantity      int     `xml:"quantity,omitempty"`
 	Amount        float64 `xml:"amount"`
@@ -129,6 +130,8 @@ type OrderLine struct {
 	//应收商品数量
 	PlanQty   int    `xml:"planQty,omitempty"`
 	OwnerCode string `xml:"ownerCode,omitempty"`
+	//子订单信息
+	SubSourceOrderCode string `xml:"subSourceOrderCode"`
 }
 type Items struct {
 	ItemList []*Item `xml:"item"`

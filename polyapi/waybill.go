@@ -61,6 +61,8 @@ func (client *Client) DownloadOrderListV2(request common.DownLoadOrderListPostBi
 	if OutData.Code == "10000" {
 		err = nil
 	}
+	//logs.Debug("下载订单完成，菠萝派ID[", OutData.Polyapirequestid, "]")
+	//logs.Error("下载JSON内容[", string(body), "]")
 	return OutData, err
 }
 func (client *Client) CancelWaybill(request []common.WaybillCancel, extData ...string) (*common.WaybillCancelReturn, error) {
@@ -97,6 +99,24 @@ func (client *Client) TBDecrypt(request []*BusinessBatchTBDecryptOrders, extData
 		return nil, err
 	}
 	var OutData BusinessBatchTBDecryptReturn
+	err = json.Unmarshal(body, &OutData)
+	return &OutData, err
+}
+func (client *Client) GetWaybillV2(request []*common.WmsLogisticsPostOrder) (*common.WmsLogisticsReturn, error) {
+	//开始提交数据
+	method := "Differ.JH.Logistics.PostOrder"
+	var reqA common.WmsLogisticsBizcontent
+	reqA.Orders = request
+	bizcontent, err := json.Marshal(reqA)
+	req := make(map[string]interface{})
+	req["bizcontent"] = string(bizcontent)
+	params, err := common.InterfaceToParameter(req)
+	//此处可能还要加工Json
+	_, body, err := client.Execute(method, params)
+	if err != nil {
+		return nil, err
+	}
+	var OutData common.WmsLogisticsReturn
 	err = json.Unmarshal(body, &OutData)
 	return &OutData, err
 }

@@ -41,10 +41,12 @@ var (
 	TBDecryptRouter = "http://api.polyapi.com/openapi/do"
 	// 顺丰丰桥地址
 	sfRouter = "http://aliyun.polyapi.com/OpenAPI/do"
+	// 抖音地址
+	dyRouter = "http://api.polyapi.com/openapi/do"
 	// 京东物流地址
 	jdExpRouter = "http://jd.polyapi.com/OpenAPI/do"
 	// 奇门订单下载地址
-	qimenRouter = "http://online.polyapi.com/openapi/do"
+	qimenRouter = "http://aliyun.polyapi.com/OpenAPI/do" //http://online.polyapi.com/openapi/do
 	// 测试地址
 	// router = "http://aliyuntest.polyapi.com/OpenAPI/do"
 	// Timeout ...
@@ -110,6 +112,8 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 			url = refundCheckPddRouter
 		} else if param["platid"] == "1008" {
 			url = newRouter
+		} else if param["platid"] == "126" {
+			url = dyRouter
 		}
 	} else if param["method"] == "Differ.JH.Other.DelegateQimenGetOrder" {
 		// 奇门委托专用地址
@@ -120,6 +124,8 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	} else if param["platid"] == "47" {
 		// 走拼多多地址
 		url = pddRouter
+	} else if param["platid"] == "17" {
+		url = TBDecryptRouter
 	} else if param["platid"] == "1002" || param["platid"] == "1008" {
 		// 走新地址
 		url = newRouter
@@ -130,7 +136,11 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 		//京东物流地址
 		url = jdExpRouter
 	} else if param["method"] == "Differ.JH.Business.BatchTBDecrypt" {
+		//淘宝解密地址
 		url = TBDecryptRouter
+	} else if param["platid"] == "126" {
+		//抖音地址
+		url = dyRouter
 	}
 	//fmt.Println("execute:", strings.NewReader(data))
 	req, err = http.NewRequest("POST", url, strings.NewReader(data))
