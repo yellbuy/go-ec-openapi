@@ -65,3 +65,8 @@ func (client *Client) TBDecrypt(request []*polyapi.BusinessBatchTBDecryptOrders,
 	var OutData *polyapi.BusinessBatchTBDecryptReturn
 	return OutData, err
 }
+func (client *Client) OrderSendV2(request *common.WmsBusinessSendBizcontent) (*common.WmsBusinessSendReturn, error) {
+	err := errors.New("未实现")
+	var OutData *common.WmsBusinessSendReturn
+	return OutData, err
+}

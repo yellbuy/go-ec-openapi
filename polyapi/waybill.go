@@ -102,6 +102,26 @@ func (client *Client) TBDecrypt(request []*BusinessBatchTBDecryptOrders, extData
 	err = json.Unmarshal(body, &OutData)
 	return &OutData, err
 }
+
+//同步发货接口V2
+func (client *Client) OrderSendV2(request *common.WmsBusinessSendBizcontent) (*common.WmsBusinessSendReturn, error) {
+	//开始提交数据
+	method := "Differ.JH.Business.Send"
+	bizcontent, err := json.Marshal(request)
+	req := make(map[string]interface{})
+	req["bizcontent"] = string(bizcontent)
+	params, err := common.InterfaceToParameter(req)
+	//此处可能还要加工Json
+	_, body, err := client.Execute(method, params)
+	if err != nil {
+		return nil, err
+	}
+	var OutData common.WmsBusinessSendReturn
+	err = json.Unmarshal(body, &OutData)
+	return &OutData, err
+}
+
+//预约单号接口V2
 func (client *Client) GetWaybillV2(request []*common.WmsLogisticsPostOrder) (*common.WmsLogisticsReturn, error) {
 	//开始提交数据
 	method := "Differ.JH.Logistics.PostOrder"

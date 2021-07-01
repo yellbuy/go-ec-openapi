@@ -61,4 +61,6 @@ type Client interface {
 	TBDecrypt(request []*polyapi.BusinessBatchTBDecryptOrders, extData ...string) (*polyapi.BusinessBatchTBDecryptReturn, error)
 	// 预约电子面单V2
 	GetWaybillV2(request []*common.WmsLogisticsPostOrder) (*common.WmsLogisticsReturn, error)
+	// 同步发货V2
+	OrderSendV2(request *common.WmsBusinessSendBizcontent) (*common.WmsBusinessSendReturn, error)
 }
