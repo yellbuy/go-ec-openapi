@@ -199,6 +199,7 @@ func bytesToResult(bytes []byte) (res *simplejson.Json, err error) {
 		if msg == "" {
 			msg = res.Get("msg").MustString()
 		}
+		msg = msg + res.Get("polyapirequestid").MustString()
 		fmt.Println("msg:", msg)
 		err = errors.New(msg)
 	}

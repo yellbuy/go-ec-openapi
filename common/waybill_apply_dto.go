@@ -529,131 +529,132 @@ type WmsLogisticsBizcontent struct {
 	Orders []*WmsLogisticsPostOrder
 }
 type WmsLogisticsPostOrder struct {
-	Orderno                     string                   //!必填	通用	32	订单号	FO58965555996
-	Plattradeno                 string                   //可选	通用	32	平台原始单号(多个原始单号以英文“,”分隔...	YS567417751123
-	Ismultiplepieces            json.Number              //可选	通用	4	是否为子母件(子母件=1，非子母件=0；默认0...	0
-	Numpackage                  json.Number              //!必填	通用	4	包裹数量(默认填写值为1，有子母件时“IsMu...	1
-	Logisticno                  string                   //可选	通用	32	运单号(仅限于先预约单号的平台，如果是子...	XO434334244543423
-	Businesstype                string                   //!必填	通用	32	平台的业务类型(标准业务=JH_Normal)+..	JH_Normal
-	Businessplat                string                   //可选	通用	20	电商平台标识码+..	Taobao
-	Paymode                     string                   //可选	通用	32	快递支付方式(立即付款=0，货到付款=1，发...	货到付款
-	Ordertype                   string                   //可选	通用	32	订单类型(普通订单=JH_Normal，退货单=JH_R...+..	JH_Normal
-	Codpaymoney                 json.Number              //可选	通用	12	货到付款金额(OrderType=JH_COD时必传)	150.2
-	Packagemoney                json.Number              //可选	通用	12	订单包裹物品金额	238.05
-	Weight                      json.Number              //!必填	通用	4	订单重量(单位：克)	500
-	Supporpaymoney              json.Number              //可选	通用	12	保价赔付金额	220.50
-	Length                      json.Number              //!必填	通用	4	包裹长(单位：CM)	18
-	Width                       json.Number              //!必填	通用	4	包裹宽(单位：CM)	18
-	Height                      json.Number              //!必填	通用	4	包裹高(单位：CM)	18
-	Volume                      json.Number              //可选	通用	8	包裹体积	12
-	Ispickup                    json.Number              //可选	通用	1	是否上门揽收(上门揽收=1，不上门揽收=0；...	0
-	Producttype                 string                   //可选	通用	20	产品类型+..	服装
-	Logistictype                string                   //可选	通用	32	物流类型(标准物流=JH_Normal，经济物流=JH...+..	JH_Normal
-	Cpcode                      string                   //!必填	通用	32	承运公司编码	POSTB
-	Dmssorting                  json.Number              //!必填	通用	32	是否使用智分宝预分拣(仓库WMS系统对接落地...	1
-	Needencrypt                 json.Number              //!必填	通用	32	设定取号返回的云打印报文是否加密(是=1，...	1
-	Sender                      *WmsLogisticsHumanInfo   //!必填	发件人信息
-	Receiver                    *WmsLogisticsHumanInfo   //!必填	收件人信息
-	Pickup                      *WmsLogisticsHumanInfo   //可选	通用	-	揽收信息(当Ispickup=1时必填)
-	Return                      *WmsLogisticsHumanInfo   //可选	通用	-	退货人
-	Goods                       []*WmsLogisticsGoodsInfo //!必填	通用	-	商品信息集合
-	Labelformat                 string                   //!必填	通用	10	打印尺寸格式+..
-	Shipperno                   string                   //?必填	UPS、联邦快递、顺丰国际、顺丰国际俄罗斯、京东阿尔法	32	支付账号(在顺丰指月结卡号)	6124851842487424
-	Warecode                    string                   //?必填	Panex、Wish邮、中邮小包、中通国际物流、菜鸟、万邑通ISP、唯品会	32	仓库代码+..	0003
-	Warehouselineid             json.Number              //?必填	Panex	32	货站自选线路+..	0003
-	Batchno                     string                   //?必填	唯品会	32	批次号+..
-	Isliquid                    json.Number              //?必填	Panex	0	是否液体(是=1; 否=0)	0
-	Ishasbattery                json.Number              //?必填	Panex、中邮小包、互联易、顺丰国际俄罗斯、Wish邮、速卖通物流、递四方速递、易宇通物流、去发货、E速宝	0	是否包含电池(是=1; 否=0)	0
-	Isinsurance                 json.Number              //?必填	联邦快递、京东阿尔法、JD、递四方速递	32	是否保价(保价=1; 不保价=0)	0
-	Isvip                       json.Number              //?必填	中通	32	是否VIP尊享件(是=1; 否=0)	0
-	Istopayment                 json.Number              //?必填	中通	32	是否到付件(是=1; 否=0)	0
-	Deliverytype                string                   //?必填	德邦物流、运东西	32	送货方式(自提=JH_Picked，送货(不含上楼)=...	JH_Picked
-	Backsignbill                string                   //?必填	顺丰、德邦物流、JD	32	签收回单(无需返单=JH_001，需要返单=JH_0...	0
-	Islesstruck                 json.Number              //?必填	德邦物流	32	是否零担下单(是=1;否=0)	0
-	Customercode                string                   //?必填	JD、京东阿尔法	32	商家编码(此商家编码需由商家向快递运营人...	1542154
-	Customername                string                   //?必填	京东阿尔法	32	商家名称(此商家名称需由商家向快递运营人...	1542154
-	Imagestyle                  string                   //?必填	联邦快递	32	图像类型(两联单=JH_TwoDuplicate，三联单=...	JH_TwoDuplicate
-	Inputsite                   string                   //?必填	申通、京东阿尔法	32	录入网点	上海陈行公司
-	Sitecode                    string                   //?必填	安能快递、转运四方快递、京东阿尔法	32	网点名称	1354512
-	Ischeckrange                json.Number              //?必填	天天快递	32	是否检测超区(是=1;否=0)	0
-	Temprangetype               string                   //?必填	顺丰	32	温度范围(冷藏 = 1；冷冻 = 3)	1
-	Mainsubpaymode              string                   //?必填	EMS	1	一票多单计费方式(集中主单计费 = 1；平均...	1
-	Transtype                   string                   //?必填	EMS、中通国际物流、Tourline、JD	1	运输方式(陆运 = 0；航空 = 1；陆转航 = 2...	1
-	Isbbc                       json.Number              //?必填	中通国际物流、Tourline	32	是否是BBC订单(是=1;否=0)	0
-	Transtypecode               string                   //?必填	EMS、中通国际物流、Tourline	1	运输方式编码	1
-	Prodcode                    string                   //?必填	EMS、邮政国际	1	产品代码(文件 = 0100000000；信函 = 02000...	1
-	Isnanji                     string                   //?必填	EMS	1	是否集散邮件(是 =1； 否 = 0)	1
-	Currencytype                string                   //?必填	顺丰国际俄罗斯、转运四方快递、邮政国际	255	货币类型简写	USD
-	Platwebsite                 string                   //?必填	顺丰国际俄罗斯	255	平台网址(当Businesstype为顺丰国际电商专...	Http://Www.Taobao.Com
-	Crosscodeid                 string                   //?必填	贝海直邮	255	货站ID(纽约分拨中心=1 ,旧金山分拨中心=2 ...	1
-	Definedorderinfo            string                   //?必填	韵达、韵达国际、贝海直邮	255	订单自定义信息	红色、大码
-	Definedgoodsinfo            string                   //?必填	韵达、韵达国际	255	商品自定义信息	红色、大码
-	Payorderno                  string                   //?必填	贝海直邮	255	支付单号	NO011244
-	Payamount                   json.Number              //?必填	贝海直邮	16	支付金额	55
-	Senderaccount               string                   //?必填	联邦快递	16	寄件账号(9 位数字)	1545515674521
-	Is5kgpacking                json.Number              //?必填	联邦快递	4	是否5公斤装	1
-	Is3pl                       string                   //?可选	EWE物流	4	是否3PL订单(是=Y;否=N)	Y
-	Isusestock                  string                   //?可选	EWE物流	4	是否使用库存商品（不使用=0;使用=1）	0
-	Iseconomic                  json.Number              //?可选	EWE物流	4	是否走经济线	False
-	Specialhandling             string                   //?必填	联邦快递	4	特殊处理(留站自提=留站自提；签单返还（运...	1
-	Codtype                     string                   //?必填	德邦物流	4	代收货款类型(三日退=3，即日退=1)	1
-	Packageservice              string                   //?必填	德邦物流、拼多多金虹桥	4	包装类型（直接用中文）： 纸、纤、木（包...	纸箱
-	Isout                       json.Number              //?必填	德邦物流	1	是否外发	0
-	Receiveraccount             string                   //?必填	德邦物流	4	代收账号	6225848752785448
-	Receiveraccountname         string                   //?必填	德邦物流	4	代收账户开启名	张三
-	Isfresh                     json.Number              //?必填	顺丰	4	是否保鲜(是=1; 否=0)	1
-	Remark                      string                   //?必填	菠萝派快递、品骏、顺丰国际IBS	255	客服备注	周末送，工作日没人
-	Customerremark              string                   //?必填	菜鸟	255	客服备注	发申通
-	Ordersource                 string                   //?可选	京东阿尔法、拼多多金虹桥、捷网物流	64	订单来源	订单来源
-	Providerid                  string                   //?可选	京东阿尔法	20	承运商ID(京东阿尔法承运商ID与物流类别两...	20160927770
-	Providercode                string                   //?必填	京东阿尔法、唯品会JIT	20	承运商编码	20160927770
-	Expresspaymethod            string                   //?必填	京东阿尔法	20	快递费付款方式(顺丰必传)	1:寄方付
-	Expresstype                 string                   //?必填	京东阿尔法	20	快件产品类别(顺丰必传)	1.顺丰次日
-	Undeliverabledecision       string                   //?可选	速卖通物流、递四方速递、邮政国际	20	不可达处理	0
-	Servicename                 string                   //?可选	速卖通物流、EWE物流	64	服务名称	0
-	Cumstomscode                string                   //?可选	中通国际物流	64	海关编号	NBCUSTOMS
-	Totallogisticsno            string                   //?可选	中通国际物流	64	提货单号	88091011
-	Stockflag                   string                   //?必填	中通国际物流	1	是否集货(是 =1； 否 = 0)	1
-	Ebpcode                     string                   //?必填	中通国际物流	64	电商企业代码	1
-	Ecpname                     string                   //?必填	中通国际物流	64	电商平台名称(海关备案名称)	1
-	Ecpcodeg                    string                   //?必填	中通国际物流	64	电商平台代码(国检)	1
-	Ecpnameg                    string                   //?必填	中通国际物流	64	电商平台名称(国检)	1
-	Agentcode                   string                   //?可选	中通国际物流	32	代理企业编号	154643265
-	Agentname                   string                   //?可选	中通国际物流	32	代理企业名称	154643265
-	Totalshippingfee            json.Number              //?必填	中通国际物流、贝海直邮	64	订单运费	0
-	Feeunit                     string                   //?可选	中通国际物流	64	费用单位	元
-	Clearcode                   json.Number              //?必填	中通国际物流	64	关区代码	2991
-	Sellerid                    string                   //?必填	菜鸟	64	卖家Id	2991
-	User_id                     string                   //?必填	菜鸟	32	使用者ID	12
-	Logistics_services          string                   //?可选	菜鸟	32	服务值,如不需要特殊服务，该值为空	12
-	Object_id                   string                   //?必填	菜鸟	32	请求ID	12
-	Template_url                string                   //?必填	菜鸟、拼多多金虹桥	32	标准模板模板URL	Http://Xxx.Com
-	Order_channels_type         string                   //?必填	菜鸟、易宇通物流、去发货、捷网物流	32	订单渠道平台编码	TB
-	Trade_order_list            string                   //?必填	菜鸟	32	订单号,数量限制100	1222221
-	Logisticsproductname        string                   //?必填	菜鸟	32	菜鸟物流产品名称（JH_01:智选物流;JH_02:...	JH_01
-	Deptno                      string                   //?必填	JD	50	事业部编号	00001
-	Businessnetworkno           string                   //?必填	德邦物流	50	发货部门编码	00001
-	Sendertc                    string                   //?必填	JD	50	始发转运中心名称	00001
-	Pickupdate                  string                   //?必填	JD	50	上门揽件时间
-	Installflag                 json.Number              //?必填	JD	4	是否安维
-	Thirdcategoryno             string                   //?必填	JD	20	三级分类编码(安维必填)
-	Brandno                     string                   //?必填	JD	50	品牌ID(安维必填)
-	Productsku                  string                   //?必填	JD	50	商品Sku(安维必填)
-	Platcode                    string                   //?必填	JD	50	订单平台编码（必填）
-	Sequenceno                  string                   //?必填	唯品会	50	顺序号（必填）
-	Chinashipname               string                   //?必填	贝海直邮	10	国内配送公司（必填）
-	Taxpaytype                  string                   //可选	顺丰国际IBS	32	税金支付方式（必填）(立即付款=0，货到付...	货到付款
-	Taxsetaccounts              string                   //?必填	顺丰国际IBS	10	税金结算账号
-	Praceltype                  string                   //?必填	去发货、E速宝、捷网物流	1	包裹类型
-	Addressid                   string                   //可选	EbayDIS	255	发货地址ID+..	1
-	Shoptype                    string                   //可选	通用	25	店铺类型+..	JH_001
-	Consignpreferenceid         string                   //可选	EbayDIS	255	交运偏好ID+..	1
-	Notifycouriertype           string                   //?必填	顺丰	10	通知顺丰收派员收件方式
-	Mallmaskid                  string                   //?必填	拼多多金虹桥	64	代打店铺Id	184003167
-	Goodsdescription            string                   //可选	拼多多金虹桥	64	货品描述	测试货品
-	Openboxservice              string                   //可选	京东大件	64	开箱服务（京东大件用，0:否 1:开箱通电 2:...	0
-	Shopnick                    string                   //可选	奇门海外物流	64	店铺名称（奇门海外专用）	0
-	Isneedsignatureconfirmation json.Number              //?必填	顺丰	4	是否使用签收确认(是=1; 否=0)	1
+	Orderno     string //!必填	通用	32	订单号	FO58965555996
+	Plattradeno string //可选	通用	32	平台原始单号(多个原始单号以英文“,”分隔...	YS567417751123
+	// Ismultiplepieces            json.Number              //可选	通用	4	是否为子母件(子母件=1，非子母件=0；默认0...	0
+	Numpackage json.Number //!必填	通用	4	包裹数量(默认填写值为1，有子母件时“IsMu...	1
+	// Logisticno                  string                   //可选	通用	32	运单号(仅限于先预约单号的平台，如果是子...	XO434334244543423
+	Businesstype string      //!必填	通用	32	平台的业务类型(标准业务=JH_Normal)+..	JH_Normal
+	Businessplat string      //可选	通用	20	电商平台标识码+..	Taobao
+	Paymode      string      //可选	通用	32	快递支付方式(立即付款=0，货到付款=1，发...	货到付款
+	Ordertype    string      //可选	通用	32	订单类型(普通订单=JH_Normal，退货单=JH_R...+..	JH_Normal
+	Codpaymoney  json.Number //可选	通用	12	货到付款金额(OrderType=JH_COD时必传)	150.2
+	// Packagemoney                json.Number              //可选	通用	12	订单包裹物品金额	238.05
+	// Weight                      json.Number              //!必填	通用	4	订单重量(单位：克)	500
+	// Supporpaymoney              json.Number              //可选	通用	12	保价赔付金额	220.50
+	// Length                      json.Number              //!必填	通用	4	包裹长(单位：CM)	18
+	// Width                       json.Number              //!必填	通用	4	包裹宽(单位：CM)	18
+	// Height                      json.Number              //!必填	通用	4	包裹高(单位：CM)	18
+	// Volume                      json.Number              //可选	通用	8	包裹体积	12
+	// Ispickup                    json.Number              //可选	通用	1	是否上门揽收(上门揽收=1，不上门揽收=0；...	0
+	// Producttype                 string                   //可选	通用	20	产品类型+..	服装
+	Logistictype      string                 //可选	通用	32	物流类型(标准物流=JH_Normal，经济物流=JH...+..	JH_Normal
+	Cpcode            string                 //!必填	通用	32	承运公司编码	POSTB
+	Dmssorting        json.Number            //!必填	通用	32	是否使用智分宝预分拣(仓库WMS系统对接落地...	1
+	Needencrypt       json.Number            //!必填	通用	32	设定取号返回的云打印报文是否加密(是=1，...	1
+	Sender            *WmsLogisticsHumanInfo //!必填	发件人信息
+	Receiver          *WmsLogisticsHumanInfo //!必填	收件人信息
+	LogisticsServices string
+	// Pickup                      *WmsLogisticsHumanInfo   //可选	通用	-	揽收信息(当Ispickup=1时必填)
+	// Return                      *WmsLogisticsHumanInfo   //可选	通用	-	退货人
+	Goods []*WmsLogisticsGoodsInfo //!必填	通用	-	商品信息集合
+	// Labelformat                 string                   //!必填	通用	10	打印尺寸格式+..
+	Shipperno string //?必填	UPS、联邦快递、顺丰国际、顺丰国际俄罗斯、京东阿尔法	32	支付账号(在顺丰指月结卡号)	6124851842487424
+	// Warecode                    string                   //?必填	Panex、Wish邮、中邮小包、中通国际物流、菜鸟、万邑通ISP、唯品会	32	仓库代码+..	0003
+	// Warehouselineid             json.Number              //?必填	Panex	32	货站自选线路+..	0003
+	// Batchno                     string                   //?必填	唯品会	32	批次号+..
+	// Isliquid                    json.Number              //?必填	Panex	0	是否液体(是=1; 否=0)	0
+	// Ishasbattery                json.Number              //?必填	Panex、中邮小包、互联易、顺丰国际俄罗斯、Wish邮、速卖通物流、递四方速递、易宇通物流、去发货、E速宝	0	是否包含电池(是=1; 否=0)	0
+	// Isinsurance                 json.Number              //?必填	联邦快递、京东阿尔法、JD、递四方速递	32	是否保价(保价=1; 不保价=0)	0
+	// Isvip                       json.Number              //?必填	中通	32	是否VIP尊享件(是=1; 否=0)	0
+	// Istopayment                 json.Number              //?必填	中通	32	是否到付件(是=1; 否=0)	0
+	// Deliverytype                string                   //?必填	德邦物流、运东西	32	送货方式(自提=JH_Picked，送货(不含上楼)=...	JH_Picked
+	// Backsignbill                string                   //?必填	顺丰、德邦物流、JD	32	签收回单(无需返单=JH_001，需要返单=JH_0...	0
+	// Islesstruck                 json.Number              //?必填	德邦物流	32	是否零担下单(是=1;否=0)	0
+	Customercode string //?必填	JD、京东阿尔法	32	商家编码(此商家编码需由商家向快递运营人...	1542154
+	Customername string //?必填	京东阿尔法	32	商家名称(此商家名称需由商家向快递运营人...	1542154
+	// Imagestyle                  string                   //?必填	联邦快递	32	图像类型(两联单=JH_TwoDuplicate，三联单=...	JH_TwoDuplicate
+	Inputsite string //?必填	申通、京东阿尔法	32	录入网点	上海陈行公司
+	Sitecode  string //?必填	安能快递、转运四方快递、京东阿尔法	32	网点名称	1354512
+	// Ischeckrange                json.Number              //?必填	天天快递	32	是否检测超区(是=1;否=0)	0
+	// Temprangetype               string                   //?必填	顺丰	32	温度范围(冷藏 = 1；冷冻 = 3)	1
+	// Mainsubpaymode              string                   //?必填	EMS	1	一票多单计费方式(集中主单计费 = 1；平均...	1
+	// Transtype                   string                   //?必填	EMS、中通国际物流、Tourline、JD	1	运输方式(陆运 = 0；航空 = 1；陆转航 = 2...	1
+	// Isbbc                       json.Number              //?必填	中通国际物流、Tourline	32	是否是BBC订单(是=1;否=0)	0
+	// Transtypecode               string                   //?必填	EMS、中通国际物流、Tourline	1	运输方式编码	1
+	// Prodcode                    string                   //?必填	EMS、邮政国际	1	产品代码(文件 = 0100000000；信函 = 02000...	1
+	// Isnanji                     string                   //?必填	EMS	1	是否集散邮件(是 =1； 否 = 0)	1
+	// Currencytype                string                   //?必填	顺丰国际俄罗斯、转运四方快递、邮政国际	255	货币类型简写	USD
+	// Platwebsite                 string                   //?必填	顺丰国际俄罗斯	255	平台网址(当Businesstype为顺丰国际电商专...	Http://Www.Taobao.Com
+	// Crosscodeid                 string                   //?必填	贝海直邮	255	货站ID(纽约分拨中心=1 ,旧金山分拨中心=2 ...	1
+	// Definedorderinfo            string                   //?必填	韵达、韵达国际、贝海直邮	255	订单自定义信息	红色、大码
+	// Definedgoodsinfo            string                   //?必填	韵达、韵达国际	255	商品自定义信息	红色、大码
+	// Payorderno                  string                   //?必填	贝海直邮	255	支付单号	NO011244
+	// Payamount                   json.Number              //?必填	贝海直邮	16	支付金额	55
+	// Senderaccount               string                   //?必填	联邦快递	16	寄件账号(9 位数字)	1545515674521
+	// Is5kgpacking                json.Number              //?必填	联邦快递	4	是否5公斤装	1
+	// Is3pl                       string                   //?可选	EWE物流	4	是否3PL订单(是=Y;否=N)	Y
+	// Isusestock                  string                   //?可选	EWE物流	4	是否使用库存商品（不使用=0;使用=1）	0
+	// Iseconomic                  json.Number              //?可选	EWE物流	4	是否走经济线	False
+	// Specialhandling             string                   //?必填	联邦快递	4	特殊处理(留站自提=留站自提；签单返还（运...	1
+	// Codtype                     string                   //?必填	德邦物流	4	代收货款类型(三日退=3，即日退=1)	1
+	// Packageservice              string                   //?必填	德邦物流、拼多多金虹桥	4	包装类型（直接用中文）： 纸、纤、木（包...	纸箱
+	// Isout                       json.Number              //?必填	德邦物流	1	是否外发	0
+	// Receiveraccount             string                   //?必填	德邦物流	4	代收账号	6225848752785448
+	// Receiveraccountname         string                   //?必填	德邦物流	4	代收账户开启名	张三
+	// Isfresh                     json.Number              //?必填	顺丰	4	是否保鲜(是=1; 否=0)	1
+	// Remark                      string                   //?必填	菠萝派快递、品骏、顺丰国际IBS	255	客服备注	周末送，工作日没人
+	// Customerremark              string                   //?必填	菜鸟	255	客服备注	发申通
+	Ordersource string //?可选	京东阿尔法、拼多多金虹桥、捷网物流	64	订单来源	订单来源
+	// Providerid                  string                   //?可选	京东阿尔法	20	承运商ID(京东阿尔法承运商ID与物流类别两...	20160927770
+	Providercode     string //?必填	京东阿尔法、唯品会JIT	20	承运商编码	20160927770
+	Expresspaymethod string //?必填	京东阿尔法	20	快递费付款方式(顺丰必传)	1:寄方付
+	Expresstype      string //?必填	京东阿尔法	20	快件产品类别(顺丰必传)	1.顺丰次日
+	// Undeliverabledecision       string                   //?可选	速卖通物流、递四方速递、邮政国际	20	不可达处理	0
+	// Servicename                 string                   //?可选	速卖通物流、EWE物流	64	服务名称	0
+	// Cumstomscode                string                   //?可选	中通国际物流	64	海关编号	NBCUSTOMS
+	// Totallogisticsno            string                   //?可选	中通国际物流	64	提货单号	88091011
+	// Stockflag                   string                   //?必填	中通国际物流	1	是否集货(是 =1； 否 = 0)	1
+	// Ebpcode                     string                   //?必填	中通国际物流	64	电商企业代码	1
+	// Ecpname                     string                   //?必填	中通国际物流	64	电商平台名称(海关备案名称)	1
+	// Ecpcodeg                    string                   //?必填	中通国际物流	64	电商平台代码(国检)	1
+	// Ecpnameg                    string                   //?必填	中通国际物流	64	电商平台名称(国检)	1
+	// Agentcode                   string                   //?可选	中通国际物流	32	代理企业编号	154643265
+	// Agentname                   string                   //?可选	中通国际物流	32	代理企业名称	154643265
+	// Totalshippingfee            json.Number              //?必填	中通国际物流、贝海直邮	64	订单运费	0
+	// Feeunit                     string                   //?可选	中通国际物流	64	费用单位	元
+	// Clearcode                   json.Number              //?必填	中通国际物流	64	关区代码	2991
+	// Sellerid                    string                   //?必填	菜鸟	64	卖家Id	2991
+	// User_id                     string                   //?必填	菜鸟	32	使用者ID	12
+	// Logistics_services          string                   //?可选	菜鸟	32	服务值,如不需要特殊服务，该值为空	12
+	// Object_id                   string                   //?必填	菜鸟	32	请求ID	12
+	TemplateUrl string `json:"template_url"` //?必填	菜鸟、拼多多金虹桥	32	标准模板模板URL	Http://Xxx.Com
+	// Order_channels_type         string                   //?必填	菜鸟、易宇通物流、去发货、捷网物流	32	订单渠道平台编码	TB
+	// Trade_order_list            string                   //?必填	菜鸟	32	订单号,数量限制100	1222221
+	Logisticsproductname string //?必填	菜鸟	32	菜鸟物流产品名称（JH_01:智选物流;JH_02:...	JH_01
+	// Deptno                      string                   //?必填	JD	50	事业部编号	00001
+	// Businessnetworkno           string                   //?必填	德邦物流	50	发货部门编码	00001
+	// Sendertc                    string                   //?必填	JD	50	始发转运中心名称	00001
+	// Pickupdate                  string                   //?必填	JD	50	上门揽件时间
+	// Installflag                 json.Number              //?必填	JD	4	是否安维
+	// Thirdcategoryno             string                   //?必填	JD	20	三级分类编码(安维必填)
+	// Brandno                     string                   //?必填	JD	50	品牌ID(安维必填)
+	// Productsku                  string                   //?必填	JD	50	商品Sku(安维必填)
+	// Platcode                    string                   //?必填	JD	50	订单平台编码（必填）
+	// Sequenceno                  string                   //?必填	唯品会	50	顺序号（必填）
+	// Chinashipname               string                   //?必填	贝海直邮	10	国内配送公司（必填）
+	// Taxpaytype                  string                   //可选	顺丰国际IBS	32	税金支付方式（必填）(立即付款=0，货到付...	货到付款
+	// Taxsetaccounts              string                   //?必填	顺丰国际IBS	10	税金结算账号
+	// Praceltype                  string                   //?必填	去发货、E速宝、捷网物流	1	包裹类型
+	// Addressid                   string                   //可选	EbayDIS	255	发货地址ID+..	1
+	// Shoptype                    string                   //可选	通用	25	店铺类型+..	JH_001
+	// Consignpreferenceid         string                   //可选	EbayDIS	255	交运偏好ID+..	1
+	// Notifycouriertype           string                   //?必填	顺丰	10	通知顺丰收派员收件方式
+	// Mallmaskid                  string                   //?必填	拼多多金虹桥	64	代打店铺Id	184003167
+	// Goodsdescription            string                   //可选	拼多多金虹桥	64	货品描述	测试货品
+	// Openboxservice              string                   //可选	京东大件	64	开箱服务（京东大件用，0:否 1:开箱通电 2:...	0
+	// Shopnick                    string                   //可选	奇门海外物流	64	店铺名称（奇门海外专用）	0
+	// Isneedsignatureconfirmation json.Number              //?必填	顺丰	4	是否使用签收确认(是=1; 否=0)	1
 }
 type WmsLogisticsHumanInfo struct {
 	Name            string //!必填	通用	32	姓名	张三
