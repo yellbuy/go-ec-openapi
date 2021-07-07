@@ -99,49 +99,56 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 
 	var req *http.Request
 	data := param.GetRequestData()
-
-	url := router
-	if param["method"] == "Differ.JH.Business.BatchCheckRefundStatus" {
-		// 退款检测专用地址
-		url = refundCheckRouter
-		if param["platid"] == "2" || param["platid"] == "544" {
-			// 走京东退款检测地址
-			url = refundCheckJdRouter
-		} else if param["platid"] == "47" {
-			// 走拼多多退款检测地址
-			url = refundCheckPddRouter
-		} else if param["platid"] == "1008" {
-			url = newRouter
-		} else if param["platid"] == "126" {
-			url = dyRouter
-		}
-	} else if param["method"] == "Differ.JH.Other.DelegateQimenGetOrder" {
-		// 奇门委托专用地址
-		url = qimenRouter
-	} else if param["platid"] == "2" || param["platid"] == "544" {
-		// 走京东地址
-		url = jdRouter
-	} else if param["platid"] == "47" {
-		// 走拼多多地址
-		url = pddRouter
-	} else if param["platid"] == "17" {
-		url = TBDecryptRouter
-	} else if param["platid"] == "1002" || param["platid"] == "1008" {
-		// 走新地址
-		url = newRouter
-	} else if param["platid"] == "584" {
-		//顺丰丰桥地址
-		url = sfRouter
-	} else if param["platid"] == "528" {
-		//京东物流地址
-		url = jdExpRouter
-	} else if param["method"] == "Differ.JH.Business.BatchTBDecrypt" {
-		//淘宝解密地址
-		url = TBDecryptRouter
-	} else if param["platid"] == "126" {
-		//抖音地址
-		url = dyRouter
+	var url string = ""
+	platid := param["platid"].(string)
+	url = common.PostUrl[platid]
+	if platid == "752" {
+		url = router
 	}
+	if len(url) < 1 {
+		return nil, errors.New("参数错误，URL不正确")
+	}
+	// if param["method"] == "Differ.JH.Business.BatchCheckRefundStatus" {
+	// 	// 退款检测专用地址
+	// 	url = refundCheckRouter
+	// 	if param["platid"] == "2" || param["platid"] == "544" {
+	// 		// 走京东退款检测地址
+	// 		url = refundCheckJdRouter
+	// 	} else if param["platid"] == "47" {
+	// 		// 走拼多多退款检测地址
+	// 		url = refundCheckPddRouter
+	// 	} else if param["platid"] == "1008" {
+	// 		url = newRouter
+	// 	} else if param["platid"] == "126" {
+	// 		url = dyRouter
+	// 	}
+	// } else if param["method"] == "Differ.JH.Other.DelegateQimenGetOrder" {
+	// 	// 奇门委托专用地址
+	// 	url = qimenRouter
+	// } else if param["platid"] == "2" || param["platid"] == "544" {
+	// 	// 走京东地址
+	// 	url = jdRouter
+	// } else if param["platid"] == "47" {
+	// 	// 走拼多多地址
+	// 	url = pddRouter
+	// } else if param["platid"] == "17" {
+	// 	url = TBDecryptRouter
+	// } else if param["platid"] == "1002" || param["platid"] == "1008" {
+	// 	// 走新地址
+	// 	url = newRouter
+	// } else if param["platid"] == "584" {
+	// 	//顺丰丰桥地址
+	// 	url = sfRouter
+	// } else if param["platid"] == "528" {
+	// 	//京东物流地址
+	// 	url = jdExpRouter
+	// } else if param["method"] == "Differ.JH.Business.BatchTBDecrypt" {
+	// 	//淘宝解密地址
+	// 	url = TBDecryptRouter
+	// } else if param["platid"] == "126" {
+	// 	//抖音地址
+	// 	url = dyRouter
+	// }
 	//fmt.Println("execute:", strings.NewReader(data))
 	req, err = http.NewRequest("POST", url, strings.NewReader(data))
 	if err != nil {
@@ -166,6 +173,8 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	//fmt.Println(string(bytes))
 	return
 }
+
+//缓存地址Url
 
 // Execute 执行API接口
 func (client *Client) Execute(method string, param common.Parameter) (res *simplejson.Json, body []byte, err error) {

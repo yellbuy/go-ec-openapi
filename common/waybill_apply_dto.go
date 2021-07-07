@@ -861,7 +861,7 @@ type WmsBusinessSendReturn struct {
 	Submessage       string      //必填 通用 200 子级消息 订单已出库
 	Polyapitotalms   json.Number //必填 通用 64 菠萝派总耗时 102
 	Polyapirequestid string      //必填 通用 64 请求菠萝派编号 20161222154212742
-	Codmoney         string      //必填 京东 64 货到付款金额 26.30
+	Codmoney         json.Number //必填 京东 64 货到付款金额 26.30
 	Logisticnos      string      //必填 LaZaDa 64 物流单号 26.30
 	Subplatorderno   string      //必填 苏宁特卖 32 订单行号，仅限异步模式 00890643547303
 	Logisticname     string      //可选 通用 32 快递名称 顺风
