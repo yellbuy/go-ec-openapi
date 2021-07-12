@@ -104,6 +104,8 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	url = common.PostUrl[platid]
 	if platid == "752" {
 		url = router
+	} else if param["method"] == "Differ.JH.Business.BatchTBDecrypt" {
+		url = TBDecryptRouter
 	}
 	if len(url) < 1 {
 		return nil, errors.New("参数错误，URL不正确")

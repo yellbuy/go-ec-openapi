@@ -181,6 +181,8 @@ type DownLoadOrderListOrdersReturn struct {
 	Oaid                   string            `json:"oaid"`
 	Shopname               string            `json:"shopname"`
 	Tid                    int64             `json:"tid"`
+	IsPremium              json.Number       `json:"ispremium"`
+	PremiumAmount          json.Number       `json:"premiumamount"`
 }
 type ServiceOrdersV2 struct {
 	Serviceid    string      `json:"serviceid"`
