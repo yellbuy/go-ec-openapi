@@ -580,7 +580,7 @@ type WmsLogisticsPostOrder struct {
 	Sitecode  string //?必填	安能快递、转运四方快递、京东阿尔法	32	网点名称	1354512
 	// Ischeckrange                json.Number              //?必填	天天快递	32	是否检测超区(是=1;否=0)	0
 	// Temprangetype               string                   //?必填	顺丰	32	温度范围(冷藏 = 1；冷冻 = 3)	1
-	// Mainsubpaymode              string                   //?必填	EMS	1	一票多单计费方式(集中主单计费 = 1；平均...	1
+	Mainsubpaymode string //?必填	EMS	1	一票多单计费方式(集中主单计费 = 1；平均...	1
 	// Transtype                   string                   //?必填	EMS、中通国际物流、Tourline、JD	1	运输方式(陆运 = 0；航空 = 1；陆转航 = 2...	1
 	// Isbbc                       json.Number              //?必填	中通国际物流、Tourline	32	是否是BBC订单(是=1;否=0)	0
 	// Transtypecode               string                   //?必填	EMS、中通国际物流、Tourline	1	运输方式编码	1
@@ -657,6 +657,7 @@ type WmsLogisticsPostOrder struct {
 	// Openboxservice              string                   //可选	京东大件	64	开箱服务（京东大件用，0:否 1:开箱通电 2:...	0
 	// Shopnick                    string                   //可选	奇门海外物流	64	店铺名称（奇门海外专用）	0
 	// Isneedsignatureconfirmation json.Number              //?必填	顺丰	4	是否使用签收确认(是=1; 否=0)	1
+	Oaid string
 }
 type WmsLogisticsHumanInfo struct {
 	Name            string //!必填	通用	32	姓名	张三
