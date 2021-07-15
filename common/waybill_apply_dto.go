@@ -183,6 +183,7 @@ type DownLoadOrderListOrdersReturn struct {
 	Tid                    int64             `json:"tid"`
 	IsPremium              json.Number       `json:"ispremium"`
 	PremiumAmount          json.Number       `json:"premiumamount"`
+	SourceOrderCode        string            `json:"sourceOrderCode"`
 }
 type ServiceOrdersV2 struct {
 	Serviceid    string      `json:"serviceid"`

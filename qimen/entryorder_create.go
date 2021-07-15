@@ -132,6 +132,7 @@ type OrderLine struct {
 	OwnerCode string `xml:"ownerCode,omitempty"`
 	//子订单信息
 	SubSourceOrderCode string `xml:"subSourceOrderCode"`
+	SourceOrderCode    string `xml:"sourceOrderCode"`
 }
 type Items struct {
 	ItemList []*Item `xml:"item"`
