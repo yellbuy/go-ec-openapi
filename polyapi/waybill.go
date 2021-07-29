@@ -134,7 +134,9 @@ func (client *Client) GetWaybillV2(request []*common.WmsLogisticsPostOrder) (*co
 	//此处可能还要加工Json
 	_, body, err := client.Execute(method, params)
 	if err != nil {
-		return nil, err
+		var OutData common.WmsLogisticsReturn
+		json.Unmarshal(body, &OutData)
+		return &OutData, err
 	}
 	var OutData common.WmsLogisticsReturn
 	err = json.Unmarshal(body, &OutData)

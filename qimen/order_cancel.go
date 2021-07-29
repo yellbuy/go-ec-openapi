@@ -16,13 +16,16 @@ func OrderCancelParse(body []byte) (res *OrderCancelReqDto, err error) {
 }
 
 type OrderCancelReqDto struct {
-	XMLName       xml.Name          `xml:"request"`
-	WarehouseCode string            `xml:"warehouseCode"`
-	OwnerCode     string            `xml:"ownerCode"`
-	OrderCode     string            `xml:"orderCode"`
-	OrderId       string            `xml:"orderId"`
-	OrderType     string            `xml:"orderType"`
-	CancelReason  string            `xml:"cancelReason"`
-	ExtendProps   map[string]string `xml:"extendProps"`
-	remark        string            `xml:"remark"`
+	XMLName       xml.Name                `xml:"request"`
+	WarehouseCode string                  `xml:"warehouseCode"`
+	OwnerCode     string                  `xml:"ownerCode"`
+	OrderCode     string                  `xml:"orderCode"`
+	OrderId       string                  `xml:"orderId"`
+	OrderType     string                  `xml:"orderType"`
+	CancelReason  string                  `xml:"cancelReason"`
+	ExtendProps   *OrderCancelExtendProps `xml:"extendProps"`
+	Remark        string                  `xml:"remark"`
+}
+type OrderCancelExtendProps struct {
+	ReservoirCode string `xml:"ReservoirCode"`
 }

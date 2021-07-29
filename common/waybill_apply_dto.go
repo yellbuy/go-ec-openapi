@@ -784,6 +784,9 @@ type WmsLogisticsPostOrderResultItem struct {
 	Newicon                string            //?必填	顺丰	1	NewIcon 标	1
 	Newabflag              string            //?必填	顺丰	1	NewAbFlag 标	1
 	Xbflag                 string            //?必填	顺丰	1	Xb 标	1
+	Encryptprintinfo       string            //加密打印字段
+	Encryptedtoken         string            //加密token
+	Signature              string            //加密
 }
 type WmsPackageInfo struct {
 	Logisticno      string //!必填	通用	32	运单号	HT8895SW389966
