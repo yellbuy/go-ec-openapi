@@ -10,6 +10,10 @@ import (
 	"github.com/yellbuy/go-ec-openapi/polyapi"
 )
 
+func (client *Client) GetDyPlatApiReuestInfo(postData string) (*common.WmsPlatApiReturnInfo, error) {
+	err := errors.New("未实现")
+	return nil, err
+}
 func (client *Client) GetWaybillV2(request []*common.WmsLogisticsPostOrder) (*common.WmsLogisticsReturn, error) {
 	err := errors.New("未实现")
 	return nil, err

@@ -121,6 +121,27 @@ func (client *Client) OrderSendV2(request *common.WmsBusinessSendBizcontent) (*c
 	return &OutData, err
 }
 
+//换取抖音打印参数
+func (client *Client) GetDyPlatApiReuestInfo(postData string) (*common.WmsPlatApiReturnInfo, error) {
+	method := "Differ.JH.Business.GetPlatApiRequestInfo"
+	var reqA common.WmsPlatApiReuestInfo
+	reqA.PlatMethod = postData
+	bizcontent, _ := json.Marshal(reqA)
+	req := make(map[string]interface{})
+	req["bizcontent"] = string(bizcontent)
+	params, err := common.InterfaceToParameter(req)
+	//此处可能还要加工Json
+	_, body, err := client.Execute(method, params)
+	if err != nil {
+		var OutData common.WmsPlatApiReturnInfo
+		json.Unmarshal(body, &OutData)
+		return &OutData, err
+	}
+	var OutData common.WmsPlatApiReturnInfo
+	err = json.Unmarshal(body, &OutData)
+	return &OutData, err
+}
+
 //预约单号接口V2
 func (client *Client) GetWaybillV2(request []*common.WmsLogisticsPostOrder) (*common.WmsLogisticsReturn, error) {
 	//开始提交数据

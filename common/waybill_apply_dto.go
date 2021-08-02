@@ -528,6 +528,18 @@ type WaybillApplyNewInfo struct {
 	// 兼容pdd的接口，电子面单内容
 	PrintData string `json:"-"`
 }
+type WmsPlatApiReturnInfo struct {
+	Code             string `json:"code"`             //必填	通用	64	返回码	10000
+	Msg              string `json:"msg"`              //必填	通用	64	返回消息	Success
+	Subcode          string `json:"subcode"`          //必填	通用	200	子集编码	LXO.JD.REQUEST_FAIL
+	Submessage       string `json:"submessage"`       //必填	通用	200	子级消息	订单已出库
+	Polyapitotalms   int    `json:"polyapitotalms"`   //必填	通用	64	菠萝派总耗时	102
+	Polyapirequestid string `json:"polyapirequestid"` //必填	通用	64	请求菠萝派编号	20161222154212742
+	Requestinfo      string `json:"requestinfo"`
+}
+type WmsPlatApiReuestInfo struct {
+	PlatMethod string `json:"platMethod"`
+}
 type WmsLogisticsBizcontent struct {
 	Orders []*WmsLogisticsPostOrder
 }

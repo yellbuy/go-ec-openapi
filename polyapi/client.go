@@ -98,7 +98,6 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	}
 
 	var req *http.Request
-	data := param.GetRequestData()
 	var url string = ""
 	platid := param["platid"].(string)
 	url = common.PostUrl[platid]
@@ -106,6 +105,8 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 		url = router
 	} else if param["method"] == "Differ.JH.Business.BatchTBDecrypt" {
 		url = TBDecryptRouter
+	} else if param["method"] == "Differ.JH.Business.GetPlatApiReuestInfo" {
+		url = newRouter
 	}
 	if len(url) < 1 {
 		return nil, errors.New("参数错误，URL不正确")
@@ -151,6 +152,10 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	// 	//抖音地址
 	// 	url = dyRouter
 	// }
+	// if param["method"] == "Differ.JH.Business.GetPlatApiReuestInfo" {
+	// 	param["platid"] = "126"
+	// }
+	data := param.GetRequestData()
 	//fmt.Println("execute:", strings.NewReader(data))
 	req, err = http.NewRequest("POST", url, strings.NewReader(data))
 	if err != nil {
