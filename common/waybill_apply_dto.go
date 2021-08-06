@@ -305,7 +305,8 @@ type CheckRefundReturnData struct {
 	Platorderno             string                                      `json:"platorderno"`             //必填	通用	64	平台订单号	SE88956989966
 	Refundstatus            string                                      `json:"refundstatus"`            //必填	通用	25	退款状态(没有退款=JH_07，买家已经申请退款等待卖家同意=JH_01，卖家已经同意退款等待买家退货=JH_02，买家已经退货等待卖家确认收货=JH_03，卖家拒绝退款=JH_04，退款关闭=JH_05，退款成功=JH_06，退款中=JH_08，部分退款=JH_09，待审核=JH_10，其他=JH_99)
 	Refundstatusdescription string                                      `json:"refundstatusdescription"` //可选	通用	32	退款状态说明	退款中
-	Tradestatus             string                                      `json:"tradestatus"`             //必填	通用	25	订单交易状态(等待买家付款=JH_01，等待卖家发货=JH_02，等待买家确认收货=JH_03，交易成功=JH_04，交易关闭=JH_05，已暂停=JH_06，已锁定=JH_07，卖家部分发货=JH_08，订单冻结=JH_09，缺货订单=JH_10，投诉订单=JH_12，已拆单=JH_13，退换货订单=JH_14，待开票订单(亚马逊)=JH_15，处理中订单（库巴国美）=JH_17，未发货取消（唯品会JITX）=JH_18，已发货取消（唯品会JITX）=JH_19，已揽收取消（唯品会JITX）=JH_20，无需发货(格格家履约)=JH_21，取消待审核（孩子王与孩子王一件代发专用）=JH_22，已拒收（每日一淘专用）=JH_23，禁发订单（唯品会JITX专用）=JH_24，其他（返参使用）=JH_98，所有订单=JH_99)
+	Polyapirequestid        string                                      `json:"polyapirequestid"`
+	Tradestatus             string                                      `json:"tradestatus"` //必填	通用	25	订单交易状态(等待买家付款=JH_01，等待卖家发货=JH_02，等待买家确认收货=JH_03，交易成功=JH_04，交易关闭=JH_05，已暂停=JH_06，已锁定=JH_07，卖家部分发货=JH_08，订单冻结=JH_09，缺货订单=JH_10，投诉订单=JH_12，已拆单=JH_13，退换货订单=JH_14，待开票订单(亚马逊)=JH_15，处理中订单（库巴国美）=JH_17，未发货取消（唯品会JITX）=JH_18，已发货取消（唯品会JITX）=JH_19，已揽收取消（唯品会JITX）=JH_20，无需发货(格格家履约)=JH_21，取消待审核（孩子王与孩子王一件代发专用）=JH_22，已拒收（每日一淘专用）=JH_23，禁发订单（唯品会JITX专用）=JH_24，其他（返参使用）=JH_98，所有订单=JH_99)
 	Childrenrefundstatus    []CheckRefundReturnChildrenRefundStatusItem `json:"childrenrefundstatus"`
 	ShopId                  int64
 }
