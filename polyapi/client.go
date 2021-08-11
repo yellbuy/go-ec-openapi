@@ -105,7 +105,7 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 		url = router
 	} else if param["method"] == "Differ.JH.Business.BatchTBDecrypt" {
 		url = TBDecryptRouter
-	} else if param["method"] == "Differ.JH.Business.GetPlatApiReuestInfo" {
+	} else if param["method"] == "Differ.JH.Business.GetPlatApiRequestInfo" {
 		url = newRouter
 	}
 	if len(url) < 1 {
