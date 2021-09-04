@@ -563,7 +563,7 @@ type WmsLogisticsPostOrder struct {
 	// Height                      json.Number              //!必填	通用	4	包裹高(单位：CM)	18
 	// Volume                      json.Number              //可选	通用	8	包裹体积	12
 	// Ispickup                    json.Number              //可选	通用	1	是否上门揽收(上门揽收=1，不上门揽收=0；...	0
-	// Producttype                 string                   //可选	通用	20	产品类型+..	服装
+	Producttype                 string                   //可选	通用	20	产品类型+..	服装
 	Logistictype      string                 //可选	通用	32	物流类型(标准物流=JH_Normal，经济物流=JH...+..	JH_Normal
 	Cpcode            string                 //!必填	通用	32	承运公司编码	POSTB
 	Dmssorting        json.Number            //!必填	通用	32	是否使用智分宝预分拣(仓库WMS系统对接落地...	1
