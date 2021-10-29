@@ -184,6 +184,7 @@ type DownLoadOrderListOrdersReturn struct {
 	IsPremium              json.Number       `json:"ispremium"`
 	PremiumAmount          json.Number       `json:"premiumamount"`
 	SourceOrderCode        string            `json:"sourceOrderCode"`
+	Desenmobile            string            `json:"desenmobile"`
 }
 type ServiceOrdersV2 struct {
 	Serviceid    string      `json:"serviceid"`
@@ -563,7 +564,7 @@ type WmsLogisticsPostOrder struct {
 	// Height                      json.Number              //!必填	通用	4	包裹高(单位：CM)	18
 	// Volume                      json.Number              //可选	通用	8	包裹体积	12
 	// Ispickup                    json.Number              //可选	通用	1	是否上门揽收(上门揽收=1，不上门揽收=0；...	0
-	Producttype                 string                   //可选	通用	20	产品类型+..	服装
+	Producttype       string                 //可选	通用	20	产品类型+..	服装
 	Logistictype      string                 //可选	通用	32	物流类型(标准物流=JH_Normal，经济物流=JH...+..	JH_Normal
 	Cpcode            string                 //!必填	通用	32	承运公司编码	POSTB
 	Dmssorting        json.Number            //!必填	通用	32	是否使用智分宝预分拣(仓库WMS系统对接落地...	1
@@ -582,7 +583,7 @@ type WmsLogisticsPostOrder struct {
 	// Isliquid                    json.Number              //?必填	Panex	0	是否液体(是=1; 否=0)	0
 	// Ishasbattery                json.Number              //?必填	Panex、中邮小包、互联易、顺丰国际俄罗斯、Wish邮、速卖通物流、递四方速递、易宇通物流、去发货、E速宝	0	是否包含电池(是=1; 否=0)	0
 	// Isinsurance                 json.Number              //?必填	联邦快递、京东阿尔法、JD、递四方速递	32	是否保价(保价=1; 不保价=0)	0
-	// Isvip                       json.Number              //?必填	中通	32	是否VIP尊享件(是=1; 否=0)	0
+	Isvip json.Number //?必填	中通	32	是否VIP尊享件(是=1; 否=0)	0
 	// Istopayment                 json.Number              //?必填	中通	32	是否到付件(是=1; 否=0)	0
 	// Deliverytype                string                   //?必填	德邦物流、运东西	32	送货方式(自提=JH_Picked，送货(不含上楼)=...	JH_Picked
 	// Backsignbill                string                   //?必填	顺丰、德邦物流、JD	32	签收回单(无需返单=JH_001，需要返单=JH_0...	0
@@ -654,7 +655,7 @@ type WmsLogisticsPostOrder struct {
 	// Pickupdate                  string                   //?必填	JD	50	上门揽件时间
 	// Installflag                 json.Number              //?必填	JD	4	是否安维
 	// Thirdcategoryno             string                   //?必填	JD	20	三级分类编码(安维必填)
-	// Brandno                     string                   //?必填	JD	50	品牌ID(安维必填)
+	Brandno string //?必填	JD	50	品牌ID(安维必填)
 	// Productsku                  string                   //?必填	JD	50	商品Sku(安维必填)
 	// Platcode                    string                   //?必填	JD	50	订单平台编码（必填）
 	// Sequenceno                  string                   //?必填	唯品会	50	顺序号（必填）
@@ -667,7 +668,7 @@ type WmsLogisticsPostOrder struct {
 	// Consignpreferenceid         string                   //可选	EbayDIS	255	交运偏好ID+..	1
 	// Notifycouriertype           string                   //?必填	顺丰	10	通知顺丰收派员收件方式
 	// Mallmaskid                  string                   //?必填	拼多多金虹桥	64	代打店铺Id	184003167
-	// Goodsdescription            string                   //可选	拼多多金虹桥	64	货品描述	测试货品
+	Goodsdescription string //可选	拼多多金虹桥	64	货品描述	测试货品
 	// Openboxservice              string                   //可选	京东大件	64	开箱服务（京东大件用，0:否 1:开箱通电 2:...	0
 	// Shopnick                    string                   //可选	奇门海外物流	64	店铺名称（奇门海外专用）	0
 	// Isneedsignatureconfirmation json.Number              //?必填	顺丰	4	是否使用签收确认(是=1; 否=0)	1
@@ -886,4 +887,70 @@ type WmsBusinessSendReturn struct {
 	Subplatorderno   string      //必填 苏宁特卖 32 订单行号，仅限异步模式 00890643547303
 	Logisticname     string      //可选 通用 32 快递名称 顺风
 	Logistictype     string      //必填 通用 25 快递类别(JH前缀为国内快递 ，JHI为国际快...+.. JH_001
+}
+type WmsLogisticsPrintOrderBizcontent struct {
+	Orderno          string `json:"orderno"`          //必填	通用	32	客户订单号(多个用英文逗号隔开)	T20160922120
+	Logisticno       string `json:"logisticno"`       //必填	通用	32	运单号(多个用英文逗号隔开)	Y20160927770
+	Outputformat     string `json:"outputformat"`     //必填	通用	10	打印输出格式(PDF格式=JH_PDF，PDF格式的网...	JH_PDF
+	Labelformat      string `json:"labelformat"`      //必填	通用	10	打印尺寸格式(A4纸=JH_A4，标签纸=JH_Label...+..	JH_A4
+	Printobjecttype  string `json:"printobjecttype"`  //必填	通用	20	打印类别(标签=JH_Label，标签+配货=JH_Lab...+..	JH_Label
+	Numpackage       int    `json:"numpackage"`       //必填	通用	4	包裹数量(默认填写值为1，有子母件时“IsMu...	1
+	Countrycode      string `json:"countrycode"`      //必填	去发货	32	国家二字简码	US
+	Logisticsid      string `json:"logisticsid"`      //必填	去发货	32	渠道编码，去发货系统的渠道编号	WELPMDWY396
+	Orderitemno      string `json:"orderitemno"`      //必填	LaZaDa物流	32	商品编码(多个用英文逗号隔开)	Y20160927770
+	Sendername       string `json:"sendername"`       //必填	申通	20	寄件人姓名	张三
+	Sendercompany    string `json:"sendercompany"`    //必填	申通	20	寄件人公司名称	笛佛网店管家
+	Senderprovince   string `json:"senderprovince"`   //必填	申通	20	寄件人省份	浙江省
+	Sendercity       string `json:"sendercity"`       //必填	申通	20	寄件人城市	杭州
+	Senderarea       string `json:"senderarea"`       //必填	申通	20	寄件人区/县	西湖区
+	Senderaddress    string `json:"senderaddress"`    //必填	申通	20	寄件人地址	紫金花路120号
+	Sendertel        string `json:"sendertel"`        //必填	申通	20	寄件人电话	15044444444
+	Receivername     string `json:"receivername"`     //必填	申通	20	收件人姓名	李四
+	Receivercompany  string `json:"receivercompany"`  //必填	申通	20	收件人公司名称	上海东商有限公司
+	Receiverprovince string `json:"receiverprovince"` //必填	申通	20	收件人省份	上海
+	Receivercity     string `json:"receivercity"`     //必填	申通	20	收件人城市	上海
+	Receiverarea     string `json:"receiverarea"`     //必填	申通	20	收件人区/县	浦东新区
+	Receiveraddress  string `json:"receiveraddress"`  //必填	申通	20	收件人地址	浦东156号
+	Receivertel      string `json:"receivertel"`      //必填	申通	20	收件人电话	13587944872
+	Cargoname        string `json:"cargoname"`        //必填	申通	20	货物内件品名	茶杯
+	Senddata         string `json:"senddata"`         //必填	申通	20	发货日期	2016-7-01 12:34:01
+	Weight           string `json:"weight"`           //必填	申通	20	重量	620
+	Remark           string `json:"remark"`           //必填	申通	20	备注	轻拿轻放
+	Carrier          string `json:"carrier"`          //必填	Ebay	20	运输公司(CNPOST;FEDEX)	联邦
+	Selleruserid     string `json:"selleruserid"`     //必填	Ebay	20	卖家eBay账户	u12451547
+	Printno          string `json:"printno"`          //必填	万邑通ISP	32	打印单号	154643265
+	Iscloudprint     bool   `json:"iscloudprint"`     //必填	速卖通物流	10	是否使用云打印	true
+	Needprintdetail  bool   `json:"needprintdetail"`  //必填	速卖通物流、飞裕达	10	是否需要打印详情（云打印时选填）	true
+	Extenddata       string `json:"extenddata"`       //必填	速卖通物流	32	自定义分拣单信息	154643265
+	Providercode     string `json:"providercode"`     //必填	唯品会JIT	20	承运商编码	20160927770
+	Packageno        string `json:"packageno"`        //必填	唯品会JIT	20	包裹序号	20160927770
+	Fontsize         string `json:"fontsize"`         //必填	澳邮物流	20	面单字体大小(澳邮物流专用)	0
+	Platorderno      string `json:"platorderno"`      //必填	京东印尼	20	平台订单号(京东印尼专用)	0
+	Sipshopid        int    `json:"sipshopid"`        //必填	110	64	SIP业务的子店铺ID	184003167
+	CpCode           string `json:"cpcode"`
+}
+type WmsLogisticsPrintOrderReturnResults struct {
+	Issuccess      json.Number `json:"issuccess"`      //必填	通用	1	是否成功(0表示失败；1表示成功)	0
+	Code           string      `json:"code"`           //必填	通用	256	错误编码	Failed
+	Message        string      `json:"message"`        //可选	通用	256	是否成功	订单已出库
+	Orderno        string      `json:"orderno"`        //必填	通用	32	客户订单号(多个用英文逗号隔开)	T20160922120
+	Logisticno     string      `json:"logisticno"`     //必填	通用	32	运单号(多个用英文逗号隔开)	Y20160927770
+	Bufferdatatype json.Number `json:"bufferdatatype"` //必填	通用	4	二进制内容类别(PDF=0，JPG=1，GIF=2，PNG=...	0
+	//Bufferdata             []byte `json:"bufferdata"`             //必填	通用	-	打印内容(二进制)	-
+	//Base64stringbufferdata []byte `json:"base64stringbufferdata"` //必填	通用		打印内容(二进制)转Base64编码
+	Urldata   string `json:"urldata"`   //必填	通用	-	打印内容网址	http://www.aaa.com/stream.pdf
+	Printdata string `json:"printdata"` //可选	通用	-	打印内容	JVBERi0xLjQKJfbk/N8KMS
+	Htmldata  string `json:"htmldata"`  //可选	通用	-	打印内容
+}
+type WmsLogisticsPrintOrderReturn struct {
+	Code             string                                 `json:"code"`             //必填	通用	64	返回码	10000
+	Msg              string                                 `json:"msg"`              //必填	通用	64	返回消息	Success
+	Subcode          string                                 `json:"subcode"`          //必填	通用	200	子集编码	LXO.JD.REQUEST_FAIL
+	Submessage       string                                 `json:"submessage"`       //必填	通用	200	子级消息	订单已出库
+	Polyapitotalms   json.Number                            `json:"polyapitotalms"`   //必填	通用	64	菠萝派总耗时	102
+	Polyapirequestid string                                 `json:"polyapirequestid"` //必填	通用	64	请求菠萝派编号	20161222154212742
+	Results          []*WmsLogisticsPrintOrderReturnResults `json:"results"`
+}
+type WmsLogisticsPrintOrderBizcontentOrders struct {
+	Orders []*WmsLogisticsPrintOrderBizcontent `json:"orders"`
 }

@@ -106,7 +106,13 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	} else if param["method"] == "Differ.JH.Business.BatchTBDecrypt" {
 		url = TBDecryptRouter
 	} else if param["method"] == "Differ.JH.Business.GetPlatApiRequestInfo" {
-		url = newRouter
+		if platid == "2" {
+			url = jdRouter
+		} else {
+			url = newRouter
+		}
+	} else if param["method"] == "Differ.JH.Logistics.BatchPrintOrder" {
+		url = "http://apijd.polyapi.com/openapi/do"
 	}
 	if len(url) < 1 {
 		return nil, errors.New("参数错误，URL不正确")
