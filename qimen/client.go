@@ -105,7 +105,7 @@ func execute(client *Client, param common.Parameter, body []byte) (bytes []byte,
 		baseUrl = client.BaseUrl
 	}
 	fullUrl = fmt.Sprintf("%s?%s", baseUrl, fullUrl)
-	fmt.Println(fullUrl, "\n", string(body))
+	//fmt.Println(fullUrl, "\n", string(body))
 
 	req, err = http.NewRequest("POST", fullUrl, strings.NewReader(string(body)))
 	if err != nil {

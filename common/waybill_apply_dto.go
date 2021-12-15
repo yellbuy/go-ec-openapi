@@ -185,6 +185,7 @@ type DownLoadOrderListOrdersReturn struct {
 	PremiumAmount          json.Number       `json:"premiumamount"`
 	SourceOrderCode        string            `json:"sourceOrderCode"`
 	Desenmobile            string            `json:"desenmobile"`
+	Ordertype              string            `json:"ordertype"`
 }
 type ServiceOrdersV2 struct {
 	Serviceid    string      `json:"serviceid"`

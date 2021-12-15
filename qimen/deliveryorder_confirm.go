@@ -34,6 +34,33 @@ func (client *Client) DeliveryOrderConfirm(dto *DeliveryOrderConfirmReqDto) (bod
 	return
 }
 
+// 奇门出库单回传
+func (client *Client) QimenStockoutConfirm(dto *WmsQimenStockoutConfirm) (body []byte, err error) {
+	var bytes []byte
+	bytes, err = xml.Marshal(dto)
+	if err != nil {
+		return nil, err
+	}
+	req := make(map[string]interface{})
+	//fmt.Println("bizcontent：", string(bizcontent))
+	params, resErr := common.InterfaceToParameter(req)
+	if resErr != nil {
+		fmt.Println(resErr)
+		err = resErr
+		body = nil
+		return
+	}
+
+	// 通过奇门代理平台
+	method := "taobao.qimen.stockout.confirm"
+	fmt.Println("奇门出库单推送报文", string(bytes))
+	body, err = client.Execute(method, params, bytes)
+	if err != nil {
+		fmt.Println(method, err)
+	}
+	return
+}
+
 // 奇门淘宝订单解密
 func (client *Client) QimenTBDecrypt(dto *WmsQimenTBDecrypt) (*WmsQimenTBDecryptReturn, error) {
 	var bytes []byte
