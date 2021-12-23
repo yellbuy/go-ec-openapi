@@ -42,7 +42,7 @@ func (client *Client) DownloadProductList(pageIndex, pageSize int, status, produ
 			reqJson.Set("shoptype", "JH_001")
 		}
 	}
-
+	reqJson.Set("producttype", "")
 	bizcontent, resErr := reqJson.Encode()
 	if resErr != nil {
 		fmt.Println(resErr)

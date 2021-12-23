@@ -186,6 +186,7 @@ type DownLoadOrderListOrdersReturn struct {
 	SourceOrderCode        string            `json:"sourceOrderCode"`
 	Desenmobile            string            `json:"desenmobile"`
 	Ordertype              string            `json:"ordertype"`
+	ExpressCode            string            `json:"expressCode"`
 }
 type ServiceOrdersV2 struct {
 	Serviceid    string      `json:"serviceid"`
