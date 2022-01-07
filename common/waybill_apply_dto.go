@@ -488,7 +488,7 @@ type WaybillApplyNewRequest struct {
 	// 物流服务商编码，必填
 	CpCode string `valid:"Required" json:"cp_code"`
 	// 菠萝派业务类型
-	BusinessType uint `json:"business_type"`
+	BusinessType string `json:"business_type"`
 	// 菠萝派业务类型
 	LogisticsServices string `json:"logistics_services"`
 	// 菠萝派月结帐号

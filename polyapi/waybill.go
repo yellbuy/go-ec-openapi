@@ -218,7 +218,7 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	}
 	dto.CodPayMoney = reqData.CodPayMoney
 
-	if request.BusinessType > 0 {
+	if request.BusinessType != "0" {
 		dto.BusinessType = fmt.Sprintf("%d", request.BusinessType)
 	} else {
 		dto.BusinessType = "JH_Normal"
