@@ -556,10 +556,10 @@ type WmsLogisticsBizcontent struct {
 	Orders []*WmsLogisticsPostOrder
 }
 type WmsLogisticsPostOrder struct {
-	Orderno     string //!必填	通用	32	订单号	FO58965555996
-	Plattradeno string //可选	通用	32	平台原始单号(多个原始单号以英文“,”分隔...	YS567417751123
-	// Ismultiplepieces            json.Number              //可选	通用	4	是否为子母件(子母件=1，非子母件=0；默认0...	0
-	Numpackage json.Number //!必填	通用	4	包裹数量(默认填写值为1，有子母件时“IsMu...	1
+	Orderno          string      //!必填	通用	32	订单号	FO58965555996
+	Plattradeno      string      //可选	通用	32	平台原始单号(多个原始单号以英文“,”分隔...	YS567417751123
+	Ismultiplepieces json.Number //可选	通用	4	是否为子母件(子母件=1，非子母件=0；默认0...	0
+	Numpackage       json.Number //!必填	通用	4	包裹数量(默认填写值为1，有子母件时“IsMu...	1
 	// Logisticno                  string                   //可选	通用	32	运单号(仅限于先预约单号的平台，如果是子...	XO434334244543423
 	Businesstype string      //!必填	通用	32	平台的业务类型(标准业务=JH_Normal)+..	JH_Normal
 	Businessplat string      //可选	通用	20	电商平台标识码+..	Taobao
