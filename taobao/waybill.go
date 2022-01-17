@@ -38,6 +38,10 @@ func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData
 	}
 	return result, data, err
 }
+func (client *Client) GetWayBillCondition(postData *polyapi.WayBillConditionPost) (*polyapi.WayBillConditionReturn, error) {
+	err := errors.New("未实现")
+	return nil, err
+}
 func (client *Client) GetDyPlatApiReuestInfo(postData string) (*common.WmsPlatApiReturnInfo, error) {
 	err := errors.New("未实现")
 	return nil, err

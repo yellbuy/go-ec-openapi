@@ -67,4 +67,6 @@ type Client interface {
 	GetDyPlatApiReuestInfo(postData string) (*common.WmsPlatApiReturnInfo, error)
 	//菠萝派批量物流打印接口
 	LogisticsPrintOrderList(request []*common.WmsLogisticsPrintOrderBizcontent, extData ...string) (common.WmsLogisticsPrintOrderReturn, error)
+	//获取店铺物流配置接口
+	GetWayBillCondition(postData *polyapi.WayBillConditionPost) (*polyapi.WayBillConditionReturn, error)
 }

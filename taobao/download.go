@@ -4,7 +4,6 @@ import (
 	"errors"
 
 	"github.com/yellbuy/go-ec-openapi/common"
-
 )
 
 func (client *Client) DownloadProductList(pageIndex, pageSize int, status, productToken string, extData ...string) (res []*common.Product, hasNextPage bool, nextToken string, body []byte, err error) {
