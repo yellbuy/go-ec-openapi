@@ -98,7 +98,7 @@ type WmsQimenStockout struct {
 	XMLName       xml.Name                       `xml:"request"`
 	DeliveryOrder *WmsQimenStockoutDeliveryOrder `xml:"deliveryOrder"` //DeliveryOrder	false		出库单信息
 	OrderLines    *WmsQimenStockOrderLine        `xml:"orderLines"`    //OrderLine[]	false		单据信息
-	ExtendProps   map[string]interface{}         `xml:"extendProps"`   //Map	false		扩展属性
+	//ExtendProps   map[string]interface{}         `xml:"extendProps"`   //Map	false		扩展属性
 }
 type WmsQimenStockOrderLine struct {
 	OrderLine []*QimenOrderLines `xml:"orderLine"`

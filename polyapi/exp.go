@@ -2,7 +2,6 @@ package polyapi
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/yellbuy/go-ec-openapi/common"
 )
@@ -63,7 +62,6 @@ func (client *Client) GetWayBillCondition(postData *WayBillConditionPost) (*WayB
 	req["bizcontent"] = string(bizcontent)
 	params, err := common.InterfaceToParameter(req)
 	_, body, err := client.Execute(method, params)
-	fmt.Println(string(body))
 	//logs.Debug(string(body))
 	OutData := new(WayBillConditionReturn)
 	if err != nil {
