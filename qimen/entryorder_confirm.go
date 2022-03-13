@@ -63,10 +63,10 @@ type EntryOrderConfirmReqDto struct {
 	OrderLines EntryOrderLines `xml:"orderLines"`
 }
 type EntryOrderConfirmReqDtoV2 struct {
-	XMLName    xml.Name             `xml:"request"`
-	Text       string               `xml:",chardata"`
-	EntryOrder *EntryOrderV2        `xml:"entryOrder"`
-	OrderLines []*EntryOrderLinesV2 `xml:"orderLines"`
+	XMLName    xml.Name           `xml:"request"`
+	Text       string             `xml:",chardata"`
+	EntryOrder *EntryOrderV2      `xml:"entryOrder"`
+	OrderLines *EntryOrderLinesV2 `xml:"orderLines"`
 }
 type EntryOrderV2 struct {
 	OrderCode             string `xml:"orderCode"`             //String	false	订单编码	订单编码
@@ -92,6 +92,9 @@ type EntryOrderV2 struct {
 	ShopCode              string `xml:"shopCode"`              //String	true	ssss	店铺编码
 }
 type EntryOrderLinesV2 struct {
+	OrderLine []*EntryOrderLineV2 `xml:"orderLine"`
+}
+type EntryOrderLineV2 struct {
 	OutBizCode    string      `xml:"outBizCode"`    //String	false	O123	外部业务编码(消息ID;用于去重;当单据需要分批次发送时使用)
 	OrderLineNo   string      `xml:"orderLineNo"`   //String	false	EL123	入库单的行号
 	OwnerCode     string      `xml:"ownerCode"`     //String	true	O123	货主编码
