@@ -106,6 +106,7 @@ type DownLoadOrderListOrdersReturn struct {
 	// goodinfos	GoodInfo[]	必填	通用		商品信息集合
 	// coupondetails	CouponDetail[]	可选	通用		优惠明细，只用来展示参考，不能用来计算优...
 	// serviceorders	List	可选	通用		服务子订单列表
+	LogisticsCode          string
 	Shoptype               string                                   `json:"shoptype"`
 	Platorderno            string                                   `json:"platorderno"`
 	Tradestatus            string                                   `json:"tradestatus"`
