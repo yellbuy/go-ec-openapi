@@ -11,6 +11,21 @@ import (
 	"github.com/yellbuy/go-ec-openapi/common"
 )
 
+func (client *Client) OrderSendV3(request []*common.WmsOrderBatchSend, extData ...string) (common.WmsOrderBatchSendReturn, error) {
+	method := "Differ.JH.Business.BatchSend" //菠萝派批量同步接口
+	bizcontent, err := json.Marshal(request)
+	req := make(map[string]interface{})
+	req["bizcontent"] = string(bizcontent)
+	params, err := common.InterfaceToParameter(req)
+	_, body, err := client.Execute(method, params)
+	//logs.Debug(string(body))
+	var OutData common.WmsOrderBatchSendReturn
+	if err != nil {
+		return OutData, err
+	}
+	err = json.Unmarshal(body, &OutData)
+	return OutData, err
+}
 func (client *Client) LogisticsPrintOrderList(request []*common.WmsLogisticsPrintOrderBizcontent, extData ...string) (common.WmsLogisticsPrintOrderReturn, error) {
 	method := "Differ.JH.Logistics.BatchPrintOrder" //菠萝派批量物流打印接口
 	orders := new(common.WmsLogisticsPrintOrderBizcontentOrders)

@@ -966,3 +966,65 @@ type WmsLogisticsPrintOrderReturn struct {
 type WmsLogisticsPrintOrderBizcontentOrders struct {
 	Orders []*WmsLogisticsPrintOrderBizcontent `json:"orders"`
 }
+type WmsOrderBatchSendReturn struct {
+	Results []*WmsOrderBatchSendReturnOrderResultItem `json:"results"` //必填	通用	-	批量发货返回结果集合	-
+	//平台专有参数所有平台亚马逊	-	-	-	-	平台专有参数	-
+	Sendrequestid    string `json:"sendrequestid"`    //必填	亚马逊	32	发货查询批次，仅限异步模式(如亚马逊)	156721544
+	Invoicerequestid string `json:"invoicerequestid"` //必填	亚马逊	32	发票查询批次号，仅限异步模式(如亚马逊)	1801524
+}
+type WmsOrderBatchSendReturnOrderResultItem struct {
+	Issuccess   int    `json:"issuccess"`   //必填	通用	1	是否成功(0表示失败；1表示成功)	0
+	Code        string `json:"code"`        //必填	通用	256	错误编码	Failed
+	Message     string `json:"message"`     //可选	通用	256	是否成功	订单已出库
+	Platorderno string `json:"platorderno"` //必填	通用	64	平台订单号	SE88956989966
+	Logisticno  string `json:"logisticno"`  //必填	通用	64	快递运单号	W157459841286
+	//平台专有参数所有平台亚马逊京东苏宁特卖ShopeeLaZaDa	-	-	-	-	平台专有参数	-
+	Transactionid       string `json:"transactionid"`       //可选	亚马逊	45	交易序号	222425696737
+	Codmoney            string `json:"codmoney"`            //必填	京东	64	货到付款金额	26.30
+	Subplatorderno      string `json:"subplatorderno"`      //必填	苏宁特卖	32	订单行号，仅限异步模式	00890643547303
+	Logisticname        string `json:"logisticname"`        //必填	通用	32	快递名称	顺风
+	Logistictype        string `json:"logistictype"`        //必填	通用	25	快递类别(JH前缀为国内快递 ，JHI为国际快...	JH_001
+	Pickuptimeid        int    `json:"pickuptimeid"`        //必填	Shopee	64	平台上门揽收时间id	1595408400
+	Pickupdate          int    `json:"pickupdate"`          //必填	Shopee	64	上门揽收日期	1595408400
+	Pickuptimestagedesc int    `json:"pickuptimestagedesc"` //必填	Shopee	64	上门揽收时间段	18:00:00-23:00:00
+	Packageid           int    `json:"packageid"`           //必填	LaZaDa	64	包裹id	12312312
+}
+type WmsOrderBatchSend struct {
+	Orders           []*WmsOrderBatchSendOrderInfo `json:"orders"`           //	必填	通用	-	订单集合	-
+	Sendrequestid    string                        `json:"sendrequestid"`    //可选	亚马逊	32	发货查询批次，仅限异步模式	156721544
+	Invoicerequestid string                        `json:"invoicerequestid"` //可选	亚马逊	32	发票查询批次号，仅限异步模式	1801524
+	Countrycode      string                        `json:"countrycode"`      //必填	亚马逊、LaZaDa	15	国家编码(中国=JH_01，美国=JH_02，德国=JH...	UK
+}
+type WmsOrderBatchSendOrderInfo struct {
+	Platorderno   string                             `json:"platorderno"`   //必填	通用	32	平台订单号	TS04594434433
+	Logisticno    string                             `json:"logisticno"`    //必填	通用	32	快递运单号	WR6685851555
+	Logistictype  string                             `json:"logistictype"`  //必填	通用	25	快递类别(JH前缀为国内快递 ，JHI为国际快...	JH_001
+	Logisticname  string                             `json:"logisticname"`  //必填	通用	32	快递名称	顺风
+	Sendtype      string                             `json:"sendtype"`      //必填	通用	25	订单发货类别(自己联系物流=JH_01，在线下...	JH_01
+	Issplit       int                                `json:"issplit"`       //必填	通用	4	是否拆单发货(拆单=1 ，不拆单=0)	0
+	Shoptype      string                             `json:"shoptype"`      //必填	通用	25	店铺类型(好药师代表ERP标识)(普通=JH_001，分销=JH_002，经销=JH_003，3PL=JH_004，JITX=JH_005，周期送=JH_006，拼多多代打=JH_DaiDa)	JH_001
+	Sendername    string                             `json:"sendername"`    //必填	通用	15	发货人姓名	张三
+	Sendertel     string                             `json:"sendertel"`     //必填	通用	15	发货人联系电话	15047788954
+	Senderaddress string                             `json:"senderaddress"` //必填	通用	15	发货人地址(省市区之间以空格分隔)	上海 上海市 宝山区 逸仙路2816号华滋奔腾大厦A栋14楼
+	Ishwgflag     int                                `json:"ishwgflag"`     //必填	通用	2	是否为海外购(是=1；否=0)	1
+	Deliverytype  string                             `json:"deliverytype"`  //必填	通用	15	海外购供货商发货方式(国内供货商发货=JH_0...	01
+	Goods         []*WmsOrderBatchSendOrderInfoGoods `json:"goods"`         //必填	通用	15	商品集合	01
+	//平台专有参数-	-	-	-	平台专有参数	-
+	Ismodsendinfo     int    `json:"ismodsendinfo"`     //可选	通用	4	是否是修改已发货物流信息操作(是=1 ，否=0...	0
+	Olderlogistictype string `json:"olderlogistictype"` //必填	通用	25	旧的快递类别(JH前缀为国内快递 ，JHI为国...+..	JH_001
+	Eventcreatetime   string `json:"eventcreatetime"`   //必填	通用	32	流转节点发生时间	2019-03-01 12:00:00
+	Plantime          string `json:"plantime"`          //必填	通用	32	配送日期	2019-03-01 12:00:00
+	Desc              string `json:"desc"`              //必填	通用	256	流转节点的详细地址及操作描述	浙江省杭州市西湖区上车扫描
+	Sequenceno        string `json:"sequenceno"`        //必填	通用	256	配送序号	1
+	Event             int    `json:"event"`             //必填	通用	256	事件编码	10
+}
+type WmsOrderBatchSendOrderInfoGoods struct {
+	Platproductid   string `json:"platproductid"`   //必填	通用	32	平台商品ID	51654561
+	Suborderno      string `json:"suborderno"`      //必填	通用	64	子订单号(从抓单中获取)	622321321323345
+	Tradegoodsno    string `json:"tradegoodsno"`    //必填	通用	64	外部商家编码(从抓单中获取)	6723213213
+	Sublogistictype string `json:"sublogistictype"` //可选	通用	25	快递类别(JH前缀为国内快递 ，JHI为国际快...	JH_001
+	Sublogisticname string `json:"sublogisticname"` //可选	通用	30	子快递名称	顺风
+	Sublogisticno   string `json:"sublogisticno"`   //可选	通用	32	子快递运单号	WR6685851555
+	Barcode         string `json:"barcode"`         //必填	通用	64	商品条形码(从抓单中获取)	6723213213
+	Count           int    `json:"count"`           //必填	通用	11	发货数量	1
+}
