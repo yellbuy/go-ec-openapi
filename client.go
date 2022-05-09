@@ -63,6 +63,8 @@ type Client interface {
 	GetWaybillV2(request []*common.WmsLogisticsPostOrder) (*common.WmsLogisticsReturn, error)
 	// 同步发货V2
 	OrderSendV2(request *common.WmsBusinessSendBizcontent) (*common.WmsBusinessSendReturn, error)
+	// 批量同步发货V3
+	OrderSendV3(request *common.WmsOrderBatchSend, extData ...string) (common.WmsOrderBatchSendReturn, error)
 	// 抖音获得打印参数
 	GetDyPlatApiReuestInfo(postData string) (*common.WmsPlatApiReturnInfo, error)
 	//菠萝派批量物流打印接口

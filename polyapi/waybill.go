@@ -11,7 +11,7 @@ import (
 	"github.com/yellbuy/go-ec-openapi/common"
 )
 
-func (client *Client) OrderSendV3(request []*common.WmsOrderBatchSend, extData ...string) (common.WmsOrderBatchSendReturn, error) {
+func (client *Client) OrderSendV3(request *common.WmsOrderBatchSend, extData ...string) (common.WmsOrderBatchSendReturn, error) {
 	method := "Differ.JH.Business.BatchSend" //菠萝派批量同步接口
 	bizcontent, err := json.Marshal(request)
 	req := make(map[string]interface{})

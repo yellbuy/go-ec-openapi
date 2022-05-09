@@ -277,6 +277,11 @@ func (client *Client) OrderSendV2(request *common.WmsBusinessSendBizcontent) (*c
 	var OutData *common.WmsBusinessSendReturn
 	return OutData, err
 }
+func (client *Client) OrderSendV3(request *common.WmsOrderBatchSend, extData ...string) (common.WmsOrderBatchSendReturn, error) {
+	err := errors.New("未实现")
+	var OutData common.WmsOrderBatchSendReturn
+	return OutData, err
+}
 
 //菠萝派批量物流打印接口
 func (client *Client) LogisticsPrintOrderList(request []*common.WmsLogisticsPrintOrderBizcontent, extData ...string) (common.WmsLogisticsPrintOrderReturn, error) {
