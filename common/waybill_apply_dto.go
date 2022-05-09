@@ -973,21 +973,21 @@ type WmsOrderBatchSendReturn struct {
 	Invoicerequestid string `json:"invoicerequestid"` //必填	亚马逊	32	发票查询批次号，仅限异步模式(如亚马逊)	1801524
 }
 type WmsOrderBatchSendReturnOrderResultItem struct {
-	Issuccess   int    `json:"issuccess"`   //必填	通用	1	是否成功(0表示失败；1表示成功)	0
+	Issuccess   string `json:"issuccess"`   //必填	通用	1	是否成功(0表示失败；1表示成功)	0
 	Code        string `json:"code"`        //必填	通用	256	错误编码	Failed
 	Message     string `json:"message"`     //可选	通用	256	是否成功	订单已出库
 	Platorderno string `json:"platorderno"` //必填	通用	64	平台订单号	SE88956989966
 	Logisticno  string `json:"logisticno"`  //必填	通用	64	快递运单号	W157459841286
 	//平台专有参数所有平台亚马逊京东苏宁特卖ShopeeLaZaDa	-	-	-	-	平台专有参数	-
-	Transactionid       string `json:"transactionid"`       //可选	亚马逊	45	交易序号	222425696737
-	Codmoney            string `json:"codmoney"`            //必填	京东	64	货到付款金额	26.30
+	Transactionid string `json:"transactionid"` //可选	亚马逊	45	交易序号	222425696737
+	//!Codmoney //菠萝派返回一会数字一会字符串，丢掉不用           float64 `json:"codmoney"`            //必填	京东	64	货到付款金额	26.30
 	Subplatorderno      string `json:"subplatorderno"`      //必填	苏宁特卖	32	订单行号，仅限异步模式	00890643547303
 	Logisticname        string `json:"logisticname"`        //必填	通用	32	快递名称	顺风
 	Logistictype        string `json:"logistictype"`        //必填	通用	25	快递类别(JH前缀为国内快递 ，JHI为国际快...	JH_001
-	Pickuptimeid        int    `json:"pickuptimeid"`        //必填	Shopee	64	平台上门揽收时间id	1595408400
-	Pickupdate          int    `json:"pickupdate"`          //必填	Shopee	64	上门揽收日期	1595408400
-	Pickuptimestagedesc int    `json:"pickuptimestagedesc"` //必填	Shopee	64	上门揽收时间段	18:00:00-23:00:00
-	Packageid           int    `json:"packageid"`           //必填	LaZaDa	64	包裹id	12312312
+	Pickuptimeid        string `json:"pickuptimeid"`        //必填	Shopee	64	平台上门揽收时间id	1595408400
+	Pickupdate          string `json:"pickupdate"`          //必填	Shopee	64	上门揽收日期	1595408400
+	Pickuptimestagedesc string `json:"pickuptimestagedesc"` //必填	Shopee	64	上门揽收时间段	18:00:00-23:00:00
+	Packageid           string `json:"packageid"`           //必填	LaZaDa	64	包裹id	12312312
 }
 type WmsOrderBatchSend struct {
 	Orders           []*WmsOrderBatchSendOrderInfo `json:"orders"`           //	必填	通用	-	订单集合	-

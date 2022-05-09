@@ -24,6 +24,9 @@ func (client *Client) OrderSendV3(request *common.WmsOrderBatchSend, extData ...
 		return OutData, err
 	}
 	err = json.Unmarshal(body, &OutData)
+	if err != nil {
+		logs.Debug("批量同步错误[" + err.Error() + "]")
+	}
 	return OutData, err
 }
 func (client *Client) LogisticsPrintOrderList(request []*common.WmsLogisticsPrintOrderBizcontent, extData ...string) (common.WmsLogisticsPrintOrderReturn, error) {
