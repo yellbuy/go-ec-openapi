@@ -940,6 +940,7 @@ type WmsLogisticsPrintOrderBizcontent struct {
 	Platorderno      string `json:"platorderno"`      //必填	京东印尼	20	平台订单号(京东印尼专用)	0
 	Sipshopid        int    `json:"sipshopid"`        //必填	110	64	SIP业务的子店铺ID	184003167
 	CpCode           string `json:"cpcode"`
+	CustomerCode     string `json:"customercode"` //月结卡号 京东528用
 }
 type WmsLogisticsPrintOrderReturnResults struct {
 	Issuccess      json.Number `json:"issuccess"`      //必填	通用	1	是否成功(0表示失败；1表示成功)	0
