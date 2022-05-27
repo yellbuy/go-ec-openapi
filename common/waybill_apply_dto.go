@@ -189,6 +189,7 @@ type DownLoadOrderListOrdersReturn struct {
 	Ordertype              string                                   `json:"ordertype"`
 	ExpressCode            string                                   `json:"expressCode"`
 	Platcipher             *DownLoadOrderListOrdersReturnplatcipher `json:"platcipher"`
+	LocalShopId            int64
 }
 type DownLoadOrderListOrdersReturnplatcipher struct {
 	Buyernick    string `json:"buyernick"`
