@@ -1029,4 +1029,5 @@ type WmsOrderBatchSendOrderInfoGoods struct {
 	Sublogisticno   string `json:"sublogisticno"`   //可选	通用	32	子快递运单号	WR6685851555
 	Barcode         string `json:"barcode"`         //必填	通用	64	商品条形码(从抓单中获取)	6723213213
 	Count           int    `json:"count"`           //必填	通用	11	发货数量	1
+	State           string `json:"-"`
 }
