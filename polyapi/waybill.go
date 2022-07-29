@@ -119,12 +119,10 @@ func (client *Client) CancelWaybill(request []common.WaybillCancel, extData ...s
 	err = json.Unmarshal(body, &OutData)
 	return &OutData, err
 }
-func (client *Client) TBDecrypt(request []*BusinessBatchTBDecryptOrders, extData ...string) (*BusinessBatchTBDecryptReturn, error) {
+func (client *Client) TBDecrypt(request *BusinessBatchTBDecryptBizcontent, extData ...string) (*BusinessBatchTBDecryptReturn, error) {
 	//开始提交数据
 	method := "Differ.JH.Business.BatchTBDecrypt"
-	var reqA BusinessBatchTBDecryptBizcontent
-	reqA.Orders = request
-	bizcontent, err := json.Marshal(reqA)
+	bizcontent, err := json.Marshal(request)
 	req := make(map[string]interface{})
 	req["bizcontent"] = string(bizcontent)
 	params, err := common.InterfaceToParameter(req)
@@ -694,6 +692,7 @@ type BusinessBatchTBDecryptOrders struct {
 	Platorderno string                        `json:"platorderno"` //!必填	通用	32	平台订单号	TS04594434433
 	Oaid        string                        `json:"oaid"`        //可选	通用	256	解密标识	2w2RYE45iahnF4aiaJ7pHKCJ3Hwnbgnq2PH3AfpQVyWZNHKS9wNgAAOUfCVt9XZMetogNHwc
 	Items       []*BusinessBatchTBDecryptItem `json:"items"`       //!必填	通用	-	待加密密钥集合	-
+	Scene       string                        `json:"scene"`
 }
 type BusinessBatchTBDecryptItem struct {
 	Secret string `json:"Secret"` //!必填	通用	256	待解密字符串	$136$rplMdffh4+x9GhkdlddxHg==$1$

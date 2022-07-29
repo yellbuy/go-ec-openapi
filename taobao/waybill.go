@@ -68,7 +68,7 @@ func (client *Client) CheckRefundV2(request common.BatchCheckRefundStatusBizcont
 	var OutData common.CheckRefundReturn
 	return OutData, err
 }
-func (client *Client) TBDecrypt(request []*polyapi.BusinessBatchTBDecryptOrders, extData ...string) (*polyapi.BusinessBatchTBDecryptReturn, error) {
+func (client *Client) TBDecrypt(request *polyapi.BusinessBatchTBDecryptBizcontent, extData ...string) (*polyapi.BusinessBatchTBDecryptReturn, error) {
 	err := errors.New("未实现")
 	var OutData *polyapi.BusinessBatchTBDecryptReturn
 	return OutData, err
