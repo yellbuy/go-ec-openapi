@@ -34,6 +34,35 @@ func (client *Client) DeliveryOrderConfirm(dto *DeliveryOrderConfirmReqDto) (bod
 	return
 }
 
+// 奇门订单流水回传信息
+func (client *Client) QimenOrderProcess(dto *common.QimenOrderProcessReportRequest) (body []byte, err error) {
+	var bytes []byte
+	bytes, err = xml.Marshal(dto)
+	if err != nil {
+		return nil, err
+	}
+	req := make(map[string]interface{})
+	//fmt.Println("bizcontent：", string(bizcontent))
+	params, resErr := common.InterfaceToParameter(req)
+	if resErr != nil {
+		fmt.Println(resErr)
+		err = resErr
+		body = nil
+		return
+	}
+
+	// 通过奇门代理平台
+	method := "taobao.qimen.orderprocess.report"
+	// fmt.Println("奇门订单流水信息推送报文", string(bytes))
+	// nowbody, _ := json.Marshal(client)
+	// // fmt.Println("请求参数", string(nowbody))
+	body, err = client.Execute(method, params, bytes)
+	if err != nil {
+		fmt.Println(method, err)
+	}
+	return
+}
+
 // 奇门出库单回传
 func (client *Client) QimenStockoutConfirm(dto *WmsQimenStockoutConfirm) (body []byte, err error) {
 	var bytes []byte

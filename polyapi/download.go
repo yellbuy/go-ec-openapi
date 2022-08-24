@@ -141,6 +141,7 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 	reqJson.Set("orderstatus", orderStatus)
 	reqJson.Set("nexttoken", orderToken)
 	reqJson.Set("randomnumber", orderToken)
+	reqJson.Set("outUserName", "JXOS")
 
 	if len(extData) > 0 && extData[0] != "" {
 		reqJson.Set("platvalue", extData[0])
