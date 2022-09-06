@@ -114,6 +114,10 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	} else if param["method"] == "Differ.JH.Logistics.BatchPrintOrder" {
 		url = "http://apijd.polyapi.com/openapi/do"
 	}
+	fmt.Println("菠萝派提交的URL", platid, url)
+	for key, val := range common.PostUrl {
+		fmt.Println(key, val)
+	}
 	if len(url) < 1 {
 		return nil, errors.New("参数错误，URL不正确")
 	}

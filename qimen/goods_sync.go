@@ -32,6 +32,8 @@ func GoodsSyncParse(body []byte) (res []*common.Product, warehouseCode, ownerCod
 		product.SkuList = make([]*common.Sku, 1)
 		sku := new(common.Sku)
 		sku.SkuBarCode = product.BarCode
+		sku.IsSNMgmt = goods.IsSNMgmt
+		sku.IsShelfLifeMgmt = goods.IsShelfLifeMgmt
 		if goods.SkuProperty == "" {
 			sku.SkuId = product.ProductId
 			sku.SkuCode = product.ProductCode
@@ -72,6 +74,10 @@ type GoodsSyncItem struct {
 	SkuProperty string `xml:"skuProperty"`
 	// 商品属性
 	StockUnit string `xml:"stockUnit"`
+	// 有效期管理(Y/N)
+	IsShelfLifeMgmt string `xml:"isShelfLifeMgmt"`
+	// 序列号管理(Y/N)
+	IsSNMgmt string `xml:"isSNMgmt"`
 }
 
 type GoodsSyncResponseDto struct {

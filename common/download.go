@@ -71,16 +71,18 @@ type Product struct {
 
 // 规格
 type Sku struct {
-	SkuId         string `json:"skuid"`
-	SkuCode       string `json:"skuouterid"`
-	SkuPrice      string `json:"skuprice"`
-	SkuQuantity   string `json:"skuquantity"`
-	SkuName       string `json:"skuname"`
-	SkuProperty   string `json:"skuproperty"`
-	SkuType       string `json:"skutype"`
-	SkuPictureUrl string `json:"skupictureurl"`
-	SkuName2      string `json:"skuname2"`
-	SkuBarCode    string `json:"barcode"` //奇门字段
+	SkuId           string `json:"skuid"`
+	SkuCode         string `json:"skuouterid"`
+	SkuPrice        string `json:"skuprice"`
+	SkuQuantity     string `json:"skuquantity"`
+	SkuName         string `json:"skuname"`
+	SkuProperty     string `json:"skuproperty"`
+	SkuType         string `json:"skutype"`
+	SkuPictureUrl   string `json:"skupictureurl"`
+	SkuName2        string `json:"skuname2"`
+	SkuBarCode      string `json:"barcode"` //奇门字段
+	IsShelfLifeMgmt string `json:"isShelfLifeMgmt"`
+	IsSNMgmt        string `json:"isSNMgmt"`
 }
 
 type SubGoods struct {

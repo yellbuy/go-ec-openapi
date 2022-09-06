@@ -36,9 +36,9 @@ func (client *Client) QimenStockChangeReport(dto *QimenStocChangeReportRequest) 
 }
 
 type QimenStocChangeReportRequest struct {
-	XMLName xml.Name                    `xml:"request"`
-	Items   *QimenStocChangeReportItems `xml:"items"` //Item[]	false		item
-	//extendProps	Map	false		扩展属性
+	XMLName     xml.Name                    `xml:"request"`
+	Items       *QimenStocChangeReportItems `xml:"items"`       //Item[]	false		item
+	ExtendProps interface{}                 `xml:"extendProps"` //	扩展属性
 }
 type QimenStocChangeReportItem struct {
 	OwnerCode     string                            `xml:"ownerCode"`     //!true	H1234	货主编码
