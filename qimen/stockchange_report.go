@@ -8,7 +8,7 @@ import (
 	"github.com/yellbuy/go-ec-openapi/common"
 )
 
-//奇门库存异动通知接口
+// 奇门库存异动通知接口
 func (client *Client) QimenStockChangeReport(dto *QimenStocChangeReportRequest) (body []byte, err error) {
 	var bytes []byte
 	bytes, err = xml.Marshal(dto)
@@ -38,7 +38,7 @@ func (client *Client) QimenStockChangeReport(dto *QimenStocChangeReportRequest) 
 type QimenStocChangeReportRequest struct {
 	XMLName     xml.Name                    `xml:"request"`
 	Items       *QimenStocChangeReportItems `xml:"items"`       //Item[]	false		item
-	ExtendProps interface{}                 `xml:"extendProps"` //	扩展属性
+	ExtendProps interface{}                 `xml:"extendProps"` //Map	false		扩展属性
 }
 type QimenStocChangeReportItem struct {
 	OwnerCode     string                            `xml:"ownerCode"`     //!true	H1234	货主编码
