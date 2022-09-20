@@ -18,9 +18,12 @@ func (client *Client) OrderSendV3(request *common.WmsOrderBatchSend, extData ...
 	req["bizcontent"] = string(bizcontent)
 	params, err := common.InterfaceToParameter(req)
 	_, body, err := client.Execute(method, params)
-	//logs.Debug(string(body))
+	logs.Debug("菠萝派批量同步接口", string(body))
 	var OutData common.WmsOrderBatchSendReturn
 	if err != nil {
+		if len(body) > 0 {
+			json.Unmarshal(body, &OutData)
+		}
 		return OutData, err
 	}
 	err = json.Unmarshal(body, &OutData)
@@ -136,7 +139,7 @@ func (client *Client) TBDecrypt(request *BusinessBatchTBDecryptBizcontent, extDa
 	return &OutData, err
 }
 
-//同步发货接口V2
+// 同步发货接口V2
 func (client *Client) OrderSendV2(request *common.WmsBusinessSendBizcontent) (*common.WmsBusinessSendReturn, error) {
 	//开始提交数据
 	method := "Differ.JH.Business.Send"
@@ -154,7 +157,7 @@ func (client *Client) OrderSendV2(request *common.WmsBusinessSendBizcontent) (*c
 	return &OutData, err
 }
 
-//换取抖音打印参数
+// 换取抖音打印参数
 func (client *Client) GetDyPlatApiReuestInfo(postData string) (*common.WmsPlatApiReturnInfo, error) {
 	method := "Differ.JH.Business.GetPlatApiRequestInfo"
 	var reqA common.WmsPlatApiReuestInfo
@@ -175,7 +178,7 @@ func (client *Client) GetDyPlatApiReuestInfo(postData string) (*common.WmsPlatAp
 	return &OutData, err
 }
 
-//预约单号接口V2
+// 预约单号接口V2
 func (client *Client) GetWaybillV2(request []*common.WmsLogisticsPostOrder) (*common.WmsLogisticsReturn, error) {
 	//开始提交数据
 	method := "Differ.JH.Logistics.PostOrder"
@@ -682,7 +685,7 @@ type Address struct {
 	Detail string `json:"detail,omitempty"`
 }
 
-//菠萝派解密接口
+// 菠萝派解密接口
 type BusinessBatchTBDecryptBizcontent struct {
 	Randomnumber string                          `json:"randomnumber"` //!必填	通用	64	淘宝随机字符串	tbxLGzL2r67me4zhYLHtDNvxxqPfjlgkAdU88pSPT55=
 	Orders       []*BusinessBatchTBDecryptOrders `json:"orders"`       //!必填	通用	-	订单集合	-

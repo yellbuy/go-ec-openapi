@@ -685,6 +685,7 @@ type WmsLogisticsPostOrder struct {
 	// Shopnick                    string                   //可选	奇门海外物流	64	店铺名称（奇门海外专用）	0
 	// Isneedsignatureconfirmation json.Number              //?必填	顺丰	4	是否使用签收确认(是=1; 否=0)	1
 	Oaid string
+	Caid string
 	Tid  string //!新增字段
 }
 type WmsLogisticsHumanInfo struct {
