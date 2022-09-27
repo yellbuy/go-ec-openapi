@@ -1031,4 +1031,5 @@ type WmsOrderBatchSendOrderInfoGoods struct {
 	Barcode         string `json:"barcode"`         //必填	通用	64	商品条形码(从抓单中获取)	6723213213
 	Count           int    `json:"count"`           //必填	通用	11	发货数量	1
 	State           string `json:"-"`
+	Skuid           string `'json:"skuid"` //	可选	亚马逊	32	平台规格ID	2134542315
 }
