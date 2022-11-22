@@ -684,9 +684,10 @@ type WmsLogisticsPostOrder struct {
 	// Openboxservice              string                   //可选	京东大件	64	开箱服务（京东大件用，0:否 1:开箱通电 2:...	0
 	// Shopnick                    string                   //可选	奇门海外物流	64	店铺名称（奇门海外专用）	0
 	// Isneedsignatureconfirmation json.Number              //?必填	顺丰	4	是否使用签收确认(是=1; 否=0)	1
-	Oaid string
-	Caid string
-	Tid  string //!新增字段
+	Oaid      string
+	Caid      string
+	Tid       string      //!新增字段
+	ExtraInfo interface{} `json:"extraInfo"`
 }
 type WmsLogisticsHumanInfo struct {
 	Name            string //!必填	通用	32	姓名	张三
