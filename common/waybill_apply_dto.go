@@ -664,7 +664,8 @@ type WmsLogisticsPostOrder struct {
 	// Deptno                      string                   //?必填	JD	50	事业部编号	00001
 	// Businessnetworkno           string                   //?必填	德邦物流	50	发货部门编码	00001
 	// Sendertc                    string                   //?必填	JD	50	始发转运中心名称	00001
-	// Pickupdate                  string                   //?必填	JD	50	上门揽件时间
+	Pickupdate    string //?必填	JD	50	上门揽件时间
+	Pickupenddate string //?上门揽件结束时间
 	// Installflag                 json.Number              //?必填	JD	4	是否安维
 	// Thirdcategoryno             string                   //?必填	JD	20	三级分类编码(安维必填)
 	Brandno string //?必填	JD	50	品牌ID(安维必填)
