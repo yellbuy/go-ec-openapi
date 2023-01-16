@@ -89,7 +89,7 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	defer func() { // 必须要先声明defer，否则不能捕获到panic异常
 		if e := recover(); e != nil {
 			err = fmt.Errorf("%s", e)
-			fmt.Println(fmt.Sprintf("polyapi execute error:%s", e))
+			// fmt.Println(fmt.Sprintf("polyapi execute error:%s", e))
 		}
 	}()
 	err = checkConfig(client)
@@ -177,7 +177,7 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	var response *http.Response
 	response, err = httpClient.Do(req)
 	if err != nil {
-		fmt.Println(err, data)
+		// fmt.Println(err, data)
 		return
 	}
 
@@ -199,7 +199,7 @@ func (client *Client) Execute(method string, param common.Parameter) (res *simpl
 	param = setRequestData(param, client.Params)
 	body, err = execute(client, param)
 	if err != nil {
-		fmt.Println(err)
+		// fmt.Println(err)
 		return
 	}
 

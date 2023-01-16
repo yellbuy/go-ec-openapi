@@ -18,7 +18,7 @@ func (client *Client) OrderSendV3(request *common.WmsOrderBatchSend, extData ...
 	req["bizcontent"] = string(bizcontent)
 	params, err := common.InterfaceToParameter(req)
 	_, body, err := client.Execute(method, params)
-	logs.Debug("菠萝派批量同步接口", string(body))
+	// logs.Debug("菠萝派批量同步接口", string(body))
 	var OutData common.WmsOrderBatchSendReturn
 	if err != nil {
 		if len(body) > 0 {
