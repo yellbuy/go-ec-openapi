@@ -83,8 +83,13 @@ func (client *Client) OrderSendV3(request *common.WmsOrderBatchSend, extData ...
 	var OutData common.WmsOrderBatchSendReturn
 	return OutData, err
 }
+func (client *Client) GoodsSkuSync(request *common.WmsGoodsSkuSync, extData ...string) (common.WmsGoodsSkuSyncReturn, error) {
+	err := errors.New("未实现")
+	var OutData common.WmsGoodsSkuSyncReturn
+	return OutData, err
+}
 
-//菠萝派批量物流打印接口
+// 菠萝派批量物流打印接口
 func (client *Client) LogisticsPrintOrderList(request []*common.WmsLogisticsPrintOrderBizcontent, extData ...string) (common.WmsLogisticsPrintOrderReturn, error) {
 	err := errors.New("未实现")
 	var OutData common.WmsLogisticsPrintOrderReturn

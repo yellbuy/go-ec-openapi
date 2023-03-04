@@ -55,6 +55,7 @@ type WaybillApplySubscriptionInfoServiceInfoServiceAttr struct {
 	Typedesc string `json:"typedesc"` //必填	通用	32	枚举类型的枚举值	1
 }
 
+
 func (client *Client) GetWayBillCondition(postData *WayBillConditionPost) (*WayBillConditionReturn, error) {
 	method := "Differ.JH.Logistics.GetWayBillCondition" //定义菠萝派退款检测批量接口
 	bizcontent, err := json.Marshal(postData)

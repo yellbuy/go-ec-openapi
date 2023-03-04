@@ -65,6 +65,8 @@ type Client interface {
 	OrderSendV2(request *common.WmsBusinessSendBizcontent) (*common.WmsBusinessSendReturn, error)
 	// 批量同步发货V3
 	OrderSendV3(request *common.WmsOrderBatchSend, extData ...string) (common.WmsOrderBatchSendReturn, error)
+	// 库存同步接口
+	GoodsSkuSync(request *common.WmsGoodsSkuSync, extData ...string) (common.WmsGoodsSkuSyncReturn, error)
 	// 抖音获得打印参数
 	GetDyPlatApiReuestInfo(postData string) (*common.WmsPlatApiReturnInfo, error)
 	//菠萝派批量物流打印接口

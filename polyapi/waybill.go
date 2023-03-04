@@ -11,6 +11,27 @@ import (
 	"github.com/yellbuy/go-ec-openapi/common"
 )
 
+func (client *Client) GoodsSkuSync(request *common.WmsGoodsSkuSync, extData ...string) (common.WmsGoodsSkuSyncReturn, error) {
+	method := "Differ.JH.Business.BatchSyncStock" //菠萝派批量同步接口
+	bizcontent, err := json.Marshal(request)
+	req := make(map[string]interface{})
+	req["bizcontent"] = string(bizcontent)
+	params, err := common.InterfaceToParameter(req)
+	_, body, err := client.Execute(method, params)
+	// logs.Debug("菠萝派批量同步接口", string(body))
+	var OutData common.WmsGoodsSkuSyncReturn
+	if err != nil {
+		if len(body) > 0 {
+			json.Unmarshal(body, &OutData)
+		}
+		return OutData, err
+	}
+	err = json.Unmarshal(body, &OutData)
+	if err != nil {
+		logs.Debug("批量同步错误[" + err.Error() + "]")
+	}
+	return OutData, err
+}
 func (client *Client) OrderSendV3(request *common.WmsOrderBatchSend, extData ...string) (common.WmsOrderBatchSendReturn, error) {
 	method := "Differ.JH.Business.BatchSend" //菠萝派批量同步接口
 	bizcontent, err := json.Marshal(request)
