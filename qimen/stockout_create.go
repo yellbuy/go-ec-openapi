@@ -11,7 +11,7 @@ func StockOutCreateParse(body []byte) (res *WmsQimenStockout, err error) {
 	return
 }
 
-//奇门出库单确认结构体
+// 奇门出库单确认结构体
 type WmsQimenStockoutConfirm struct {
 	XMLName       xml.Name                             `xml:"request"`
 	DeliveryOrder WmsQimenStockoutConfirmDeliveryOrder `xml:"deliveryOrder"` //false		deliveryOrder
@@ -93,12 +93,12 @@ type WmsQimenStockoutConfirmOrderSnList struct {
 	Sn []string `xml:"sn"` //false		sn
 }
 
-//奇门出库单结构体
+// 奇门出库单结构体
 type WmsQimenStockout struct {
 	XMLName       xml.Name                       `xml:"request"`
 	DeliveryOrder *WmsQimenStockoutDeliveryOrder `xml:"deliveryOrder"` //DeliveryOrder	false		出库单信息
 	OrderLines    *WmsQimenStockOrderLine        `xml:"orderLines"`    //OrderLine[]	false		单据信息
-	//ExtendProps   map[string]interface{}         `xml:"extendProps"`   //Map	false		扩展属性
+	//ExtendProps   map[string]string         `xml:"extendProps"`   //Map	false		扩展属性
 }
 type WmsQimenStockOrderLine struct {
 	OrderLine []*QimenOrderLines `xml:"orderLine"`
@@ -133,7 +133,7 @@ type WmsQimenStockoutDeliveryOrderRelatedOrder struct {
 	OrderCode string `xml:"orderCode"` //false	GL1234	关联的订单编号
 }
 
-//奇门提货人信息通用结构体
+// 奇门提货人信息通用结构体
 type QimenPickerInfo struct {
 	Company string `xml:"company"` //false	天猫	公司名称
 	Name    string `xml:"name"`    //false	老王	姓名
@@ -143,7 +143,7 @@ type QimenPickerInfo struct {
 	CarNo   string `xml:"carNo"`   //false	XA1234	车牌号
 }
 
-//奇门发件人通用结构体
+// 奇门发件人通用结构体
 type QimenSenderInfo struct {
 	Company       string `xml:"company"`       //false	淘宝	公司名称
 	Name          string `xml:"name"`          //true	老王	姓名
@@ -160,7 +160,7 @@ type QimenSenderInfo struct {
 	Id            string `xml:"id"`            //false	476543213245733	证件号
 }
 
-//奇门收件人通用结构体
+// 奇门收件人通用结构体
 type QimenReceiverInfo struct {
 	Company       string `xml:"company"`       //false	淘宝	公司名称
 	Name          string `xml:"name"`          //true	老王	姓名
@@ -179,19 +179,19 @@ type QimenReceiverInfo struct {
 	Id            string `xml:"id"`            //false	4713242536	证件号
 }
 type QimenOrderLines struct {
-	OutBizCode    string                 `xml:"outBizCode"`    //false	OB1234	外部业务编码(消息ID;用于去重;当单据需要分批次发送时使用)
-	OrderLineNo   string                 `xml:"orderLineNo"`   //false	11	单据行号
-	OwnerCode     string                 `xml:"ownerCode"`     //true	H1234	货主编码
-	ItemCode      string                 `xml:"itemCode"`      //true	I1234	商品编码
-	ItemId        string                 `xml:"itemId"`        //false	W1234	仓储系统商品编码
-	InventoryType string                 `xml:"inventoryType"` //false	ZP	库存类型(ZP=正品;CC=残次;JS=机损;XS= 箱损;ZT=在途库存;默认为查所有类型的库存)
-	ItemName      string                 `xml:"itemName"`      //false	淘公仔	商品名称
-	PlanQty       json.Number            `xml:"planQty"`       //true	11	应发商品数量
-	BatchCode     string                 `xml:"batchCode"`     //false	123	批次编码
-	ProductDate   string                 `xml:"productDate"`   //false	2016-07-06	生产日期(YYYY-MM-DD)
-	ExpireDate    string                 `xml:"expireDate"`    //false	2016-07-06	过期日期(YYYY-MM-DD)
-	ProduceCode   string                 `xml:"produceCode"`   //false	P11233	生产批号
-	PlatformCode  string                 `xml:"platformCode"`  //false	123456789	交易平台商品编码
-	Unit          string                 `xml:"unit"`          //false	个/箱/盒等	单位
-	ExtendProps   map[string]interface{} `xml:"extendProps"`   //false		扩展属性
+	OutBizCode    string      `xml:"outBizCode"`    //false	OB1234	外部业务编码(消息ID;用于去重;当单据需要分批次发送时使用)
+	OrderLineNo   string      `xml:"orderLineNo"`   //false	11	单据行号
+	OwnerCode     string      `xml:"ownerCode"`     //true	H1234	货主编码
+	ItemCode      string      `xml:"itemCode"`      //true	I1234	商品编码
+	ItemId        string      `xml:"itemId"`        //false	W1234	仓储系统商品编码
+	InventoryType string      `xml:"inventoryType"` //false	ZP	库存类型(ZP=正品;CC=残次;JS=机损;XS= 箱损;ZT=在途库存;默认为查所有类型的库存)
+	ItemName      string      `xml:"itemName"`      //false	淘公仔	商品名称
+	PlanQty       json.Number `xml:"planQty"`       //true	11	应发商品数量
+	BatchCode     string      `xml:"batchCode"`     //false	123	批次编码
+	ProductDate   string      `xml:"productDate"`   //false	2016-07-06	生产日期(YYYY-MM-DD)
+	ExpireDate    string      `xml:"expireDate"`    //false	2016-07-06	过期日期(YYYY-MM-DD)
+	ProduceCode   string      `xml:"produceCode"`   //false	P11233	生产批号
+	PlatformCode  string      `xml:"platformCode"`  //false	123456789	交易平台商品编码
+	Unit          string      `xml:"unit"`          //false	个/箱/盒等	单位
+	// ExtendProps   map[string]interface{} `xml:"extendProps"`   //false		扩展属性
 }

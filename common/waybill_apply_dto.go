@@ -31,6 +31,7 @@ type DownloadOrderListReturn struct {
 	Orders           []DownLoadOrderListOrdersReturn `json:"orders"`
 	Nexttoken        string                          `json:"nexttoken"`
 	Tid              int64
+	Oid              int64 `orm:"-"`
 }
 type DownLoadOrderListOrdersReturn struct {
 	// shoptype	string	可选	通用	25	店铺类型(普通=JH_001，分销=JH_002，经销=...+..	JH_001
@@ -190,6 +191,7 @@ type DownLoadOrderListOrdersReturn struct {
 	ExpressCode            string                                   `json:"expressCode"`
 	Platcipher             *DownLoadOrderListOrdersReturnplatcipher `json:"platcipher"`
 	LocalShopId            int64
+	Oid                    int64 `orm:"-"`
 }
 type DownLoadOrderListOrdersReturnplatcipher struct {
 	Buyernick    string `json:"buyernick"`

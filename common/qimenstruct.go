@@ -6,8 +6,8 @@ import "encoding/xml"
 type QimenInventoryQuery struct {
 	XMLName      xml.Name                          `xml:"request"`
 	CriteriaList *QimenInventoryQuery_CriteriaList `xml:"criteriaList"`
-	ExtendProps  interface{}                       `xml:"extendProps"` //Map	false		扩展属性
-	Remark       string                            `xml:"remark"`      //	false	备注	备注
+	// ExtendProps  interface{}                       `xml:"extendProps"` //Map	false		扩展属性
+	Remark string `xml:"remark"` //	false	备注	备注
 }
 type QimenInventoryQuery_Criteria struct {
 	WarehouseCode string `xml:"warehouseCode"` //false	W1234	仓库编码
@@ -45,11 +45,11 @@ type QimenInventoryQueryResponse_Item struct {
 
 //奇门订单流水通知结构体
 type QimenOrderProcessReportRequest struct {
-	XMLName     xml.Name                                `xml:"request"`
-	Order       *QimenOrderProcessReportRequest_Order   `xml:"order"`       //false		订单信息
-	Process     *QimenOrderProcessReportRequest_Process `xml:"process"`     //false		订单处理信息
-	ExtendProps interface{}                             `xml:"extendProps"` //false		扩展属性
-	Remark      string                                  `xml:"remark"`      //false		备注
+	XMLName xml.Name                                `xml:"request"`
+	Order   *QimenOrderProcessReportRequest_Order   `xml:"order"`   //false		订单信息
+	Process *QimenOrderProcessReportRequest_Process `xml:"process"` //false		订单处理信息
+	// ExtendProps interface{}                             `xml:"extendProps"` //false		扩展属性
+	Remark string `xml:"remark"` //false		备注
 }
 type QimenOrderProcessReportRequest_Order struct {
 	OrderCode     string `xml:"orderCode"`     //	true	D1234	单据号
@@ -71,19 +71,19 @@ type WmsGoodsSkuSyncReturn struct {
 	Results []*WmsGoodsSkuSyncReturnItem `json:"results"`
 }
 type WmsGoodsSkuSyncReturnItem struct {
-	Issuccess        int    `json:"issuccess"`        //必填	通用	1	是否成功(0表示失败；1表示成功)	0
-	Code             string `json:"code"`             //必填	通用	256	错误编码	Failed
-	Message          string `json:"message"`          //可选	通用	256	是否成功	Success
-	Platproductid    string `json:"platproductid"`    //可选	通用	32	平台商品ID（平台商品ID、平台子规格ID、外...	11447876487218
-	Skuid            string `json:"skuid"`            //可选	通用	32	平台子规格ID（平台商品ID、平台子规格ID、...	114478764
-	Outerid          string `json:"outerid"`          //可选	通用	32	外部商家编码（平台商品ID、平台子规格ID、...	WR6685851555
-	Outskuid         string `json:"outskuid"`         //可选	通用	30	外部商家SKU编号（平台商品ID、平台子规格I...	SK43008558525565
-	Quantity         int    `json:"quantity"`         //必填	通用	4	更新后的数量	180
-	Transactionid    string `json:"transactionid"`    //可选	亚马逊	45	交易序号	222425696737
-	Platstoreid      string `json:"platstoreid"`      //可选	京东到家、有赞	15	门店ID	01
-	Whsecode         string `json:"whsecode"`         //可选	融易购、达令网、美囤妈妈、唯品会	15	商品仓库编号	KU002
-	Vipcooperationno int    `json:"vipcooperationno"` //可选	唯品会	15	合作编码	23
-	Requestid        int    `json:"requestid"`        //选	亚马逊	4	查询批次号，仅限异步模式(如亚马逊)	180
+	Issuccess        int    `json:"issuccess,string"`        //必填	通用	1	是否成功(0表示失败；1表示成功)	0
+	Code             string `json:"code"`                    //必填	通用	256	错误编码	Failed
+	Message          string `json:"message"`                 //可选	通用	256	是否成功	Success
+	Platproductid    string `json:"platproductid"`           //可选	通用	32	平台商品ID（平台商品ID、平台子规格ID、外...	11447876487218
+	Skuid            string `json:"skuid"`                   //可选	通用	32	平台子规格ID（平台商品ID、平台子规格ID、...	114478764
+	Outerid          string `json:"outerid"`                 //可选	通用	32	外部商家编码（平台商品ID、平台子规格ID、...	WR6685851555
+	Outskuid         string `json:"outskuid"`                //可选	通用	30	外部商家SKU编号（平台商品ID、平台子规格I...	SK43008558525565
+	Quantity         int    `json:"quantity"`                //必填	通用	4	更新后的数量	180
+	Transactionid    string `json:"transactionid"`           //可选	亚马逊	45	交易序号	222425696737
+	Platstoreid      string `json:"platstoreid"`             //可选	京东到家、有赞	15	门店ID	01
+	Whsecode         string `json:"whsecode"`                //可选	融易购、达令网、美囤妈妈、唯品会	15	商品仓库编号	KU002
+	Vipcooperationno int    `json:"vipcooperationno,string"` //可选	唯品会	15	合作编码	23
+	Requestid        int    `json:"requestid"`               //选	亚马逊	4	查询批次号，仅限异步模式(如亚马逊)	180
 }
 type WmsGoodsSkuSync struct {
 	Goods []*WmsGoodsSkuSyncGoods `json:"goods"`

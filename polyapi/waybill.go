@@ -18,6 +18,7 @@ func (client *Client) GoodsSkuSync(request *common.WmsGoodsSkuSync, extData ...s
 	req["bizcontent"] = string(bizcontent)
 	params, err := common.InterfaceToParameter(req)
 	_, body, err := client.Execute(method, params)
+	fmt.Println(string(body))
 	// logs.Debug("菠萝派批量同步接口", string(body))
 	var OutData common.WmsGoodsSkuSyncReturn
 	if err != nil {
