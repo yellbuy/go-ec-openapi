@@ -35,6 +35,33 @@ func (client *Client) QimenStockChangeReport(dto *QimenStocChangeReportRequest) 
 	return
 }
 
+// 奇门库存异动通知接口
+func (client *Client) QimenInventoryReport(dto *QimenInventoryReport) (body []byte, err error) {
+	var bytes []byte
+	bytes, err = xml.Marshal(dto)
+	if err != nil {
+		return nil, err
+	}
+	req := make(map[string]interface{})
+	//fmt.Println("bizcontent：", string(bizcontent))
+	params, resErr := common.InterfaceToParameter(req)
+	if resErr != nil {
+		fmt.Println(resErr)
+		err = resErr
+		body = nil
+		return
+	}
+
+	// 通过奇门代理平台
+	method := "taobao.qimen.inventory.report"
+	//fmt.Println("奇门出库单推送报文", string(bytes))
+	body, err = client.Execute(method, params, bytes)
+	if err != nil {
+		fmt.Println(method, err)
+	}
+	return
+}
+
 type QimenStocChangeReportRequest struct {
 	XMLName     xml.Name                    `xml:"request"`
 	Items       *QimenStocChangeReportItems `xml:"items"`       //Item[]	false		item
@@ -69,4 +96,36 @@ type QimenStocChangeReportItemBatch struct {
 	ProduceCode   string      `xml:"produceCode"`   //false	PD1234	生产批号
 	InventoryType string      `xml:"inventoryType"` //false	ZP	库存类型(ZP=正品;CC=残次;JS=机损 XS= 箱损;ZT=在途库存)
 	Quantity      json.Number `xml:"quantity"`      //false	12	异动数量(要求batchs节点下所有的异动数量之和等于orderline中的异动数量)
+}
+
+type QimenInventoryReport struct {
+	XMLName        xml.Name                   `xml:"request"`
+	TotalPage      int                        `xml:"totalPage"`      //!Number	true	12	总页数
+	CurrentPage    int                        `xml:"currentPage"`    //!Number	true	1	当前页(从1开始)
+	PageSize       int                        `xml:"pageSize"`       //!Number	true	12	每页记录的条数
+	WarehouseCode  string                     `xml:"warehouseCode"`  //!String	true	W1234	仓库编码
+	CheckOrderCode string                     `xml:"checkOrderCode"` //!String	true	P1234	盘点单编码
+	CheckOrderId   string                     `xml:"checkOrderId"`   //String	false	PS1234	仓储系统的盘点单编码
+	OwnerCode      string                     `xml:"ownerCode"`      //!String	true	H1234	货主编码
+	CheckTime      string                     `xml:"checkTime"`      //String	false	2016-09-09 12:00:00	盘点时间(YYYY-MM-DD HH:MM:SS)
+	OutBizCode     string                     `xml:"outBizCode"`     //!String	true	OZ1234	外部业务编码(消息ID;用于去重;ISV对于同一请求;分配一个唯一性的编码。用来保证因为网络等原因导致重复传输;请求不 会被重复处理)
+	Remark         string                     `xml:"remark"`         //String	false	备注信息	备注
+	Items          *QimenInventoryReportItems `xml:"items"`          //Item[]	false		商品库存信息列表
+	AdjustType     string                     `xml:"adjustType"`     //!String	true	CHECK	变动类型：CHECK=盘点 ADJUST=调整
+}
+type QimenInventoryReportItems struct {
+	Item []*QimenInventoryReport_Item `xml:"item"`
+}
+type QimenInventoryReport_Item struct {
+	ItemCode      string `xml:"itemCode"`      //!String	true	I1234	商品编码
+	ItemId        string `xml:"itemId"`        //String	false	ID1234	仓储系统商品ID
+	InventoryType string `xml:"inventoryType"` //String	false	ZP	库存类型(ZP=正品;CC=残次;JS=机损;XS= 箱损;ZT=在途库存;默认为ZP)
+	Quantity      int    `xml:"quantity"`      //!Number	true	12	盘盈盘亏商品变化量(盘盈为正数;盘亏为负数)
+	BatchCode     string `xml:"batchCode"`     //String	false	P1234	批次编码
+	ProductDate   string `xml:"productDate"`   //String	false	2016-09-09	商品生产日期(YYYY-MM-DD)
+	ExpireDate    string `xml:"expireDate"`    //String	false	2016-09-09	商品过期日期(YYYY-MM-DD)
+	ProduceCode   string `xml:"produceCode"`   //String	false	P1234	生产批号
+	SnCode        string `xml:"snCode"`        //String	false	X1234	商品序列号
+	Remark        string `xml:"remark"`        //String	false	备注信息	备注
+	TotalQty      int    `xml:"totalQty"`      //Number	false	100	库存商品总量
 }

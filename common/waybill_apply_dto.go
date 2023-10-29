@@ -689,7 +689,8 @@ type WmsLogisticsPostOrder struct {
 	// Isneedsignatureconfirmation json.Number              //?必填	顺丰	4	是否使用签收确认(是=1; 否=0)	1
 	Oaid      string
 	Caid      string
-	Tid       string      //!新增字段
+	Tid       string //!新增字段
+	Sipshopid string
 	ExtraInfo interface{} `json:"extraInfo"`
 }
 type WmsLogisticsHumanInfo struct {

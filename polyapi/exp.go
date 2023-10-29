@@ -2,6 +2,7 @@ package polyapi
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/yellbuy/go-ec-openapi/common"
 )
@@ -10,13 +11,13 @@ type WayBillConditionPost struct {
 	Cpcode string `json:"cpcode"` //必填	通用	32	承运公司编码	POSTB
 }
 type WayBillConditionReturn struct {
-	Code             string      //必填	通用	64	返回码	10000
-	Msg              string      //必填	通用	64	返回消息	Success
-	Subcode          string      //必填	通用	200	子集编码	LXO.JD.REQUEST_FAIL
-	Submessage       string      //必填	通用	200	子级消息	订单已出库
-	Polyapitotalms   json.Number //必填	通用	64	菠萝派总耗时	102
-	Polyapirequestid string      //必填	通用	64	请求菠萝派编号	20161222154212742
-	Results          []*WayBillConditionResults
+	Code             string                     //必填	通用	64	返回码	10000
+	Msg              string                     //必填	通用	64	返回消息	Success
+	Subcode          string                     //必填	通用	200	子集编码	LXO.JD.REQUEST_FAIL
+	Submessage       string                     //必填	通用	200	子级消息	订单已出库
+	Polyapitotalms   json.Number                //必填	通用	64	菠萝派总耗时	102
+	Polyapirequestid string                     //必填	通用	64	请求菠萝派编号	20161222154212742
+	Results          []*WayBillConditionResults `json:"results"`
 }
 type WayBillConditionResults struct {
 	Cpcode  string                          `json:"cpcode"`  //必填	通用	32	承运公司编码	POSTB
@@ -24,15 +25,15 @@ type WayBillConditionResults struct {
 	Results []*WaybillApplySubscriptionInfo `json:"results"` //必填	通用	-	承运网点信息集合
 }
 type WaybillApplySubscriptionInfo struct {
-	Usingquantity  int                                        `json:"usingquantity"`  //必填	通用	32	已用面单数量	40
-	Sitecode       string                                     `json:"sitecode"`       //必填	通用	32	网点编码	1232
-	Sitename       string                                     `json:"sitename"`       //必填	通用	32	网点名称	1232
-	Sitestatus     string                                     `json:"sitestatus"`     //必填	通用	32	网点状态	1232
-	Cancelquantity int                                        `json:"cancelquantity"` //必填	通用	32	取消的面单数量	40
-	Printquantity  int                                        `json:"printquantity"`  //必填	通用	32	已经打印的面单总数	30
-	Quantity       int                                        `json:"quantity"`       //必填	通用	32	面单数量(可用数量)	30
-	Shippers       []*WaybillApplySubscriptionInfoShipperInfo `json:"shippers"`       //必填	通用	-	网点下发货信息集合	-
-	Services       []*WaybillApplySubscriptionInfoServiceInfo `json:"services"`       //必填	通用	-	服务信息列表	-
+	Usingquantity  interface{}                                        `json:"usingquantity"`  //必填	通用	32	已用面单数量	40
+	Sitecode       string                                     `json:"sitecode"`              //必填	通用	32	网点编码	1232
+	Sitename       string                                     `json:"sitename"`              //必填	通用	32	网点名称	1232
+	Sitestatus     string                                     `json:"sitestatus"`            //必填	通用	32	网点状态	1232
+	Cancelquantity interface{}                                        `json:"cancelquantity"` //必填	通用	32	取消的面单数量	40
+	Printquantity  interface{}                                        `json:"printquantity"`  //必填	通用	32	已经打印的面单总数	30
+	Quantity       interface{}                                `json:"quantity"`              //必填	通用	32	面单数量(可用数量)	30
+	Shippers       []*WaybillApplySubscriptionInfoShipperInfo `json:"shippers"`              //必填	通用	-	网点下发货信息集合	-
+	Services       []*WaybillApplySubscriptionInfoServiceInfo `json:"services"`              //必填	通用	-	服务信息列表	-
 }
 type WaybillApplySubscriptionInfoShipperInfo struct {
 	Province string `json:"province"` //必填	通用	32	州省	浙江
@@ -55,15 +56,17 @@ type WaybillApplySubscriptionInfoServiceInfoServiceAttr struct {
 	Typedesc string `json:"typedesc"` //必填	通用	32	枚举类型的枚举值	1
 }
 
-
 func (client *Client) GetWayBillCondition(postData *WayBillConditionPost) (*WayBillConditionReturn, error) {
 	method := "Differ.JH.Logistics.GetWayBillCondition" //定义菠萝派退款检测批量接口
 	bizcontent, err := json.Marshal(postData)
 	req := make(map[string]interface{})
 	req["bizcontent"] = string(bizcontent)
+	// fmt.Println(string(bizcontent))
 	params, err := common.InterfaceToParameter(req)
+	// body1, _ := json.Marshal(params)
+	// fmt.Println(string(body1))
 	_, body, err := client.Execute(method, params)
-	//logs.Debug(string(body))
+	fmt.Println(string(body))
 	OutData := new(WayBillConditionReturn)
 	if err != nil {
 		return OutData, err

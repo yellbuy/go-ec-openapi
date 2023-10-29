@@ -209,6 +209,7 @@ func (client *Client) GetWaybillV2(request []*common.WmsLogisticsPostOrder) (*co
 	bizcontent, err := json.Marshal(reqA)
 	req := make(map[string]interface{})
 	req["bizcontent"] = string(bizcontent)
+	// fmt.Println(string(bizcontent))
 	params, err := common.InterfaceToParameter(req)
 	//此处可能还要加工Json
 	_, body, err := client.Execute(method, params)

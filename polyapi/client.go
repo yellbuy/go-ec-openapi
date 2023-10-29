@@ -166,7 +166,8 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	// 	param["platid"] = "126"
 	// }
 	data := param.GetRequestData()
-	//fmt.Println("execute:", strings.NewReader(data))
+	// fmt.Println("execute:", data)
+	// fmt.Println("提交菠萝派", url, data)
 	req, err = http.NewRequest("POST", url, strings.NewReader(data))
 	if err != nil {
 		return
@@ -214,7 +215,9 @@ func BytesToJson(bytes []byte) (res *simplejson.Json, err error) {
 func bytesToResult(bytes []byte) (res *simplejson.Json, err error) {
 	res, err = simplejson.NewJson(bytes)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("转json错误", err)
+		fmt.Println(string(bytes))
+
 		return
 	}
 	code := res.Get("code").MustString()
