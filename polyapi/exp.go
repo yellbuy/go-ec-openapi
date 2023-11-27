@@ -2,7 +2,6 @@ package polyapi
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/yellbuy/go-ec-openapi/common"
 )
@@ -20,10 +19,11 @@ type WayBillConditionReturn struct {
 	Results          []*WayBillConditionResults `json:"results"`
 }
 type WayBillConditionResults struct {
-	Cpcode  string                          `json:"cpcode"`  //必填	通用	32	承运公司编码	POSTB
-	Cptype  string                          `json:"cptype"`  //必填	通用	32	物流服务商业务类型(直营=0，客户拥有的模...	POSTB
-	Results []*WaybillApplySubscriptionInfo `json:"results"` //必填	通用	-	承运网点信息集合
-	ShopId  string                          `json:"shopid"`
+	Cpcode           string                          `json:"cpcode"`  //必填	通用	32	承运公司编码	POSTB
+	Cptype           string                          `json:"cptype"`  //必填	通用	32	物流服务商业务类型(直营=0，客户拥有的模...	POSTB
+	Results          []*WaybillApplySubscriptionInfo `json:"results"` //必填	通用	-	承运网点信息集合
+	ShopId           string                          `json:"shopid"`
+	Logisticsaccount string                          `json:"logisticsaccount"`
 }
 type WaybillApplySubscriptionInfo struct {
 	Usingquantity  interface{}                                `json:"usingquantity"`  //必填	通用	32	已用面单数量	40
@@ -67,7 +67,7 @@ func (client *Client) GetWayBillCondition(postData *WayBillConditionPost) (*WayB
 	// body1, _ := json.Marshal(params)
 	// fmt.Println(string(body1))
 	_, body, err := client.Execute(method, params)
-	fmt.Println(string(body))
+	// fmt.Println(string(body))
 	OutData := new(WayBillConditionReturn)
 	if err != nil {
 		return OutData, err

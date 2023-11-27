@@ -83,6 +83,7 @@ type DeliveryOrderCreateDto struct {
 	SenderInfo *DeliveryOrderAddress `xml:"senderInfo"`
 	// 收件人信息
 	ReceiverInfo *DeliveryOrderAddress `xml:"receiverInfo"`
+	ExtendProps  *ExtendProps          `xml:"extendProps"`
 }
 type ExtendProps struct {
 	Key1 string `xml:"key1"`
