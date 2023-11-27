@@ -23,17 +23,18 @@ type WayBillConditionResults struct {
 	Cpcode  string                          `json:"cpcode"`  //必填	通用	32	承运公司编码	POSTB
 	Cptype  string                          `json:"cptype"`  //必填	通用	32	物流服务商业务类型(直营=0，客户拥有的模...	POSTB
 	Results []*WaybillApplySubscriptionInfo `json:"results"` //必填	通用	-	承运网点信息集合
+	ShopId  string                          `json:"shopid"`
 }
 type WaybillApplySubscriptionInfo struct {
-	Usingquantity  interface{}                                        `json:"usingquantity"`  //必填	通用	32	已用面单数量	40
-	Sitecode       string                                     `json:"sitecode"`              //必填	通用	32	网点编码	1232
-	Sitename       string                                     `json:"sitename"`              //必填	通用	32	网点名称	1232
-	Sitestatus     string                                     `json:"sitestatus"`            //必填	通用	32	网点状态	1232
-	Cancelquantity interface{}                                        `json:"cancelquantity"` //必填	通用	32	取消的面单数量	40
-	Printquantity  interface{}                                        `json:"printquantity"`  //必填	通用	32	已经打印的面单总数	30
-	Quantity       interface{}                                `json:"quantity"`              //必填	通用	32	面单数量(可用数量)	30
-	Shippers       []*WaybillApplySubscriptionInfoShipperInfo `json:"shippers"`              //必填	通用	-	网点下发货信息集合	-
-	Services       []*WaybillApplySubscriptionInfoServiceInfo `json:"services"`              //必填	通用	-	服务信息列表	-
+	Usingquantity  interface{}                                `json:"usingquantity"`  //必填	通用	32	已用面单数量	40
+	Sitecode       string                                     `json:"sitecode"`       //必填	通用	32	网点编码	1232
+	Sitename       string                                     `json:"sitename"`       //必填	通用	32	网点名称	1232
+	Sitestatus     string                                     `json:"sitestatus"`     //必填	通用	32	网点状态	1232
+	Cancelquantity interface{}                                `json:"cancelquantity"` //必填	通用	32	取消的面单数量	40
+	Printquantity  interface{}                                `json:"printquantity"`  //必填	通用	32	已经打印的面单总数	30
+	Quantity       interface{}                                `json:"quantity"`       //必填	通用	32	面单数量(可用数量)	30
+	Shippers       []*WaybillApplySubscriptionInfoShipperInfo `json:"shippers"`       //必填	通用	-	网点下发货信息集合	-
+	Services       []*WaybillApplySubscriptionInfoServiceInfo `json:"services"`       //必填	通用	-	服务信息列表	-
 }
 type WaybillApplySubscriptionInfoShipperInfo struct {
 	Province string `json:"province"` //必填	通用	32	州省	浙江
@@ -68,6 +69,24 @@ func (client *Client) GetWayBillCondition(postData *WayBillConditionPost) (*WayB
 	_, body, err := client.Execute(method, params)
 	fmt.Println(string(body))
 	OutData := new(WayBillConditionReturn)
+	if err != nil {
+		return OutData, err
+	}
+	err = json.Unmarshal(body, &OutData)
+	return OutData, err
+}
+func (client *Client) GetTemplates(postData *common.GetTemplates) (*common.TemplatesReturn, error) {
+	method := "Differ.JH.Logistics.GetTemplates" //定义菠萝派退款检测批量接口
+	bizcontent, _ := json.Marshal(postData)
+	req := make(map[string]interface{})
+	req["bizcontent"] = string(bizcontent)
+	// fmt.Println(string(bizcontent))
+	params, _ := common.InterfaceToParameter(req)
+	// body1, _ := json.Marshal(params)
+	// fmt.Println(string(body1))
+	_, body, err := client.Execute(method, params)
+	// fmt.Println(string(body))
+	OutData := new(common.TemplatesReturn)
 	if err != nil {
 		return OutData, err
 	}

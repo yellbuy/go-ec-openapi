@@ -119,7 +119,7 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	// 	fmt.Println(key, val)
 	// }
 	if len(url) < 1 {
-		return nil, errors.New("参数错误，URL不正确")
+		return nil, errors.New("参数错误，URL不正确[" + platid + "]")
 	}
 	// if param["method"] == "Differ.JH.Business.BatchCheckRefundStatus" {
 	// 	// 退款检测专用地址
@@ -167,7 +167,7 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	// }
 	data := param.GetRequestData()
 	// fmt.Println("execute:", data)
-	// fmt.Println("提交菠萝派", url, data)
+	// fmt.Println("提交菠萝派", url, strings.NewReader(data))
 	req, err = http.NewRequest("POST", url, strings.NewReader(data))
 	if err != nil {
 		return

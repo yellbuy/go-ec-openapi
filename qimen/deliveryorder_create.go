@@ -90,7 +90,8 @@ type ExtendProps struct {
 	// 起始时间
 	Key3 string `xml:"key3"`
 	// 结束时间
-	Key77 string `xml:"key77"`
+	Key77             string `xml:"key77"`
+	EwaybillOrderCode string `xml:"ewaybill_order_code"`
 }
 type DeliveryOrderAddress struct {
 	Name          string `xml:"name"`

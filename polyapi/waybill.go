@@ -213,6 +213,7 @@ func (client *Client) GetWaybillV2(request []*common.WmsLogisticsPostOrder) (*co
 	params, err := common.InterfaceToParameter(req)
 	//此处可能还要加工Json
 	_, body, err := client.Execute(method, params)
+	fmt.Println(string(body))
 	if err != nil {
 		var OutData common.WmsLogisticsReturn
 		json.Unmarshal(body, &OutData)

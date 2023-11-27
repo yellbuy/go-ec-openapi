@@ -658,7 +658,7 @@ type WmsLogisticsPostOrder struct {
 	// Sellerid                    string                   //?必填	菜鸟	64	卖家Id	2991
 	// User_id                     string                   //?必填	菜鸟	32	使用者ID	12
 	// Logistics_services          string                   //?可选	菜鸟	32	服务值,如不需要特殊服务，该值为空	12
-	// Object_id                   string                   //?必填	菜鸟	32	请求ID	12
+	ObjectId    string `json:"object_id"`    //?必填	菜鸟	32	请求ID	12
 	TemplateUrl string `json:"template_url"` //?必填	菜鸟、拼多多金虹桥	32	标准模板模板URL	Http://Xxx.Com
 	// Order_channels_type         string                   //?必填	菜鸟、易宇通物流、去发货、捷网物流	32	订单渠道平台编码	TB
 	// Trade_order_list            string                   //?必填	菜鸟	32	订单号,数量限制100	1222221
@@ -682,7 +682,7 @@ type WmsLogisticsPostOrder struct {
 	// Shoptype                    string                   //可选	通用	25	店铺类型+..	JH_001
 	// Consignpreferenceid         string                   //可选	EbayDIS	255	交运偏好ID+..	1
 	// Notifycouriertype           string                   //?必填	顺丰	10	通知顺丰收派员收件方式
-	// Mallmaskid                  string                   //?必填	拼多多金虹桥	64	代打店铺Id	184003167
+	Mallmaskid       string //?必填	拼多多金虹桥	64	代打店铺Id	184003167
 	Goodsdescription string //可选	拼多多金虹桥	64	货品描述	测试货品
 	// Openboxservice              string                   //可选	京东大件	64	开箱服务（京东大件用，0:否 1:开箱通电 2:...	0
 	// Shopnick                    string                   //可选	奇门海外物流	64	店铺名称（奇门海外专用）	0

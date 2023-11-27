@@ -22,6 +22,22 @@ func (client *Client) GetWayBillCondition(postData *polyapi.WayBillConditionPost
 	err := errors.New("未实现")
 	return nil, err
 }
+func (client *Client) GetTemplates(postData *common.GetTemplates) (*common.TemplatesReturn, error) {
+	err := errors.New("未实现")
+	return nil, err
+}
+
+// 获取打印信息接口(批量)
+func (client *Client) BatchPrintOrder(postData *polyapi.BatchPrintOrder) (*polyapi.LogisticBatchPrintOrderResponseResultItemInfo, error) {
+	err := errors.New("未实现")
+	return nil, err
+}
+
+// 获得打印信息接口
+func (client *Client) PrintOrder(postData *polyapi.BatchPrintOrder_Order, extData ...string) (*polyapi.PrintOrderReturn, error) {
+	err := errors.New("未实现")
+	return nil, err
+}
 func (client *Client) GetWaybill(request *common.WaybillApplyNewRequest, extData ...string) (*common.WaybillApplyNewCols, []byte, error) {
 	req := make(map[string]interface{})
 	req["waybill_apply_new_request"] = request
@@ -287,7 +303,8 @@ func (client *Client) GoodsSkuSync(request *common.WmsGoodsSkuSync, extData ...s
 	var OutData common.WmsGoodsSkuSyncReturn
 	return OutData, err
 }
-//菠萝派批量物流打印接口
+
+// 菠萝派批量物流打印接口
 func (client *Client) LogisticsPrintOrderList(request []*common.WmsLogisticsPrintOrderBizcontent, extData ...string) (common.WmsLogisticsPrintOrderReturn, error) {
 	err := errors.New("未实现")
 	var OutData common.WmsLogisticsPrintOrderReturn

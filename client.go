@@ -73,4 +73,10 @@ type Client interface {
 	LogisticsPrintOrderList(request []*common.WmsLogisticsPrintOrderBizcontent, extData ...string) (common.WmsLogisticsPrintOrderReturn, error)
 	//获取店铺物流配置接口
 	GetWayBillCondition(postData *polyapi.WayBillConditionPost) (*polyapi.WayBillConditionReturn, error)
+	//获取打印信息接口(批量)
+	BatchPrintOrder(postData *polyapi.BatchPrintOrder) (*polyapi.LogisticBatchPrintOrderResponseResultItemInfo, error)
+	//获得打印信息接口
+	PrintOrder(postData *polyapi.BatchPrintOrder_Order, extData ...string) (*polyapi.PrintOrderReturn, error)
+	//获得打印模板接口
+	GetTemplates(postData *common.GetTemplates) (*common.TemplatesReturn, error)
 }

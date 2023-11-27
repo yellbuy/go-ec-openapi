@@ -1,6 +1,7 @@
 package polyapi
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"strconv"
@@ -334,6 +335,60 @@ func NewErrorResDto(code int, message string, subCode int, subMsg string) *Error
 	dto.Response.SubMsg = subMsg
 	return dto
 }
+func (client *Client) PrintOrder(request *BatchPrintOrder_Order, extData ...string) (*PrintOrderReturn, error) {
+	method := "Differ.JH.Logistics.PrintOrder" //菠萝派批量同步接口
+	OutData := new(PrintOrderReturn)
+	bizcontent, err := json.Marshal(request)
+	if err != nil {
+		return OutData, err
+	}
+	req := make(map[string]interface{})
+	req["bizcontent"] = string(bizcontent)
+	params, err := common.InterfaceToParameter(req)
+	if err != nil {
+		return OutData, err
+	}
+	_, body, err := client.Execute(method, params)
+	// logs.Debug("物流打印", string(body))
+	if err != nil {
+		if len(body) > 0 {
+			json.Unmarshal(body, &OutData)
+		}
+		return OutData, err
+	}
+	err = json.Unmarshal(body, &OutData)
+	if err != nil {
+		logs.Debug("物流打印接口错误[" + err.Error() + "]")
+	}
+	return OutData, err
+}
+func (client *Client) BatchPrintOrder(request *BatchPrintOrder) (*LogisticBatchPrintOrderResponseResultItemInfo, error) {
+	method := "Differ.JH.Logistics.BatchPrintOrder" //菠萝派批量同步接口
+	OutData := new(LogisticBatchPrintOrderResponseResultItemInfo)
+	bizcontent, err := json.Marshal(request)
+	if err != nil {
+		return OutData, err
+	}
+	req := make(map[string]interface{})
+	req["bizcontent"] = string(bizcontent)
+	params, err := common.InterfaceToParameter(req)
+	if err != nil {
+		return OutData, err
+	}
+	_, body, err := client.Execute(method, params)
+	logs.Debug("物流打印(批量)", string(body))
+	if err != nil {
+		if len(body) > 0 {
+			json.Unmarshal(body, &OutData)
+		}
+		return OutData, err
+	}
+	err = json.Unmarshal(body, &OutData)
+	if err != nil {
+		logs.Debug("物流打印(批量)接口错误[" + err.Error() + "]")
+	}
+	return OutData, err
+}
 
 // Polyapi接口商品下载响应
 type GoodsDownloadResponseDto struct {
@@ -600,4 +655,105 @@ type ShopOrderInfo struct {
 	InnertranSactionId           string          `json:"innertransactionid"`
 	OriginalMobile               string          `json:"originalmobile"`
 	ServiceOrderList             []*ServiceOrder `json:"serviceorders"`
+}
+type PrintOrderReturn struct {
+	Code             string                                     `json:"code"`             //1 返回码 10000
+	Msg              string                                     `json:"msg"`              //1 返回消息 Success
+	SubCode          string                                     `json:"subCode"`          //1 返回子码
+	SubMessage       string                                     `json:"subMessage"`       //1 返回子级消息
+	PolyAPITotalMS   int                                        `json:"polyAPITotalMS"`   //1 请求接口总耗时(毫秒) 287
+	PolyAPIRequestID string                                     `json:"polyAPIRequestID"` //1 请求菠萝派上下文编号 2016122913161617168574
+	MessageFrom      string                                     `json:"messageFrom"`      //1指示此次返回是菠萝派的返回还是平台的返回 默认 POLY :POLY=POLY,PLAT=PLAT POLY
+	Env              string                                     `json:"env"`              //1 指示此次返回结果来源于菠萝派哪个环境 1
+	BufferDataType   string                                     `json:"bufferDataType"`   //1 二进制内容类别:PDF=0,GIF=0,JPG=0,PNG=0 0
+	BufferData       string                                     `json:"bufferData"`       //1 打印内容(二进制) -
+	UrlData          string                                     `json:"urlData"`          //1 打印内容网址 http://www.aaa.com/stream.pdf
+	PrintData        string                                     `json:"printData"`        //0 打印内容 万邑通ISP
+	HtmlData         string                                     `json:"htmlData"`         //0 打印内容 唯品会JIT物流、tokopedia
+	LogisticNO       string                                     `json:"logisticNO"`       //0 运单号 天猫海外仓直购物流
+	BatchPrintData   []*BatchPrintOrder_Return_BATCH_PRINT_DATA `json:"batchPrintData"`   //1 打印多个面单 batchPrintData[]
+	TrackingId       string                                     `json:"trackingId"`       //0 跟踪id 亚马逊物流
+	EncryptVersion   string                                     `json:"encryptVersion"`   //1 加密算法版本号 华为电子面单
+}
+type LogisticBatchPrintOrderResponseResultItemInfo struct {
+	IsSuccess            bool                                       `json:"isSuccess"`              //1 是否成功(0表示失败；1表示成功) 0
+	Code                 string                                     `json:"code"`                   //1 错误编码 成功-10000 40000
+	Message              string                                     `json:"message"`                //0 失败说明 订单已出库
+	SubCode              string                                     `json:"subCode"`                //1 返回子码
+	SubMessage           string                                     `json:"subMessage"`             //1 返回子级消息
+	MessageFrom          string                                     `json:"messageFrom"`            //1 指示此次返回是菠萝派的返回还是平台的返回 默认 POLY :POLY=POLY,PLAT=PLAT POLY
+	BufferDataType       string                                     `json:"bufferDataType"`         //1 二进制内容类别:PDF=0,GIF=0,JPG=0,PNG=00
+	BufferData           string                                     `json:"bufferData"`             //1 打印内容(二进制) -
+	OrderNo              string                                     `json:"orderNo"`                //1 客户订单号 12313123123
+	LogisticNo           string                                     `json:"logisticNo"`             //1 运单号(多个用英文逗号隔开) 12313123123
+	UrlData              string                                     `json:"urlData"`                //1 打印内容网址 http://www.aaa.com/stream.pdf
+	PrintData            string                                     `json:"printData"`              //0 打印内容 万邑通ISP
+	BaseStringBufferData string                                     `json:"base64StringBufferData"` //0 打印内容(二进制)转Base64编码
+	HtmlData             string                                     `json:"htmlData"`               //0 打印内容 唯品会JIT物流、tokopedia
+	BatchPrintData       []*BatchPrintOrder_Return_BATCH_PRINT_DATA `json:"batchPrintData"`         //1 打印多个面单 batchPrintData[]
+	TrackingId           string                                     `json:"trackingId"`             //0 跟踪id 亚马逊物流
+	Token                string                                     `json:"token"`                  //0 token(顺丰丰桥专用) 顺丰丰桥
+	EncryptVersion       string                                     `json:"encryptVersion"`         //1 加密算法版本号 华为电子面单
+}
+type BatchPrintOrder_Return_BATCH_PRINT_DATA struct {
+	UrlData    string `json:"urlData"`    //1 打印内容网址 http://www.aaa.com/stream.pdf
+	OrderNo    string `json:"orderNo"`    //1 订单号 FO58965555996
+	HtmlData   string `json:"htmlData"`   //0 打印内容 tokopedia
+	LogisticNo string `json:"logisticNo"` //1 物流单号 SFO58965555996
+	ExtraInfo  string `json:"extraInfo"`  //1 拓展字段 123456789 顺丰丰桥
+}
+type BatchPrintOrder struct {
+	Orders []*BatchPrintOrder_Order `json:"orders"`
+}
+type BatchPrintOrder_Order struct {
+	OrderNo            string `json:"orderNo"`            //1 客户订单号 T20160922120
+	LogisticNo         string `json:"logisticNo"`         //1 运单号 Y20160927770
+	OutputFormat       string `json:"outputFormat"`       //1 打印输出格式:PDF格式=JH_PDF,PNG格式=JH_PNG,PDF格式的网址=JH_PDFUrl JH_PDF
+	LabelFormat        string `json:"labelFormat"`        //1 打印尺寸格式:PDF格式=JH_A4,PDF格式的网址=JH_Label,PDF格式=JH_LABEL10_10,PDF格式=JH_LABEL10_15 JH_A4
+	PrintObjectType    string `json:"printObjectType"`    //1 打印类别:标签=JH_Label,标签+配货=JH_LabelPH,标签+报关=JH_LabelBG,标签+配货+报关=JH_LabelPHBG,收据联=JH_Receiving,发货联=JH_Shipping,收据联和发货联=JH_ReceivingAndShipping JH_LABEL
+	NumPackage         string `json:"numPackage"`         //1 包裹数量 1
+	CountryCode        string `json:"countryCode"`        //1 国家二字简码(去发货专用) US 去发货
+	LogisticsId        string `json:"logisticsId"`        //1 渠道编码，去发货系统的渠道编号(去发货专用) WELPMDWY396 去发货
+	OrderItemNo        string `json:"orderItemNo"`        //1 商品编码 Y20160927770 LaZaDa
+	SenderName         string `json:"senderName"`         //1 寄件人姓名 张三 申通快递
+	SenderCompany      string `json:"senderCompany"`      //1 寄件人公司名称 笛佛网店管家 申通快递
+	SenderProvince     string `json:"senderProvince"`     //1 寄件人省份 浙江省 申通快递
+	SenderCity         string `json:"senderCity"`         //1 寄件人城市 杭州 申通快递
+	SenderArea         string `json:"senderArea"`         //1 寄件人区/县 西湖区 申通快递
+	SenderAddress      string `json:"senderAddress"`      //1 寄件人地址 紫金花路120号 申通快递
+	SenderTel          string `json:"senderTel"`          //1 寄件人电话 15044444444 申通快递
+	ReceiverName       string `json:"receiverName"`       //1 收件人姓名 李四 申通快递
+	ReceiverCompany    string `json:"receiverCompany"`    //1 收件人公司名称 上海东商有限公司 申通快递
+	ReceiverProvince   string `json:"receiverProvince"`   //1 收件人省份 上海 申通快递
+	ReceiverCity       string `json:"receiverCity"`       //1 收件人城市 上海 申通快递
+	ReceiverArea       string `json:"receiverArea"`       //1 收件人区/县 浦东新区 申通快递
+	ReceiverAddress    string `json:"receiverAddress"`    //1 收件人地址 浦东156号 申通快递
+	ReceiverTel        string `json:"receiverTel"`        //1 收件人电话 13587944872 申通快递
+	CargoName          string `json:"cargoName"`          //1 货物内件品名 茶杯 申通快递
+	SendData           string `json:"sendData"`           //1 发货日期 2016-7-01 12:34:01 申通快递
+	Weight             string `json:"weight"`             //1 重量 620 申通快递
+	Remark             string `json:"remark"`             //1 备注 轻拿轻放 通快递
+	Carrier            string `json:"carrier"`            //1 运输公司 联邦 Ebay物流
+	SellerUserId       string `json:"sellerUserId"`       //1 卖家eBay账户 u12451547 Ebay物流
+	PrintNo            string `json:"printNo"`            //1 打印单号 154643265 万邑通ISP
+	IsCloudPrint       bool   `json:"isCloudPrint"`       //1 是否使用云打印 true 速卖通物流
+	NeedPrintDetail    bool   `json:"needPrintDetail"`    //1 是否需要打印详情 true 速卖通物流、飞裕达
+	ExtendData         string `json:"extendData"`         //1 自定义分拣单信息 154643265 速卖通物流
+	ProviderCode       string `json:"providerCode"`       //1 承运商编码 20160927770 唯品会JIT物流
+	PackageNo          string `json:"packageNo"`          //1 包裹序号 20160927770 唯品会JIT物流
+	FontSize           string `json:"fontSize"`           //1 面单字体大小 (澳邮物流专用) 0 澳邮物流
+	PlatOrderNo        string `json:"PlatOrderNo"`        //1 平台订单号(京东印尼专用) 0 京东印尼
+	LogisticChildNO    string `json:"logisticChildNO"`    //1 子运单号 SF2234567890100
+	BackSignBillNo     string `json:"backSignBillNo"`     //0 签回单号 SF2234567890100
+	NeedPrintLogo      bool   `json:"needPrintLogo"`      //0 是否打印LOGO true
+	CustomTemplateCode string `json:"customTemplateCode"` //0 自定义模板编码 123 顺丰丰桥
+	CustomTemplateData string `json:"customTemplateData"` //0 自定义模板 123 顺丰丰桥
+	SubOrderNo         string `json:"subOrderNo"`         //0 子订单号/物流单号 12345 华为电子面单
+	SIPShopId          string `json:"SIPShopId"`          //0 跨境一店通业务下的子店铺ID 12345 TikTok物流
+	ShopType           string `json:"shopType"`           //0  店铺类型 JH_MIRAVIA 速卖通物流
+	BusinessType       string `json:"businessType"`       //1 业务类型 IUOP 顺丰国际IBS
+	PrintPicking       bool   `json:"printPicking"`       //1 是否打印拣货单 false 顺丰国际IBS
+	IsPrintSubParent   string `json:"isPrintSubParent"`   //1 是否打印全部的子母单 false 顺丰国际IBS
+	TemplateId         string `json:"templateId"`         //1 模板id 12312313
+	PrintNum           int    `json:"printNum"`           //1 打印数量 2
 }
