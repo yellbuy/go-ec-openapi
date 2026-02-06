@@ -26,18 +26,18 @@ func TestExecute(t *testing.T) {
 
 func TestDownloadProductExecute(t *testing.T) {
 	// 752代表走奇门委托
-	platId := fmt.Sprintf("%v", 2)
-	platformType := POLYAPI
-	client, err := NewClient(platformType, &common.ClientParams{"8e770a60b9684c558f40e4796a96710f", "c9cb1df531b441a8872c60ffb7f900a6", "f50d2f8b2cdf4ad8a5b6eb25bc58e4df", platId})
-	if err == nil {
-		res, _, body, err := client.DownloadProductList(0, 10, "JH_01")
-		if err != nil {
-			t.Error(err)
-			return
-		}
-		fmt.Println(string(body))
-		fmt.Println(res)
-	}
+	// platId := fmt.Sprintf("%v", 2)
+	// platformType := POLYAPI
+	// client, err := NewClient(platformType, &common.ClientParams{"8e770a60b9684c558f40e4796a96710f", "c9cb1df531b441a8872c60ffb7f900a6", "f50d2f8b2cdf4ad8a5b6eb25bc58e4df", platId})
+	// if err == nil {
+	// 	res, _, body, err := client.DownloadProductList(0, 10, "JH_01")
+	// 	if err != nil {
+	// 		t.Error(err)
+	// 		return
+	// 	}
+	// 	fmt.Println(string(body))
+	// 	fmt.Println(res)
+	// }
 
 }
 

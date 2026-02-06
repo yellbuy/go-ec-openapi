@@ -18,7 +18,7 @@ func (client *Client) GoodsSkuSync(request *common.WmsGoodsSkuSync, extData ...s
 	req["bizcontent"] = string(bizcontent)
 	params, err := common.InterfaceToParameter(req)
 	_, body, err := client.Execute(method, params)
-	fmt.Println(string(body))
+	// fmt.Println(string(body))
 	// logs.Debug("菠萝派批量同步接口", string(body))
 	var OutData common.WmsGoodsSkuSyncReturn
 	if err != nil {
@@ -140,9 +140,9 @@ func (client *Client) CancelWaybill(request []common.WaybillCancel, extData ...s
 		return nil, err
 	}
 	logs.Debug("返回内容:", jsonstr)
-	var OutData common.WaybillCancelReturn
-	err = json.Unmarshal(body, &OutData)
-	return &OutData, err
+	OutData := new(common.WaybillCancelReturn)
+	err = json.Unmarshal(body, OutData)
+	return OutData, err
 }
 func (client *Client) TBDecrypt(request *BusinessBatchTBDecryptBizcontent, extData ...string) (*BusinessBatchTBDecryptReturn, error) {
 	//开始提交数据
@@ -213,7 +213,7 @@ func (client *Client) GetWaybillV2(request []*common.WmsLogisticsPostOrder) (*co
 	params, err := common.InterfaceToParameter(req)
 	//此处可能还要加工Json
 	_, body, err := client.Execute(method, params)
-	fmt.Println(string(body))
+	// fmt.Println(string(body))
 	if err != nil {
 		var OutData common.WmsLogisticsReturn
 		json.Unmarshal(body, &OutData)

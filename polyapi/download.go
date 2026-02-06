@@ -71,6 +71,7 @@ func (client *Client) DownloadProductList(pageIndex, pageSize int, status, produ
 		fmt.Println(method, err)
 		return res, hasNextPage, nextToken, body, err
 	}
+	fmt.Println(string(body))
 	nextToken, _ = resJson.Get("requestid").String()
 	hasNextPageStr, _ := resJson.Get("ishasnextpage").String()
 	hasNextPage = hasNextPageStr == "1"
@@ -253,14 +254,14 @@ func orderParse(resJson *simplejson.Json) ([]*common.OrderInfo, error) {
 // 菠萝派订单解析
 func PolyApiOrderParse(resJson *simplejson.Json) ([]*common.OrderInfo, error) {
 	res := make([]*common.OrderInfo, 0)
-	orderList, err := resJson.Get("Orders").Array()
+	orderList, err := resJson.Get("orders").Array()
 	if err != nil {
 		fmt.Println("PolyApiOrderParse err:", err)
 		return res, err
 	}
 	//fmt.Println("PolyApiOrderParse len:", len(orderList))
 	for index := range orderList {
-		order := resJson.Get("Orders").GetIndex(index)
+		order := resJson.Get("orders").GetIndex(index)
 		orderInfo := new(common.OrderInfo)
 		orderInfo.PlatOrderNo, _ = order.Get("PlatOrderNo").String()
 		orderInfo.TradeStatus, _ = order.Get("TradeStatus").String()

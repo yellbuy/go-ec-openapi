@@ -1,8 +1,11 @@
 package common
 
+import "encoding/json"
+
 type GetTemplates struct {
 	Templatestype string `json:"templatestype"` //必填	通用	32	订单信息(所有模版=ALL，客户拥有的模版=OW...	ALL
 	Logistictype  string `json:"logistictype"`  //必填	拼多多金虹桥	-	快递公司类别	YTO
+	BizVersion    string
 }
 
 type TemplatesReturn struct {
@@ -10,7 +13,7 @@ type TemplatesReturn struct {
 	Msg              string                    `json:"msg"`              //必填	通用	64	返回消息	Success
 	Subcode          string                    `json:"subcode"`          //必填	通用	200	子集编码	LXO.JD.REQUEST_FAIL
 	Submessage       string                    `json:"submessage"`       //必填	通用	200	子级消息	订单已出库
-	Polyapitotalms   int                       `json:"polyapitotalms"`   //必填	通用	64	菠萝派总耗时	102
+	Polyapitotalms   json.Number               `json:"polyapitotalms"`   //必填	通用	64	菠萝派总耗时	102
 	Polyapirequestid string                    `json:"polyapirequestid"` //必填	通用	64	请求菠萝派编号	20161222154212742
 	Results          []*TemplatesReturnResults `json:"results"`
 }

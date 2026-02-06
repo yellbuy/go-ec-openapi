@@ -23,33 +23,12 @@ var (
 	//router = "http://39.98.7.126/OpenAPI/do"
 	router = "http://aliyun.polyapi.com/OpenAPI/do"
 	// 京东请求地址
-	jdRouter = "http://jd.polyapi.com/OpenAPI/do"
-	// 拼多多请求地址
-	pddRouter = "http://pdd.polyapi.com/openapi/do"
-	//pddRouter = "http://pddtest.polyapi.com/OpenAPI/do"
+	jdRouter = "https://jd.polyapi.com/OpenAPI/do"
 	// 新地址
-	newRouter = "http://api.polyapi.com/openapi/do"
-	// 订单退款检测地址
-	refundCheckRouter = "http://aliyun.polyapi.com/OpenAPI/do"
-	//refundCheckRouter = "http://online.polyapi.com/openapi/do"
-	// 京东订单退款检测地址
-	refundCheckJdRouter = "http://jd.polyapi.com/OpenAPI/do"
-	// 拼多多退款检测地址
-	//refundCheckPddRouter = "http://pddtest.polyapi.com/OpenAPI/do"
-	refundCheckPddRouter = "http://pdd.polyapi.com/OpenAPI/do"
+	newRouter = "https://api.polyapi.com/openapi/do"
 	//淘宝解密接口
-	TBDecryptRouter = "http://api.polyapi.com/openapi/do"
-	// 顺丰丰桥地址
-	sfRouter = "http://aliyun.polyapi.com/OpenAPI/do"
-	// 抖音地址
-	dyRouter = "http://api.polyapi.com/openapi/do"
-	// 京东物流地址
-	jdExpRouter = "http://jd.polyapi.com/OpenAPI/do"
-	// 奇门订单下载地址
-	qimenRouter = "http://aliyun.polyapi.com/OpenAPI/do" //http://online.polyapi.com/openapi/do
-	// 测试地址
+	TBDecryptRouter = "https://api.polyapi.com/openapi/do"
 	// router = "http://aliyuntest.polyapi.com/OpenAPI/do"
-	// Timeout ...
 	Timeout time.Duration
 	// CacheExpiration 缓存过期时间
 	CacheExpiration = time.Hour
@@ -101,7 +80,9 @@ func execute(client *Client, param common.Parameter) (bytes []byte, err error) {
 	var url string = ""
 	platid := param["platid"].(string)
 	url = common.PostUrl[platid]
-	if platid == "752" {
+	if platid == "756" {
+		url = "https://api.polyapi.com/OpenAPI/do"
+	} else if platid == "752" {
 		url = router
 	} else if param["method"] == "Differ.JH.Business.BatchTBDecrypt" {
 		url = TBDecryptRouter

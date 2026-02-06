@@ -33,6 +33,27 @@ type DownloadOrderListReturn struct {
 	Tid              int64
 	Oid              int64 `orm:"-"`
 }
+
+func (c *DownLoadOrderListOrdersReturn) GetCustomerName() string {
+	if c.Platcipher != nil && c.Platcipher.Receivername != "" {
+		return c.Platcipher.Receivername
+	}
+	return c.Receivername
+}
+func (c *DownLoadOrderListOrdersReturn) GetTel() string {
+	TelStr := ""
+	if c.Platcipher != nil && c.Platcipher.Mobile != "" {
+		TelStr = c.Platcipher.Mobile
+	}
+	if TelStr == "" {
+		TelStr = c.Desenmobile
+	}
+	if TelStr == "" {
+		TelStr = c.Mobile
+	}
+	return TelStr
+}
+
 type DownLoadOrderListOrdersReturn struct {
 	// shoptype	string	可选	通用	25	店铺类型(普通=JH_001，分销=JH_002，经销=...+..	JH_001
 	// platorderno	string	必填	通用	20	平台订单号	6442452481264
@@ -191,7 +212,9 @@ type DownLoadOrderListOrdersReturn struct {
 	ExpressCode            string                                   `json:"expressCode"`
 	Platcipher             *DownLoadOrderListOrdersReturnplatcipher `json:"platcipher"`
 	LocalShopId            int64
-	Oid                    int64 `orm:"-"`
+	Oid                    int64  `orm:"-"`
+	Logisticno             string `json:"logisticno"`
+	Logisticname           string `json:"logisticname"`
 }
 type DownLoadOrderListOrdersReturnplatcipher struct {
 	Buyernick    string `json:"buyernick"`
@@ -265,7 +288,7 @@ type GoodInfoV2 struct {
 
 type DownLoadOrderListPostBizcontent struct {
 	// orderstatus	string	可选	通用	25	订单交易状态(当抓取订单列表时必传)。注：...+..	JH_01
-	// platorderno	string	可选	通用	32	平台订单号(当抓取当个订单时必传)	PX4040334233
+	Platorderno string `json:"platorderno"` //可选	通用	32	平台订单号(当抓取当个订单时必传)	PX4040334233
 	// starttime	datetime	可选	通用	20	开始时间(格式：yyyy-MM-dd HH:mm:ss)(当抓...	2016-06-15 12:23:32
 	// endtime	datetime	可选	通用	20	截止时间(格式：yyyy-MM-dd HH:mm:ss)(当抓...	2016-07-15 08:32:00
 	// timetype	string	可选	通用	25	订单时间类别(当抓取订单列表时必传，若需...+..	JH_01
@@ -324,6 +347,13 @@ type CheckRefundReturnData struct {
 	Childrenrefundstatus    []CheckRefundReturnChildrenRefundStatusItem `json:"childrenrefundstatus"`
 	ShopId                  int64
 	Polyapirequestid        string
+	Province                string `json:"province"`     //必填	通用	64	州/省	浙江省
+	City                    string `json:"city"`         //必填	通用	64	城市	杭州市
+	Area                    string `json:"area"`         //必填	通用	64	区县	西湖区
+	Address                 string `json:"address"`      //必填	通用	64	地址	尚坤生态创业园A211
+	Receivername            string `json:"receivername"` //可选	通用	20	收件人姓名	张三
+	Phone                   string `json:"phone"`        //可选	通用	20	电话(手机、电话二选一)	0571-89845712
+	Mobile                  string `json:"mobile"`       //可选	通用	20	手机(手机、电话二选一)	15067888888
 }
 type CheckRefundReturnChildrenRefundStatusItem struct {
 	Refundno                string `json:"refundno"`                //可选	通用	32	退款订单号	RF158956655
@@ -473,9 +503,9 @@ type WaybillCancelReturn struct {
 	Msg              string                     `json:"msg"`
 	Subcode          string                     `json:"subcode"`
 	Submessage       string                     `json:"submessage"`
-	Polyapitotalms   string                     `json:"polyapitotalms"`
+	Polyapitotalms   json.Number                `json:"polyapitotalms"`
 	Polyapirequestid string                     `json:"polyapirequestid"`
-	Results          []*WaybillCancelReturnData `valid:"Required" json:"results"`
+	Results          []*WaybillCancelReturnData `json:"results"`
 }
 
 // 电子面单取消返回结构体数据表
@@ -687,11 +717,12 @@ type WmsLogisticsPostOrder struct {
 	// Openboxservice              string                   //可选	京东大件	64	开箱服务（京东大件用，0:否 1:开箱通电 2:...	0
 	// Shopnick                    string                   //可选	奇门海外物流	64	店铺名称（奇门海外专用）	0
 	// Isneedsignatureconfirmation json.Number              //?必填	顺丰	4	是否使用签收确认(是=1; 否=0)	1
-	Oaid      string
-	Caid      string
-	Tid       string //!新增字段
-	Sipshopid string
-	ExtraInfo interface{} `json:"extraInfo"`
+	Oaid       string
+	Caid       string
+	Tid        string //!新增字段
+	Sipshopid  string
+	BizVersion string
+	ExtraInfo  interface{} `json:"extraInfo"`
 }
 type WmsLogisticsHumanInfo struct {
 	Name            string //!必填	通用	32	姓名	张三
@@ -979,6 +1010,8 @@ type WmsOrderBatchSendReturn struct {
 	//平台专有参数所有平台亚马逊	-	-	-	-	平台专有参数	-
 	Sendrequestid    string `json:"sendrequestid"`    //必填	亚马逊	32	发货查询批次，仅限异步模式(如亚马逊)	156721544
 	Invoicerequestid string `json:"invoicerequestid"` //必填	亚马逊	32	发票查询批次号，仅限异步模式(如亚马逊)	1801524
+	Polyapitotalms   int    `json:"polyapitotalms"`   //	必填	通用	64	菠萝派总耗时	102
+	Polyapirequestid string `json:"polyapirequestid"` //	必填	通用	64	请求菠萝派编号	20161222154212742
 }
 type WmsOrderBatchSendReturnOrderResultItem struct {
 	Issuccess   string `json:"issuccess"`   //必填	通用	1	是否成功(0表示失败；1表示成功)	0
@@ -996,6 +1029,7 @@ type WmsOrderBatchSendReturnOrderResultItem struct {
 	Pickupdate          string `json:"pickupdate"`          //必填	Shopee	64	上门揽收日期	1595408400
 	Pickuptimestagedesc string `json:"pickuptimestagedesc"` //必填	Shopee	64	上门揽收时间段	18:00:00-23:00:00
 	Packageid           string `json:"packageid"`           //必填	LaZaDa	64	包裹id	12312312
+	MainId              string `json:"-"`
 }
 type WmsOrderBatchSend struct {
 	Orders           []*WmsOrderBatchSendOrderInfo `json:"orders"`           //	必填	通用	-	订单集合	-
@@ -1025,6 +1059,14 @@ type WmsOrderBatchSendOrderInfo struct {
 	Desc              string `json:"desc"`              //必填	通用	256	流转节点的详细地址及操作描述	浙江省杭州市西湖区上车扫描
 	Sequenceno        string `json:"sequenceno"`        //必填	通用	256	配送序号	1
 	Event             int    `json:"event"`             //必填	通用	256	事件编码	10
+	ShopId            string `json:"shopid"`            //2025-01-10新增
+	SenderProvince    string `json:"senderProvince"`
+	SenderCity        string `json:"senderCity"`
+	SenderArea        string `json:"senderArea"`
+	SenderTown        string `json:"senderTown"`
+	SenderAddress     string `json:"senderAddress"`
+	SenderName        string `json:"senderName"`
+	SenderTel         string `json:"senderTel"`
 }
 type WmsOrderBatchSendOrderInfoGoods struct {
 	Platproductid   string `json:"platproductid"`   //必填	通用	32	平台商品ID	51654561
@@ -1037,4 +1079,25 @@ type WmsOrderBatchSendOrderInfoGoods struct {
 	Count           int    `json:"count"`           //必填	通用	11	发货数量	1
 	State           string `json:"-"`
 	Skuid           string `'json:"skuid"` //	可选	亚马逊	32	平台规格ID	2134542315
+}
+
+func (c *WmsOrderBatchSendOrderInfo) Matching(detail *WmsOrderBatchSendOrderInfoGoods) (int, int) {
+	outData := 0
+	outIndex := -1
+	for index, val := range c.Goods {
+		if val.Platproductid == detail.Platproductid && val.Skuid == detail.Skuid { //相同货品
+			outData += 1
+			outIndex = index
+		}
+		if val.Suborderno == detail.Suborderno {
+			outData += 1 << 1
+		}
+		if val.Sublogisticno == detail.Sublogisticno {
+			outData += 1 << 2
+		}
+		if outIndex > -1 {
+			break
+		}
+	}
+	return outData, outIndex
 }

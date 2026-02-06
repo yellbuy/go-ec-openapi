@@ -15,7 +15,19 @@ func (client *Client) DownloadOrderList(pageIndex, pageSize int, startTime, endT
 	err = errors.New("未实现")
 	return
 }
+func (client *Client) DownloadOrderListByPdd(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus string, extData ...string) (hasNextPage bool, body []byte, err error) {
+	err = errors.New("未实现")
+	return
+}
+func (client *Client) DownloadOrderListByPddByNo(pageIndex, pageSize int, no, startTime, endTime, timeType, orderStatus string, extData ...string) (hasNextPage bool, body []byte, err error) {
+	err = errors.New("未实现")
+	return
+}
 func (client *Client) DownloadOrderListByQimen(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus string, extData ...string) (hasNextPage bool, body []byte, err error) {
+	err = errors.New("未实现")
+	return
+}
+func (client *Client) DownloadOrderListByQimenByNo(pageIndex, pageSize int, no, startTime, endTime, timeType, orderStatus string, extData ...string) (hasNextPage bool, body []byte, err error) {
 	err = errors.New("未实现")
 	return
 }

@@ -50,7 +50,13 @@ type Client interface {
 	// 订单下载
 	DownloadOrderList(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus string, orderToken string, extData ...string) (res []*common.OrderInfo, hasNextPage bool, nextToken string, body []byte, err error)
 	// 订单下载
+	DownloadOrderListByPdd(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus string, extData ...string) (hasNextPage bool, body []byte, err error)
+	// 订单下载
+	DownloadOrderListByPddByNo(pageIndex, pageSize int, no, startTime, endTime, timeType, orderStatus string, extData ...string) (hasNextPage bool, body []byte, err error)
+	// 订单下载
 	DownloadOrderListByQimen(pageIndex, pageSize int, startTime, endTime, timeType, orderStatus string, extData ...string) (hasNextPage bool, body []byte, err error)
+	// 订单下载
+	DownloadOrderListByQimenByNo(pageIndex, pageSize int, no, startTime, endTime, timeType, orderStatus string, extData ...string) (hasNextPage bool, body []byte, err error)
 	// 退货退款单下载
 	DownloadRefundList(pageIndex, pageSize int, startTime, endTime, timeType, status string, orderToken string, extData ...string) (res []*common.OrderInfo, hasNextPage bool, nextToken string, body []byte, err error)
 	// 退款状态检测(批量)
@@ -73,6 +79,8 @@ type Client interface {
 	LogisticsPrintOrderList(request []*common.WmsLogisticsPrintOrderBizcontent, extData ...string) (common.WmsLogisticsPrintOrderReturn, error)
 	//获取店铺物流配置接口
 	GetWayBillCondition(postData *polyapi.WayBillConditionPost) (*polyapi.WayBillConditionReturn, error)
+	//获取京东店铺物流配置接口
+	GetJDWayBillCondition(postData *polyapi.JDWayBillConditionPost) (*polyapi.JDWayBillConditionReturn, error)
 	//获取打印信息接口(批量)
 	BatchPrintOrder(postData *polyapi.BatchPrintOrder) (*polyapi.LogisticBatchPrintOrderResponseResultItemInfo, error)
 	//获得打印信息接口

@@ -82,8 +82,9 @@ type DeliveryOrderCreateDto struct {
 	// 发件人信息
 	SenderInfo *DeliveryOrderAddress `xml:"senderInfo"`
 	// 收件人信息
-	ReceiverInfo *DeliveryOrderAddress `xml:"receiverInfo"`
-	ExtendProps  *ExtendProps          `xml:"extendProps"`
+	ReceiverInfo        *DeliveryOrderAddress `xml:"receiverInfo"`
+	ExtendProps         *ExtendProps          `xml:"extendProps"`
+	OaidOrderSourceCode string                `xml:"oaidOrderSourceCode"`
 }
 type ExtendProps struct {
 	Key1 string `xml:"key1"`
@@ -93,6 +94,7 @@ type ExtendProps struct {
 	// 结束时间
 	Key77             string `xml:"key77"`
 	EwaybillOrderCode string `xml:"ewaybill_order_code"`
+	ShopId            string `xml:"shopId"`
 }
 type DeliveryOrderAddress struct {
 	Name          string `xml:"name"`

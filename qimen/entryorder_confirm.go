@@ -131,6 +131,7 @@ type ReturnOrderConfirmRequestReturnOrder struct {
 	ReturnReason     string                                          `xml:"returnReason"`     //String	false	破损退货	退货原因
 	Remark           string                                          `xml:"remark"`           //String	false	备注信息	备注
 	SenderInfo       *ReturnOrderConfirmRequestReturnOrderSenderInfo `xml:"senderInfo"`       //SenderInfo	false		发件人信息
+	ConfirmType      int                                             `xml:"confirmType"`
 }
 type ReturnOrderConfirmRequestReturnOrderSenderInfo struct {
 	company       string `xml:"company"`       //String	false	淘宝	公司名称

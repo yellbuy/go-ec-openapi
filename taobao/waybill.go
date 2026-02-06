@@ -42,6 +42,10 @@ func (client *Client) GetWayBillCondition(postData *polyapi.WayBillConditionPost
 	err := errors.New("未实现")
 	return nil, err
 }
+func (client *Client) GetJDWayBillCondition(postData *polyapi.JDWayBillConditionPost) (*polyapi.JDWayBillConditionReturn, error) {
+	err := errors.New("未实现")
+	return nil, err
+}
 func (client *Client) GetTemplates(postData *common.GetTemplates) (*common.TemplatesReturn, error) {
 	err := errors.New("未实现")
 	return nil, err

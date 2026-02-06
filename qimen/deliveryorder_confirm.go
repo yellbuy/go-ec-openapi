@@ -82,7 +82,7 @@ func (client *Client) QimenStockoutConfirm(dto *WmsQimenStockoutConfirm) (body [
 
 	// 通过奇门代理平台
 	method := "taobao.qimen.stockout.confirm"
-	fmt.Println("奇门出库单推送报文", string(bytes))
+	// fmt.Println("奇门出库单推送报文", string(bytes))
 	body, err = client.Execute(method, params, bytes)
 	if err != nil {
 		fmt.Println(method, err)

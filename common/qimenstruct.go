@@ -24,11 +24,14 @@ type QimenInventoryQuery_CriteriaList struct {
 
 //奇门库存查询返回结构体
 type QimenInventoryQueryResponse struct {
-	XMLName xml.Name                            `xml:"response"`
-	Flag    string                              `xml:"flag"`    //success	响应结果:success|failure
-	Code    string                              `xml:"code"`    //0	响应码
-	Message string                              `xml:"message"` //invalid appkey	响应信息
-	Items   []*QimenInventoryQueryResponse_Item `xml:"items"`   //		商品的库存信息列表
+	XMLName xml.Name                          `xml:"response"`
+	Flag    string                            `xml:"flag"`    //success	响应结果:success|failure
+	Code    string                            `xml:"code"`    //0	响应码
+	Message string                            `xml:"message"` //invalid appkey	响应信息
+	Items   *QimenInventoryQueryResponseItems `xml:"items"`   //		商品的库存信息列表
+}
+type QimenInventoryQueryResponseItems struct {
+	Item []*QimenInventoryQueryResponse_Item `xml:"item"` //		商品的库存信息列表
 }
 type QimenInventoryQueryResponse_Item struct {
 	WarehouseCode string `xml:"warehouseCode"` //	C1234	仓库编码
